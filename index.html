@@ -894,6 +894,9 @@ h3{font-size:14px;font-weight:500}
     <div class="lb-tab active" id="lbt-score" onclick="lbTab('score')">⭐ Ø Test-Score</div>
     <div class="lb-tab" id="lbt-tests" onclick="lbTab('tests')">🎯 Tests absolviert</div>
     <div class="lb-tab" id="lbt-compass" onclick="lbTab('compass')">🧭 Lernkompass</div>
+    <div class="lb-tab" id="lbt-debug" onclick="lbTab('debug')">🐛 Code-Debugger</div>
+    <div class="lb-tab" id="lbt-subnet" onclick="lbTab('subnet')">🌐 Subnetz-Spiel</div>
+    <div class="lb-tab" id="lbt-robot" onclick="lbTab('robot')">🤖 Roboter</div>
   </div>
   <div class="card" style="padding:0;overflow:hidden">
     <div id="lb-content"><div class="lb-spinner"><div class="spinner"></div> Lade Rangliste...</div></div>
@@ -1386,6 +1389,140 @@ const MODULES=[
       {q:'while-Schleife ist?',o:['Fußgesteuert','Kopfgesteuert – Bedingung wird VOR Durchlauf geprüft','Zählschleife','Immer endlos'],a:1,exp:'while: kopfgesteuert – kann auch 0× laufen.',r:'while Schleife',lf:'lf5'},
     ]},
   ]},
+  ,{id:'m_lf6',title:'Netzwerke & Dienste (LF 6)',icon:'🔀',color:'#4fc3f7',lf:'lf6',weeks:[
+    {id:'w18',title:'Routing & VLANs',questions:[
+      {q:'OSPF ist ein Routing-Protokoll vom Typ?',o:['Distanzvektor','Link-State','Path-Vector','Statisch'],a:1,exp:'OSPF = Open Shortest Path First, Link-State-Protokoll.',r:'OSPF',lf:'lf6'},
+      {q:'IEEE 802.1Q definiert?',o:['WLAN-Standard','VLAN-Tagging auf Layer 2','PoE','Bluetooth'],a:1,exp:'802.1Q: VLAN-Tagging, fügt 4-Byte-Tag in Ethernet-Frame ein.',r:'802.1Q',lf:'lf6'},
+      {q:'Inter-VLAN-Routing benötigt?',o:['Nur einen Switch','Router oder Layer-3-Switch','Hub','Access Point'],a:1,exp:'Inter-VLAN-Routing: Layer-3-Gerät (Router/L3-Switch) erforderlich.',r:'Inter-VLAN',lf:'lf6'},
+      {q:'Statisches Routing: Wer pflegt die Tabellen?',o:['Automatisch','Manuell durch den Administrator','OSPF','DHCP'],a:1,exp:'Statisch: Administrator trägt Routen manuell ein.',r:'Statisches Routing',lf:'lf6'},
+      {q:'Trunk-Port unterscheidet sich von Access-Port durch?',o:['Schnellere Verbindung','Übertragung mehrerer VLANs per 802.1Q-Tag','Nur untagged Frames','Kein VLAN-Support'],a:1,exp:'Trunk: mehrere VLANs. Access: ein einziges untagged VLAN.',r:'Trunk vs. Access',lf:'lf6'},
+      {q:'BGP wird hauptsächlich eingesetzt für?',o:['Interne Firmennetze','Routing zwischen autonomen Systemen im Internet','WLAN-Mesh','VPN-Tunnel'],a:1,exp:'BGP: Border Gateway Protocol, Routing im Internet zwischen AS.',r:'BGP',lf:'lf6'},
+      {q:'RIP Hop-Count-Limit?',o:['8','15','32','255'],a:1,exp:'RIP: maximaler Hop-Count = 15, 16 = nicht erreichbar.',r:'RIP Limit',lf:'lf6'},
+      {q:'DHCP-Option 3 liefert?',o:['DNS-Server','Default Gateway','Subnetzmaske','Domänenname'],a:1,exp:'DHCP Option 3 = Default Gateway (Router).',r:'DHCP Option 3',lf:'lf6'},
+      {q:'DNS-Record-Typ für IPv6-Adressen?',o:['A','PTR','AAAA','MX'],a:2,exp:'AAAA-Record: IPv6-Adresse. A-Record: IPv4.',r:'DNS AAAA',lf:'lf6'},
+      {q:'FTP im passiven Modus: Wer initiiert die Datenverbindung?',o:['FTP-Server','FTP-Client','ISP','Router'],a:1,exp:'Passiv: Client baut beide Verbindungen auf – firewall-freundlich.',r:'FTP passiv',lf:'lf6'},
+    ]},
+    {id:'w19',title:'VPN, WAN & Protokolle',questions:[
+      {q:'IPSec ESP bietet?',o:['Nur Authentifizierung','Verschlüsselung + Authentifizierung','Nur Integrität','Komprimierung'],a:1,exp:'ESP = Encapsulating Security Payload: Verschlüsselung + Authentizität.',r:'IPSec ESP',lf:'lf6'},
+      {q:'SSL-VPN Vorteil?',o:['Keine Verschlüsselung','Nur Webbrowser nötig, kein Client','Nur Site-to-Site','Langsamer als IPSec'],a:1,exp:'SSL-VPN: nur Browser erforderlich, ideal für Remote-Zugriff.',r:'SSL VPN',lf:'lf6'},
+      {q:'NTP dient zur?',o:['Namensauflösung','Zeitsynchronisation','E-Mail-Übertragung','Dateizugriff'],a:1,exp:'NTP = Network Time Protocol: synchronisiert Uhren.',r:'NTP',lf:'lf6'},
+      {q:'SNMP Version 3 bringt?',o:['Nur Community-Strings','Keine Neuerungen','Authentifizierung und Verschlüsselung','Höhere Geschwindigkeit'],a:2,exp:'SNMPv3: Sicherheit durch Authentifizierung (SHA) und Verschlüsselung (AES).',r:'SNMPv3',lf:'lf6'},
+      {q:'SMTP sendet auf Port?',o:['21','25','110','143'],a:1,exp:'SMTP: Port 25 (oder 587 für Submission).',r:'SMTP Port',lf:'lf6'},
+      {q:'IMAP vs. POP3?',o:['Identisch','IMAP: E-Mails bleiben auf Server; POP3: lädt herunter','POP3 moderner','IMAP veraltet'],a:1,exp:'IMAP: serverseitig. POP3: lokal – E-Mails werden heruntergeladen.',r:'IMAP vs POP3',lf:'lf6'},
+      {q:'TLS-Handshake: Welcher Schritt kommt zuerst?',o:['Datenaustausch','Server sendet Zertifikat','ClientHello','Finished'],a:2,exp:'TLS: ClientHello → ServerHello → Zertifikat → Schlüsselaustausch.',r:'TLS Handshake',lf:'lf6'},
+      {q:'IKEv2 ist Teil von?',o:['SSL/TLS','PPTP','IPSec','OpenVPN'],a:2,exp:'IKEv2 = Internet Key Exchange Version 2, Teil von IPSec.',r:'IKEv2',lf:'lf6'},
+      {q:'MPLS-Vorteil gegenüber klassischem IP-Routing?',o:['Kein Routing nötig','Label-Switching ermöglicht QoS und Traffic Engineering','Günstigerer Hardware','Nur für WLAN'],a:1,exp:'MPLS: schnelles Forwarding via Labels, QoS und Traffic Engineering.',r:'MPLS',lf:'lf6'},
+      {q:'DNS-Auflösung iterativ: Was macht der Resolver?',o:['Fragt nur einen Server','Fragt sich durch die DNS-Hierarchie selbst','Rät die IP','Nutzt nur Cache'],a:1,exp:'Iterativ: Resolver fragt Root → TLD → authoritative Server selbst.',r:'DNS iterativ',lf:'lf6'},
+    ]},
+  ]},
+  {id:'m_lf7',title:'IT-Lösungen entwickeln (LF 7)',icon:'⚙️',color:'#ce93d8',lf:'lf7',weeks:[
+    {id:'w20',title:'Programmierung & OOP',questions:[
+      {q:'Vererbung in OOP bedeutet?',o:['Gleiche Klasse zweimal','Kindklasse übernimmt Attribute/Methoden der Elternklasse','Objekt kopieren','Interface implementieren'],a:1,exp:'Vererbung: Subklasse erbt alle public/protected Member der Superklasse.',r:'Vererbung',lf:'lf7'},
+      {q:'Polymorphismus ermöglicht?',o:['Doppelte Variablen','Gleicher Methodenname, unterschiedliche Implementierung','Variablen verstecken','Schnellere Kompilierung'],a:1,exp:'Polymorphismus: gleiche Schnittstelle, verschiedenes Verhalten.',r:'Polymorphismus',lf:'lf7'},
+      {q:'Kapselung (Encapsulation) bedeutet?',o:['Daten komprimieren','Attribute mit private schützen, Zugriff via Getter/Setter','Klassen verbergen','Netzwerkpaket einpacken'],a:1,exp:'Kapselung: interne Daten verbergen, kontrollierter Zugriff.',r:'Kapselung',lf:'lf7'},
+      {q:'Interface vs. abstrakte Klasse?',o:['Identisch','Interface: nur Signaturen (kein Code); abstrakte Klasse: kann Implementierung haben','Interface schneller','Abstrakte Klasse immer besser'],a:1,exp:'Interface: rein abstrakt. Abstrakte Klasse: kann konkrete Methoden enthalten.',r:'Interface vs. abstrakt',lf:'lf7'},
+      {q:'Was ist eine Instanz?',o:['Eine Klasse','Ein konkretes Objekt einer Klasse','Eine Methode','Ein Attribut'],a:1,exp:'Instanz = konkretes Objekt, erzeugt aus einer Klasse via new.',r:'Instanz',lf:'lf7'},
+      {q:'git commit -m "fix" macht was?',o:['Lädt auf GitHub hoch','Speichert Änderungen im lokalen Repository','Löscht Branch','Merged Branches'],a:1,exp:'commit: speichert Schnappschuss im lokalen Repository.',r:'Git commit',lf:'lf7'},
+      {q:'git pull vs. git fetch?',o:['Identisch','fetch: lädt nur; pull: lädt + merged','pull nur lokal','fetch ist schneller'],a:1,exp:'fetch: holt Änderungen. pull = fetch + merge.',r:'Git pull vs fetch',lf:'lf7'},
+      {q:'Äquivalenzklassen-Test: Was wird geprüft?',o:['Alle möglichen Eingaben','Repräsentative Werte aus gültigen und ungültigen Bereichen','Nur Extremwerte','Nur Fehlerfälle'],a:1,exp:'Äquivalenzklassen: repräsentative Eingaben für Klassen gültig/ungültig.',r:'Äquivalenzklassen',lf:'lf7'},
+      {q:'Grenzwertanalyse testet?',o:['Mittlere Werte','Werte an den Grenzen der Äquivalenzklassen','Zufällige Eingaben','Nur Null'],a:1,exp:'Grenzwertanalyse: Grenzwerte (z.B. 0, 1, max-1, max) testen.',r:'Grenzwertanalyse',lf:'lf7'},
+      {q:'Unit-Test testet?',o:['Gesamtes System','Eine einzelne Funktion/Methode isoliert','Netzwerkverbindungen','Benutzeroberfläche'],a:1,exp:'Unit-Test: kleinste testbare Einheit isoliert testen.',r:'Unit-Test',lf:'lf7'},
+    ]},
+    {id:'w21',title:'UML & Entwicklungsprozesse',questions:[
+      {q:'UML Aktivitätsdiagramm: Startknoten ist?',o:['Offener Kreis','Ausgefüllter Kreis','Raute','Rechteck'],a:1,exp:'Startknoten: gefüllter schwarzer Kreis. Ende: gefüllter Kreis mit Ring.',r:'Aktivitätsdiagramm Start',lf:'lf7'},
+      {q:'UML Sequenzdiagramm zeigt?',o:['Statische Struktur','Zeitlichen Ablauf von Nachrichten zwischen Objekten','Klassenbeziehungen','Datenbankschema'],a:1,exp:'Sequenzdiagramm: Kommunikation zwischen Objekten über die Zeit.',r:'Sequenzdiagramm',lf:'lf7'},
+      {q:'Scrum Sprint-Länge?',o:['1 Tag','1-4 Wochen','3 Monate','Variabel ohne Limit'],a:1,exp:'Sprint: feste Timebox, typisch 2 Wochen (1–4 Wochen).',r:'Sprint Länge',lf:'lf7'},
+      {q:'Product Backlog enthält?',o:['Nur Bugs','Alle Anforderungen priorisiert','Tagesplan','Akzeptanzkriterien allein'],a:1,exp:'Product Backlog: priorisierte Liste aller Anforderungen.',r:'Product Backlog',lf:'lf7'},
+      {q:'Wasserfall: Hauptkritik?',o:['Zu agil','Starre Phasen, spätes Feedback, teures Nachbessern','Zu flexibel','Keine Dokumentation'],a:1,exp:'Wasserfall: Fehler werden erst spät erkannt, Änderungen teuer.',r:'Wasserfall Kritik',lf:'lf7'},
+      {q:'Black-Box-Test: Was ist dem Tester bekannt?',o:['Quellcode','Nur das externe Verhalten (Ein-/Ausgabe)','Datenbank-Schema','Interna der Implementierung'],a:1,exp:'Black-Box: Tester kennt nur Schnittstelle, nicht die Implementierung.',r:'Black-Box Test',lf:'lf7'},
+      {q:'White-Box-Test analysiert?',o:['Nur Ergebnisse','Innere Struktur / Quellcode','Benutzererfahrung','Systemlast'],a:1,exp:'White-Box: Test basiert auf Kenntnis des Quellcodes.',r:'White-Box Test',lf:'lf7'},
+      {q:'git branch erstellt?',o:['Kopie des Repositories','Neuen Entwicklungszweig','Commit','Tag'],a:1,exp:'Branch: unabhängiger Entwicklungszweig vom aktuellen Stand.',r:'Git Branch',lf:'lf7'},
+      {q:'Pull Request (PR) in GitHub?',o:['Daten herunterladen','Änderungen aus Branch zum Mergen vorschlagen','Konflikte lösen','Repository löschen'],a:1,exp:'PR: Entwickler schlägt vor, seinen Branch in main zu mergen.',r:'Pull Request',lf:'lf7'},
+      {q:'Continuous Integration (CI) bedeutet?',o:['Tägliche Meetings','Häufige Code-Integration mit automatischen Tests','Manuelle Deployments','Kein Testing'],a:1,exp:'CI: häufige Zusammenführung von Code + automatisierte Tests.',r:'CI',lf:'lf7'},
+    ]},
+  ]},
+  {id:'m_lf8',title:'IT-Systeme administrieren (LF 8)',icon:'🖥️',color:'#69f0ae',lf:'lf8',weeks:[
+    {id:'w22',title:'Server & Active Directory',questions:[
+      {q:'Active Directory Domäne enthält?',o:['Nur Computer','Benutzer, Gruppen, Computer, Richtlinien',  'Nur GPOs','Nur Drucker'],a:1,exp:'AD: zentrale Verwaltung aller Netzwerkressourcen.',r:'Active Directory',lf:'lf8'},
+      {q:'GPO steht für?',o:['Global Protocol Object','Group Policy Object','Gateway Protocol Order','General Patch Option'],a:1,exp:'GPO = Group Policy Object: Einstellungen für Benutzer/Computer.',r:'GPO',lf:'lf8'},
+      {q:'OU in Active Directory ist?',o:['Benutzergruppe','Organisationseinheit für strukturierte Verwaltung','Sicherheitsrichtlinie','Domänen-Controller'],a:1,exp:'OU = Organizational Unit: Container für AD-Objekte.',r:'OU',lf:'lf8'},
+      {q:'LDAP-DN für Benutzer Max in OU Users, Domäne firma.de?',o:['Max@firma.de','CN=Max,OU=Users,DC=firma,DC=de','Max.Users.firma.de','OU=Max,CN=Users'],a:1,exp:'DN: CN=Name,OU=Einheit,DC=Domäne.',r:'LDAP DN',lf:'lf8'},
+      {q:'systemctl start apache2 macht was?',o:['Installiert Apache','Startet den Apache-Dienst','Prüft Konfiguration','Zeigt Logs'],a:1,exp:'systemctl start: startet einen systemd-Dienst.',r:'systemctl',lf:'lf8'},
+      {q:'NTFS-Berechtigung Vollzugriff beinhaltet?',o:['Nur Lesen','Lesen, Schreiben, Ausführen, Löschen, Berechtigungen ändern','Nur Schreiben','Nur Ausführen'],a:1,exp:'Vollzugriff: alle NTFS-Berechtigungen inklusive ACL-Änderung.',r:'NTFS Vollzugriff',lf:'lf8'},
+      {q:'chmod 755 in Linux bedeutet?',o:['rwxrwxrwx','rwxr-xr-x','rw-rw-rw-','rwx------'],a:1,exp:'755: Besitzer rwx (7), Gruppe r-x (5), Andere r-x (5).',r:'chmod 755',lf:'lf8'},
+      {q:'Event-ID 4625 in Windows bedeutet?',o:['Erfolgreiche Anmeldung','Fehlgeschlagene Anmeldung','Benutzer erstellt','Service gestartet'],a:1,exp:'Event 4625: An account failed to log on.',r:'Event ID 4625',lf:'lf8'},
+      {q:'journalctl -u nginx zeigt?',o:['Alle System-Logs','Logs des nginx-Dienstes','Nginx-Konfiguration','Nginx-Installationsstatus'],a:1,exp:'journalctl -u: Logs für einen spezifischen systemd-Dienst.',r:'journalctl',lf:'lf8'},
+      {q:'RBAC steht für?',o:['Remote Backup Control','Role-Based Access Control','Real-time Block Cipher','Remote Boot Configuration'],a:1,exp:'RBAC: Zugriffsrechte basierend auf Rollen, nicht Einzelpersonen.',r:'RBAC',lf:'lf8'},
+    ]},
+    {id:'w23',title:'Monitoring & Administration',questions:[
+      {q:'Nagios prüft?',o:['Nur Festplatten','Hosts und Services auf Verfügbarkeit','Nur Netzwerklast','Windows-Updates'],a:1,exp:'Nagios: Open-Source-Monitoring für Hosts, Services, Netzwerk.',r:'Nagios',lf:'lf8'},
+      {q:'SNMP-Trap ist?',o:['Anfrage vom Manager','Spontane Benachrichtigung vom Agent an Manager','Passwort-Abfrage','Konfigurationsbefehl'],a:1,exp:'SNMP-Trap: unaufgeforderte Benachrichtigung bei Ereignissen.',r:'SNMP Trap',lf:'lf8'},
+      {q:'Windows Server Core unterscheidet sich durch?',o:['Mehr Sicherheitslücken','Keine grafische Oberfläche – nur CLI','Kein Netzwerk','Keine Rollenunterstützung'],a:1,exp:'Core: kein GUI, geringere Angriffsfläche, weniger Ressourcen.',r:'Server Core',lf:'lf8'},
+      {q:'apt-get upgrade vs. apt-get dist-upgrade?',o:['Identisch','dist-upgrade: löst auch Paketabhängigkeiten auf','upgrade installiert neue Pakete','dist-upgrade für Windows'],a:1,exp:'dist-upgrade: entfernt/installiert Pakete zur Abhängigkeitsauflösung.',r:'apt dist-upgrade',lf:'lf8'},
+      {q:'Heartbeat-Monitoring prüft?',o:['CPU-Temperatur','Ob ein System noch erreichbar/aktiv ist','RAID-Status','Netzwerklast'],a:1,exp:'Heartbeat: regelmäßige Lebenszeichen – System noch aktiv?',r:'Heartbeat',lf:'lf8'},
+      {q:'SLA 99,9% Verfügbarkeit erlaubt Ausfall von?',o:['0 Minuten','~8,7 Stunden/Jahr','~44 Minuten/Monat','~1 Tag/Monat'],a:1,exp:'99,9% = 0,1% Ausfall = 8,76 h/Jahr ≈ 43,8 min/Monat.',r:'SLA 99,9%',lf:'lf8'},
+      {q:'chown user:group datei.txt macht was?',o:['Rechte ändern','Besitzer und Gruppe der Datei ändern','Datei verschieben','Datei löschen'],a:1,exp:'chown: Besitzer (und optional Gruppe) einer Datei ändern.',r:'chown',lf:'lf8'},
+      {q:'Windows Task-Manager Leistungsreiter zeigt?',o:['Nur Prozesse','CPU, RAM, Festplatten, Netzwerkauslastung','Nur Netzwerk','Sicherheitsereignisse'],a:1,exp:'Leistung: Echtzeit-Ressourcenauslastung (CPU, RAM, Disk, Net).',r:'Task Manager',lf:'lf8'},
+      {q:'Syslog-Facility KERN bedeutet?',o:['Kernel-Nachrichten','E-Mail-System','Authentifizierung','Cron-Dienste'],a:0,exp:'Facility 0 = KERN: Kernel-Meldungen.',r:'Syslog Facility',lf:'lf8'},
+      {q:'IIS ist ein?',o:['Linux-Webserver','Microsoft Webserver für Windows Server','Datenbank','Monitoring-Tool'],a:1,exp:'IIS = Internet Information Services: Microsofts Webserver.',r:'IIS',lf:'lf8'},
+    ]},
+  ]},
+  {id:'m_lf9',title:'Daten analysieren (LF 9)',icon:'📊',color:'#ff8a65',lf:'lf9',weeks:[
+    {id:'w24',title:'Geschäftsprozesse & Datenanalyse',questions:[
+      {q:'EPK: Welches Element folgt immer auf ein Ereignis?',o:['Ein weiteres Ereignis','Eine Funktion','Ein Konnektor','Ein Gateway'],a:1,exp:'EPK-Regel: Ereignis → Funktion → Ereignis (wechselnd).',r:'EPK Regel',lf:'lf9'},
+      {q:'BPMN: Welches Symbol steht für ein Startereignis?',o:['Dicker Kreis','Dünner Kreis','Raute','Rechteck'],a:1,exp:'Startereignis: dünner einfacher Kreis (Single thin circle).',r:'BPMN Startereignis',lf:'lf9'},
+      {q:'ETL steht für?',o:['Execute Transfer Load','Extract Transform Load','Edit Table Link','Evaluate Test Log'],a:1,exp:'ETL = Extract, Transform, Load: Datenprozess für Warehousing.',r:'ETL',lf:'lf9'},
+      {q:'Big Data: Welches V steht für Echtzeit-Anforderungen?',o:['Volume','Velocity','Variety','Veracity'],a:1,exp:'Velocity: Geschwindigkeit der Datenerzeugung und -verarbeitung.',r:'Big Data Velocity',lf:'lf9'},
+      {q:'SQL GROUP BY wird kombiniert mit?',o:['WHERE','ORDER BY','HAVING','JOIN'],a:2,exp:'HAVING filtert aggregierte Gruppen (wie WHERE für Gruppen).',r:'HAVING',lf:'lf9'},
+      {q:'Arithmetisches Mittel von 2, 4, 6, 8, 10?',o:['5','6','4','7'],a:1,exp:'(2+4+6+8+10)/5 = 30/5 = 6.',r:'Arithmetisches Mittel',lf:'lf9'},
+      {q:'Median von 3, 1, 4, 1, 5?',o:['1','3','4','2,8'],a:1,exp:'Sortiert: 1,1,3,4,5 → Mittlerer Wert = 3.',r:'Median',lf:'lf9'},
+      {q:'KPI steht für?',o:['Key Product Identifier','Key Performance Indicator','Knowledge Process Integration','Kernel Protocol Interface'],a:1,exp:'KPI = Key Performance Indicator: messbare Zielgröße.',r:'KPI',lf:'lf9'},
+      {q:'JSON-Format: Wie werden Objekte begrenzt?',o:['()','[]','{}','<>'],a:2,exp:'JSON-Objekte: {}. Arrays: []. Beispiel: {"key":"value"}.',r:'JSON Syntax',lf:'lf9'},
+      {q:'SQL AVG(gehalt) berechnet?',o:['Summe aller Gehälter','Durchschnittsgehalt','Maximalgehalt','Anzahl der Gehälter'],a:1,exp:'AVG = Average: Durchschnittswert der Spalte.',r:'SQL AVG',lf:'lf9'},
+    ]},
+  ]},
+  {id:'m_lf10b',title:'Serverdienste & Automatisierung (LF 10b)',icon:'🤖',color:'#4fc3f7',lf:'lf10b',weeks:[
+    {id:'w25',title:'Webserver, Skripte & Automatisierung',questions:[
+      {q:'Apache VirtualHost erlaubt?',o:['Nur einen Webauftritt pro Server','Mehrere Webauftritte auf einer IP/Port','Nur statische Seiten','Kein SSL'],a:1,exp:'VirtualHost: mehrere Domains/Seiten auf einem Server.',r:'VirtualHost',lf:'lf10b'},
+      {q:'Nginx Hauptvorteil gegenüber Apache?',o:['Ältere Software','Bessere Performance bei statischen Inhalten und hoher Last','Mehr Module','Einfacher zu konfigurieren'],a:1,exp:'Nginx: event-basiert, sehr effizient bei hoher Nebenläufigkeit.',r:'Nginx',lf:'lf10b'},
+      {q:'.htaccess in Apache ermöglicht?',o:['Benutzerauthentifizierung allein','Verzeichnis-spezifische Konfiguration ohne Server-Neustart','Nur Umleitungen','Kein Einsatz mehr'],a:1,exp:'.htaccess: pro-Verzeichnis-Konfiguration (Redirects, Auth, etc.).',r:'.htaccess',lf:'lf10b'},
+      {q:'Bash-Script beginnt mit?',o:['#!/bin/sh','# Script','#!/bin/bash','// bash'],a:2,exp:'Shebang #!/bin/bash legt den Interpreter fest.',r:'Bash Shebang',lf:'lf10b'},
+      {q:'Cron-Eintrag "0 2 * * *" bedeutet?',o:['Jeden Minuten','Täglich um 2:00 Uhr','Alle 2 Stunden','Wöchentlich'],a:1,exp:'Cron: Minute=0, Stunde=2, Tag/Monat/Wochentag=* → täglich 02:00.',r:'Cron Syntax',lf:'lf10b'},
+      {q:'Docker-Container unterscheidet sich von VM durch?',o:['Mehr Ressourcenverbrauch','Teilt Kernel mit Host – leichter, schneller','Eigener Kernel','Schlechte Isolation'],a:1,exp:'Container: teilt Host-Kernel, kein Hypervisor → weniger Overhead.',r:'Docker vs VM',lf:'lf10b'},
+      {q:'Let\'s Encrypt liefert?',o:['Paid SSL-Zertifikate','Kostenlose TLS-Zertifikate (ACME-Protokoll)','Firewall-Regeln','DNS-Dienste'],a:1,exp:"Let's Encrypt: kostenlose, automatisch erneuerbare TLS-Zertifikate.",r:"Let's Encrypt",lf:'lf10b'},
+      {q:'Reverse Proxy leitet weiter?',o:['Vom Client direkt zum Internet','Anfragen von außen an interne Server','Nur UDP-Traffic','DNS-Anfragen'],a:1,exp:'Reverse Proxy: nimmt Anfragen entgegen, leitet an Backend-Server.',r:'Reverse Proxy',lf:'lf10b'},
+      {q:'SPF-Record verhindert?',o:['DDoS-Angriffe','E-Mail-Spoofing (unberechtigtes Senden im Namen der Domain)','Virenversand','SSL-Fehler'],a:1,exp:'SPF: definiert autorisierte Mailserver für eine Domain.',r:'SPF',lf:'lf10b'},
+      {q:'Ansible ist ein Tool zur?',o:['Datenbankadministration','Automatisierten IT-Konfiguration (Infrastructure as Code)','Netzwerk-Monitoring','Backup-Verwaltung'],a:1,exp:'Ansible: agentlose Automatisierung via YAML-Playbooks.',r:'Ansible',lf:'lf10b'},
+    ]},
+  ]},
+  {id:'m_lf11b',title:'IT-Sicherheit umsetzen (LF 11b)',icon:'🛡️',color:'#ef5350',lf:'lf11b',weeks:[
+    {id:'w26',title:'Sicherheitskonzepte & Penetration Testing',questions:[
+      {q:'OWASP Top 10: Platz 1 (2021)?',o:['Injection','Broken Auth','Cryptographic Failures','Broken Access Control'],a:3,exp:'OWASP 2021 #1: Broken Access Control (Zugriffskontrollfehler).',r:'OWASP Top 10',lf:'lf11b'},
+      {q:'SQL-Injection verhindert man durch?',o:['Längere Passwörter','Prepared Statements / Parameterisierte Abfragen','HTTPS','Firewalls allein'],a:1,exp:'Prepared Statements: trennen SQL-Code von Daten.',r:'SQL-Injection Schutz',lf:'lf11b'},
+      {q:'XSS steht für?',o:['Extra Secure Shell','Cross-Site Scripting','Cross-Server Sharing','Extended SSL'],a:1,exp:'XSS = Cross-Site Scripting: Einschleusen von Script in Webseiten.',r:'XSS',lf:'lf11b'},
+      {q:'Penetrationstest Ergebnis ist?',o:['Sofortiger Angriff','Schwachstellenbericht und Empfehlungen','Nur Bestätigung','Firewall-Konfiguration'],a:1,exp:'Pentest: liefert Schwachstellen + Handlungsempfehlungen.',r:'Pentest Ergebnis',lf:'lf11b'},
+      {q:'Zero-Day-Exploit nutzt?',o:['Bekannte Sicherheitslücke mit Patch','Unbekannte Lücke ohne verfügbaren Patch','Veraltete Hardware','Schwache Passwörter'],a:1,exp:'Zero-Day: Lücke, für die noch kein Patch existiert.',r:'Zero-Day',lf:'lf11b'},
+      {q:'Honeypot dient zur?',o:['Produktiv-Datenspeicherung','Angreifer anlocken und analysieren','Verschlüsselung','Backup'],a:1,exp:'Honeypot: Köder-System, um Angreifer zu beobachten.',r:'Honeypot',lf:'lf11b'},
+      {q:'SIEM steht für?',o:['Secure IP Event Monitor','Security Information and Event Management','Secure Incident Engine Module','System Integrity Event Manager'],a:1,exp:'SIEM: zentrale Sammlung und Analyse von Sicherheitsereignissen.',r:'SIEM',lf:'lf11b'},
+      {q:'2-Faktor-Authentifizierung kombiniert?',o:['2 Passwörter','Wissen + Besitz oder Biometrie','2 Benutzernamen','PIN + Passwort allein'],a:1,exp:'2FA: zwei unterschiedliche Faktoren (Wissen, Besitz, Sein).',r:'2FA',lf:'lf11b'},
+      {q:'Phishing-Erkennungsmerkmal?',o:['Korrektes HTTPS','Dringende Aufforderung + verdächtige Absender-Domain','Legitimer Absender','Korrekte Rechtschreibung'],a:1,exp:'Phishing: Dringlichkeit, falsche Domain, unbekannte Links.',r:'Phishing erkennen',lf:'lf11b'},
+      {q:'Defense in Depth bedeutet?',o:['Nur eine Firewall','Mehrere überlagerte Sicherheitsschichten','Tiefe Datenverschlüsselung','Nur perimeter Schutz'],a:1,exp:'Defense in Depth: Angreifer muss mehrere Sicherheitsebenen überwinden.',r:'Defense in Depth',lf:'lf11b'},
+    ]},
+  ]},
+  {id:'m_lf12b',title:'IT-Systeme einführen (LF 12b)',icon:'🚀',color:'#c8ff00',lf:'lf12b',weeks:[
+    {id:'w27',title:'Migration, SLA & Wirtschaftlichkeit',questions:[
+      {q:'RTO steht für?',o:['Recovery Transfer Order','Recovery Time Objective','Remote Transfer Option','Real-Time Output'],a:1,exp:'RTO = maximale tolerierbare Ausfallzeit bis zur Wiederherstellung.',r:'RTO',lf:'lf12b'},
+      {q:'RPO steht für?',o:['Remote Protocol Object','Recovery Point Objective','Real Processing Order','Routing Protocol Option'],a:1,exp:'RPO = maximaler Datenverlust (Zeit seit letztem Backup).',r:'RPO',lf:'lf12b'},
+      {q:'P2V-Migration bedeutet?',o:['Protokoll zu VLAN','Physical to Virtual: Physischer Server wird VM','Peer-to-Peer VPN','Parallele zu vertikaler Skalierung'],a:1,exp:'P2V: bestehende physische Server als VM abbilden.',r:'P2V',lf:'lf12b'},
+      {q:'ROI = 5000€ Gewinn, 20000€ Investition. Wert?',o:['4%','25%','40%','20%'],a:1,exp:'ROI = Gewinn/Investition × 100 = 5000/20000 × 100 = 25%.',r:'ROI Berechnung',lf:'lf12b'},
+      {q:'SLA 99,99% erlaubt wie viel Ausfallzeit/Jahr?',o:['8,76 h','52,6 min','~52,6 min','~5,26 min'],a:2,exp:'99,99% = 0,01% × 8760h = ~0,876h ≈ 52,6 min/Jahr.',r:'SLA 99,99%',lf:'lf12b'},
+      {q:'Werkvertrag vs. Dienstvertrag: Haftung?',o:['Identisch','Werkvertrag: Ergebnis schuldig; Dienstvertrag: nur Tätigkeit','Dienstvertrag: Ergebnis','Kein Unterschied'],a:1,exp:'Werkvertrag: Erfolg geschuldet. Dienstvertrag: Tätigkeit schuldig.',r:'Werkvertrag vs. Dienstvertrag',lf:'lf12b'},
+      {q:'Abnahmeprotokoll dokumentiert?',o:['Tagesplan','Akzeptanz des Liefergegenstands durch Auftraggeber','Mitarbeiterleistung','Netzwerktopologie'],a:1,exp:'Abnahmeprotokoll: formelle Bestätigung der Leistungserfüllung.',r:'Abnahmeprotokoll',lf:'lf12b'},
+      {q:'Break-Even-Analyse zeigt?',o:['Maximalen Gewinn','Punkt, ab dem Erlöse die Kosten decken','Minimalkosten','Amortisationsdauer'],a:1,exp:'Break-Even: Punkt, an dem Gesamterlöse = Gesamtkosten.',r:'Break-Even',lf:'lf12b'},
+      {q:'High Availability (HA) erreicht man durch?',o:['Bessere Software allein','Redundanz und Failover-Mechanismen','Schnellere Hardware','Mehr RAM'],a:1,exp:'HA: Redundanz (mehrere Systeme) + automatischer Failover.',r:'High Availability',lf:'lf12b'},
+      {q:'Netzwerkdokumentation sollte enthalten?',o:['Nur IP-Adressen','Topologie, IP-Pläne, Geräteinfos, Konfigurationen, Änderungslog','Nur Passwörter','Nur Herstellerinformationen'],a:1,exp:'Vollständige Netzdoku: Topologie, IPs, Geräte, Konfig, Change-Log.',r:'Netzwerkdokumentation',lf:'lf12b'},
+    ]},
+  ]},
 ];
 
 const EXAMS=[
@@ -1561,22 +1698,57 @@ const EXAMS=[
 
 
 const ACHIEVEMENTS=[
+  // ── Allgemein ──
   {id:'first_login',icon:'🚀',title:'Erster Start',desc:'App zum ersten Mal geöffnet',condition:s=>s.totalLogins>=1},
   {id:'first_test',icon:'🎯',title:'Erster Test',desc:'Ersten Wochentest absolviert',condition:s=>Object.keys(s.testResults||{}).length>=1},
   {id:'perfect_score',icon:'⭐',title:'Perfektes Ergebnis',desc:'100% in einem Wochentest',condition:s=>Object.values(s.testResults||{}).some(r=>r.pct>=100)},
   {id:'week_complete',icon:'📅',title:'Erste Woche',desc:'Alle Aufgaben einer Woche abgehakt',condition:s=>{const d=s.checkedTasks||{};return PLAN.some(w=>w.days&&w.days.every(d2=>d2.tasks&&d2.tasks.every((_,ti)=>d[w.id+'_'+w.days.indexOf(d2)+'_'+ti])));}},
+  {id:'five_tests',icon:'🔥',title:'Fleißig',desc:'5 Wochentests absolviert',condition:s=>Object.keys(s.testResults||{}).length>=5},
+  {id:'ten_tests',icon:'💪',title:'Ausdauer',desc:'10 Wochentests absolviert',condition:s=>Object.keys(s.testResults||{}).length>=10},
+  {id:'all_tests',icon:'💯',title:'Vollständig',desc:'Alle Wochentests absolviert',condition:s=>MODULES.reduce((a,m)=>a+m.weeks.length,0)<=Object.keys(s.testResults||{}).length},
+  {id:'streak_5',icon:'🌟',title:'5 Wochen Lernstreak',desc:'5 Wochen nacheinander gelernt',condition:s=>(s.weekStreak||0)>=5},
+  // ── Lernfelder ──
   {id:'lf1_master',icon:'🏢',title:'WiSo-Meister',desc:'LF1-Test mit ≥80% abgeschlossen',condition:s=>Object.entries(s.testResults||{}).some(([k,v])=>k.startsWith('w')&&v.lf==='lf1'&&v.pct>=80)},
   {id:'network_pro',icon:'🌐',title:'Netzwerk-Profi',desc:'LF3-Test mit ≥80% abgeschlossen',condition:s=>Object.entries(s.testResults||{}).some(([k,v])=>k.startsWith('w')&&v.lf==='lf3'&&v.pct>=80)},
+  {id:'security_pro',icon:'🔐',title:'Security-Experte',desc:'LF4-Test mit ≥80% abgeschlossen',condition:s=>Object.entries(s.testResults||{}).some(([k,v])=>k.startsWith('w')&&v.lf==='lf4'&&v.pct>=80)},
+  {id:'lf6_master',icon:'🔀',title:'Routing-Profi',desc:'LF6-Test mit ≥80% abgeschlossen',condition:s=>Object.entries(s.testResults||{}).some(([k,v])=>k.startsWith('w')&&v.lf==='lf6'&&v.pct>=80)},
+  {id:'lf7_master',icon:'⚙️',title:'Entwickler',desc:'LF7-Test mit ≥80% abgeschlossen',condition:s=>Object.entries(s.testResults||{}).some(([k,v])=>k.startsWith('w')&&v.lf==='lf7'&&v.pct>=80)},
+  {id:'lf8_master',icon:'🖥️',title:'Admin-Profi',desc:'LF8-Test mit ≥80% abgeschlossen',condition:s=>Object.entries(s.testResults||{}).some(([k,v])=>k.startsWith('w')&&v.lf==='lf8'&&v.pct>=80)},
+  {id:'lf12b_master',icon:'🚀',title:'Systemintegrator',desc:'LF12b-Test mit ≥80% abgeschlossen',condition:s=>Object.entries(s.testResults||{}).some(([k,v])=>k.startsWith('w')&&v.lf==='lf12b'&&v.pct>=80)},
+  // ── Prüfung ──
   {id:'exam_first',icon:'🏛️',title:'Erste Prüfungssim.',desc:'Erste Prüfungssimulation abgeschlossen',condition:s=>Object.keys(s.examResults||{}).length>=1},
   {id:'exam_pass',icon:'🎓',title:'Bestanden!',desc:'Prüfungssimulation mit ≥60%',condition:s=>Object.values(s.examResults||{}).some(r=>r.pct>=60)},
   {id:'exam_good',icon:'🥇',title:'Ausgezeichnet',desc:'Prüfungssimulation mit ≥80%',condition:s=>Object.values(s.examResults||{}).some(r=>r.pct>=80)},
-  {id:'five_tests',icon:'🔥',title:'Fleißig',desc:'5 Wochentests absolviert',condition:s=>Object.keys(s.testResults||{}).length>=5},
-  {id:'all_tests',icon:'💯',title:'Vollständig',desc:'Alle Wochentests absolviert',condition:s=>MODULES.reduce((a,m)=>a+m.weeks.length,0)<=Object.keys(s.testResults||{}).length},
+  {id:'exam_all',icon:'🏆',title:'Alle Prüfungen',desc:'Alle Prüfungssimulationen abgeschlossen',condition:s=>Object.keys(s.examResults||{}).length>=EXAMS.length},
+  // ── Lernkompass ──
   {id:'compass_half',icon:'🧭',title:'Halbzeit',desc:'50% Lernkompass abgehakt',condition:s=>{const total=COMPASS_DATA.reduce((a,s2)=>a+s2.topics.length,0);const done=Object.values(s.compassChecked||{}).filter(Boolean).length;return done>=total/2;}},
   {id:'compass_full',icon:'🗺️',title:'Lernkompass komplett',desc:'Alle Themen im Lernkompass abgehakt',condition:s=>{const total=COMPASS_DATA.reduce((a,s2)=>a+s2.topics.length,0);const done=Object.values(s.compassChecked||{}).filter(Boolean).length;return done>=total;}},
+  // ── Notizen ──
+  {id:'first_note',icon:'✏️',title:'Erste Notiz',desc:'Erste Notiz erstellt',condition:s=>(s.notes||[]).length>=1},
   {id:'ten_notes',icon:'📝',title:'Notizen-Fan',desc:'10 Notizen erstellt',condition:s=>(s.notes||[]).length>=10},
   {id:'review_cleared',icon:'✅',title:'Keine Lücken',desc:'Wiederholungsliste geleert',condition:s=>(s.reviewItems||[]).length===0&&Object.keys(s.testResults||{}).length>0},
-  {id:'streak_5',icon:'🌟',title:'5 Wochen Lernstreak',desc:'5 Wochen nacheinander gelernt',condition:s=>(s.weekStreak||0)>=5},
+  // ── 🐛 Code-Debugger ──
+  {id:'dbg_first',icon:'🐛',title:'Erster Bug',desc:'Erste Debugger-Aufgabe gelöst',condition:s=>(s.minigames||{}).dbgSolved>=1},
+  {id:'dbg_5',icon:'🔍',title:'Bug-Jäger',desc:'5 Debugger-Aufgaben gelöst',condition:s=>(s.minigames||{}).dbgSolved>=5},
+  {id:'dbg_20',icon:'💻',title:'Code-Meister',desc:'20 Debugger-Aufgaben gelöst',condition:s=>(s.minigames||{}).dbgSolved>=20},
+  {id:'dbg_streak3',icon:'🔥',title:'Debug-Streak',desc:'3 Debugger-Aufgaben in Folge korrekt',condition:s=>(s.minigames||{}).dbgBestStreak>=3},
+  {id:'dbg_score500',icon:'🏅',title:'Debugger 500',desc:'500 Punkte im Code-Debugger',condition:s=>(s.minigames||{}).dbgHighscore>=500},
+  {id:'dbg_score2000',icon:'🥇',title:'Debugger Elite',desc:'2000 Punkte im Code-Debugger',condition:s=>(s.minigames||{}).dbgHighscore>=2000},
+  // ── 🌐 Subnetz-Spiel ──
+  {id:'sn_first',icon:'🌐',title:'Erste IP',desc:'Erste Subnetz-Frage richtig beantwortet',condition:s=>(s.minigames||{}).snCorrect>=1},
+  {id:'sn_10',icon:'📡',title:'Subnetz-Starter',desc:'10 Subnetz-Fragen richtig',condition:s=>(s.minigames||{}).snCorrect>=10},
+  {id:'sn_50',icon:'🔢',title:'IP-Rechner',desc:'50 Subnetz-Fragen richtig',condition:s=>(s.minigames||{}).snCorrect>=50},
+  {id:'sn_streak5',icon:'🔥',title:'Subnetz-Streak',desc:'5 Subnetz-Fragen in Folge richtig',condition:s=>(s.minigames||{}).snBestStreak>=5},
+  {id:'sn_level5',icon:'📶',title:'Level 5 erreicht',desc:'Level 5 im Subnetz-Spiel erreicht',condition:s=>(s.minigames||{}).snMaxLevel>=5},
+  {id:'sn_level10',icon:'🏆',title:'Subnetz-Profi',desc:'Level 10 im Subnetz-Spiel erreicht',condition:s=>(s.minigames||{}).snMaxLevel>=10},
+  {id:'sn_score1000',icon:'💯',title:'Subnetz 1000',desc:'1000 Punkte im Subnetz-Spiel',condition:s=>(s.minigames||{}).snHighscore>=1000},
+  {id:'sn_score5000',icon:'🌟',title:'Subnetz-Legende',desc:'5000 Punkte im Subnetz-Spiel',condition:s=>(s.minigames||{}).snHighscore>=5000},
+  // ── 🤖 Roboter ──
+  {id:'robot_first',icon:'🤖',title:'Erster Schritt',desc:'Roboter-Level 1 gelöst',condition:s=>(s.minigames||{}).robotLevelsDone>=1},
+  {id:'robot_all',icon:'🏁',title:'Alle Level!',desc:'Alle 4 Roboter-Level gelöst',condition:s=>(s.minigames||{}).robotLevelsDone>=4},
+  {id:'robot_l3',icon:'🔄',title:'Schleifen-König',desc:'Roboter-Level 3 (Schleifen) gelöst',condition:s=>(s.minigames||{}).robotMaxLevel>=3},
+  {id:'robot_efficient',icon:'⚡',title:'Effizienter Code',desc:'Level 1 in unter 5 Befehlen gelöst',condition:s=>(s.minigames||{}).robotLevel1MinCommands<=5&&(s.minigames||{}).robotLevel1MinCommands>0},
+  {id:'robot_nocrash',icon:'🛡️',title:'Kein Absturz',desc:'3 Roboter-Level ohne Crash gelöst',condition:s=>(s.minigames||{}).robotNoCrashWins>=3},
 ];
 
 // ══════════════════ STATE & CLOUD ══════════════════
@@ -1611,6 +1783,7 @@ window.cloudSpeichern = function cloudSpeichern() {
         totalLogins:    ud.totalLogins    || 0,
         name:           ud.name           || '',
         theme:          STATE.theme       || 'dark',
+        minigames:      ud.minigames      || {},
       });
     } catch (e) {
       console.warn('Cloud-Speichern fehlgeschlagen:', e);
@@ -1737,6 +1910,7 @@ onAuthStateChanged(auth, async (user) => {
         weekStreak:     0,
         totalLogins:    0,
         theme:          'dark',
+        minigames:      {},
       };
       await setDoc(doc(db, 'users', user.uid), skeleton);
       STATE.userData = skeleton;
@@ -2646,6 +2820,7 @@ async function renderLeaderboard() {
       const testsCount = testVals.length;
       const compassDone = Object.values(d.compassChecked || {}).filter(Boolean).length;
       const compassPct = Math.round(compassDone / COMPASS_TOTAL * 100);
+      const mg = d.minigames || {};
       entries.push({
         name: d.name || d.email || 'Anonym',
         uid: docSnap.id,
@@ -2653,6 +2828,12 @@ async function renderLeaderboard() {
         testsCount,
         compassPct,
         compassDone,
+        dbgHighscore: mg.dbgHighscore || 0,
+        dbgSolved:    mg.dbgSolved    || 0,
+        snHighscore:  mg.snHighscore  || 0,
+        snCorrect:    mg.snCorrect    || 0,
+        snMaxLevel:   mg.snMaxLevel   || 0,
+        robotLevelsDone: mg.robotLevelsDone || 0,
       });
     });
     lbRender(entries);
@@ -2670,29 +2851,36 @@ function lbRender(entries) {
   if (tab === 'score')   sorted = [...entries].sort((a, b) => b.avgScore   - a.avgScore);
   if (tab === 'tests')   sorted = [...entries].sort((a, b) => b.testsCount - a.testsCount);
   if (tab === 'compass') sorted = [...entries].sort((a, b) => b.compassPct - a.compassPct);
+  if (tab === 'debug')   sorted = [...entries].sort((a, b) => b.dbgHighscore - a.dbgHighscore);
+  if (tab === 'subnet')  sorted = [...entries].sort((a, b) => b.snHighscore  - a.snHighscore);
+  if (tab === 'robot')   sorted = [...entries].sort((a, b) => b.robotLevelsDone - a.robotLevelsDone);
 
   const myUid = CUR_USER ? CUR_USER.uid : null;
   const rankSymbol = i => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
   const rankCls    = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
 
-  const maxScore   = sorted[0]?.avgScore   || 1;
-  const maxTests   = sorted[0]?.testsCount || 1;
-  const maxCompass = sorted[0]?.compassPct || 1;
-
   const colHeaders = {
     score:   ['Rang', 'Name', 'Ø Score', 'Tests', 'Kompass'],
     tests:   ['Rang', 'Name', 'Tests', 'Ø Score', 'Kompass'],
-    compass: ['Rang', 'Name', 'Kompass', 'Ø Score', 'Tests'],
+    compass: ['Rang', 'Name', 'Kompass %', 'Ø Score', 'Tests'],
+    debug:   ['Rang', 'Name', '🐛 Highscore', 'Gelöst', 'Ø Score'],
+    subnet:  ['Rang', 'Name', '🌐 Highscore', 'Richtig', 'Max. Level'],
+    robot:   ['Rang', 'Name', '🤖 Level gelöst', 'Ø Score', 'Tests'],
   };
 
   const rows = sorted.map((e, i) => {
     const isMe = e.uid === myUid;
     const barColor = i === 0 ? '#c8ff00' : i === 1 ? '#4fc3f7' : i === 2 ? '#ff8a65' : 'var(--border2)';
 
-    let mainVal, mainBar, maxMain;
-    if (tab === 'score')   { mainVal = e.avgScore + '%';   mainBar = e.avgScore;   maxMain = maxScore; }
-    if (tab === 'tests')   { mainVal = e.testsCount;        mainBar = e.testsCount; maxMain = maxTests; }
-    if (tab === 'compass') { mainVal = e.compassPct + '%';  mainBar = e.compassPct; maxMain = maxCompass; }
+    let mainVal, mainBar, maxMain, col2, col3;
+    const maxOf = key => Math.max(...sorted.map(x => x[key] || 0), 1);
+
+    if (tab === 'score')   { mainVal = e.avgScore+'%'; mainBar = e.avgScore; maxMain = maxOf('avgScore'); col2 = e.testsCount; col3 = e.compassPct+'%'; }
+    if (tab === 'tests')   { mainVal = e.testsCount;   mainBar = e.testsCount; maxMain = maxOf('testsCount'); col2 = e.avgScore+'%'; col3 = e.compassPct+'%'; }
+    if (tab === 'compass') { mainVal = e.compassPct+'%'; mainBar = e.compassPct; maxMain = maxOf('compassPct'); col2 = e.avgScore+'%'; col3 = e.testsCount; }
+    if (tab === 'debug')   { mainVal = e.dbgHighscore+' Pkt'; mainBar = e.dbgHighscore; maxMain = maxOf('dbgHighscore'); col2 = e.dbgSolved+' gelöst'; col3 = e.avgScore+'%'; }
+    if (tab === 'subnet')  { mainVal = e.snHighscore+' Pkt'; mainBar = e.snHighscore; maxMain = maxOf('snHighscore'); col2 = e.snCorrect+' richtig'; col3 = 'Lvl '+e.snMaxLevel; }
+    if (tab === 'robot')   { mainVal = e.robotLevelsDone+' Level'; mainBar = e.robotLevelsDone; maxMain = maxOf('robotLevelsDone'); col2 = e.avgScore+'%'; col3 = e.testsCount+' Tests'; }
 
     const barW = maxMain > 0 ? Math.round(mainBar / maxMain * 100) : 0;
 
@@ -2703,8 +2891,8 @@ function lbRender(entries) {
         <span style="color:var(--accent);font-weight:600">${mainVal}</span>
         <span class="lb-bar-wrap"><span class="lb-bar" style="width:${barW}%;background:${barColor}"></span></span>
       </td>
-      <td class="num" style="color:var(--text2)">${tab === 'score'   ? e.testsCount   : tab === 'tests' ? e.avgScore + '%' : e.avgScore + '%'}</td>
-      <td class="num" style="color:var(--text2)">${tab === 'compass' ? e.testsCount   : e.compassPct + '%'}</td>
+      <td class="num" style="color:var(--text2)">${col2}</td>
+      <td class="num" style="color:var(--text2)">${col3}</td>
     </tr>`;
   }).join('');
 
@@ -3498,6 +3686,13 @@ function dbgSubmit() {
     }
 
     toast('🐛 Alle Fehler behoben! +' + pts + ' Punkte', '✅');
+    // Save minigame stats
+    const ud = getUD();
+    if (!ud.minigames) ud.minigames = {};
+    ud.minigames.dbgSolved = (ud.minigames.dbgSolved || 0) + 1;
+    ud.minigames.dbgHighscore = Math.max(ud.minigames.dbgHighscore || 0, DBG2.score);
+    ud.minigames.dbgBestStreak = Math.max(ud.minigames.dbgBestStreak || 0, DBG2.streak);
+    setUD(ud); checkAchievements();
 
   } else {
     // WRONG – show what's still different
@@ -4200,6 +4395,14 @@ function snCheckAnswer(userAns, skipped) {
     SN.levelMap.push('correct');
     // Level up every 5 correct
     if (SN.correct % 5 === 0) SN.level++;
+    // Save minigame stats
+    const ud = getUD();
+    if (!ud.minigames) ud.minigames = {};
+    ud.minigames.snCorrect = (ud.minigames.snCorrect || 0) + 1;
+    ud.minigames.snHighscore = Math.max(ud.minigames.snHighscore || 0, SN.score + (q.points + Math.floor(SN.streak/3)*5));
+    ud.minigames.snBestStreak = Math.max(ud.minigames.snBestStreak || 0, SN.streak);
+    ud.minigames.snMaxLevel = Math.max(ud.minigames.snMaxLevel || 0, SN.level);
+    setUD(ud); checkAchievements();
   } else {
     SN.wrong++;
     SN.streak = 0;
@@ -4653,6 +4856,20 @@ function robotWin() {
     setTimeout(() => { cell.style.transform = ''; }, 400);
   }
   toast('🤖 Roboter hat das Ziel erreicht!', '🎉');
+  // Save minigame stats
+  const ud = getUD();
+  if (!ud.minigames) ud.minigames = {};
+  ud.minigames.robotLevelsDone = (ud.minigames.robotLevelsDone || 0) + 1;
+  ud.minigames.robotMaxLevel = Math.max(ud.minigames.robotMaxLevel || 0, robotState.level + 1);
+  ud.minigames.robotNoCrashWins = (ud.minigames.robotNoCrashWins || 0) + 1;
+  // Track minimum commands for level 1
+  if (robotState.level === 0) {
+    const raw = (document.getElementById('robot-editor') || {}).value || '';
+    const cmds = raw.split('\n').map(l=>l.trim()).filter(l=>l&&!l.startsWith('//'));
+    const prev = ud.minigames.robotLevel1MinCommands || 999;
+    if (cmds.length < prev) ud.minigames.robotLevel1MinCommands = cmds.length;
+  }
+  setUD(ud); checkAchievements();
 }
 
 async function robotRun() {
@@ -4744,7 +4961,6 @@ window.aufgJump         = aufgJump;
 window.lbTab            = lbTab;
 window.goTo             = goTo;
 window.dbgInit          = dbgInit;
-window.dbgRun           = dbgRun;
 window.dbgReset         = dbgReset;
 window.dbgNewTask       = dbgNewTask;
 window.dbgHint          = dbgHint;
