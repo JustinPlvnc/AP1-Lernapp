@@ -402,6 +402,7 @@ h3{font-size:14px;font-weight:500}
     <div class="nav-tab" id="tab-review" onclick="goTo('review')">🔁 Wiederholen</div>
     <div class="nav-tab" id="tab-achievements" onclick="goTo('achievements')">🏆 Erfolge</div>
     <div class="nav-tab" id="tab-aufgaben" onclick="goTo('aufgaben')">📖 Aufgabenheft</div>
+    <div class="nav-tab" id="tab-robot" onclick="goTo('robot')">🤖 Roboter</div>
     <div class="nav-tab" id="tab-leaderboard" onclick="goTo('leaderboard')">🏅 Rangliste</div>
     <div class="nav-tab" id="tab-notes" onclick="goTo('notes')">📝 Notizen</div>
   </div>
@@ -505,6 +506,64 @@ h3{font-size:14px;font-weight:500}
     <button class="btn btn-ghost btn-sm" onclick="aufgFilter('lf5')">📊 LF 5 – PM & Software</button>
   </div>
   <div id="aufg-content"></div>
+</div>
+
+<div class="page" id="page-robot">
+  <div style="margin-bottom:22px"><h1>🤖 Pseudocode-Interpreter</h1><div class="sub">Roboter-Labyrinth – IHK-Fokus: Algorithmen, Kontrollstrukturen, Programmierlogik</div></div>
+  <div style="display:grid;grid-template-columns:1fr 250px;gap:18px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card" style="padding:14px">
+        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Befehle einfügen</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <button class="btn btn-ghost btn-xs" style="font-family:var(--mono)" onclick="robotIns('geheVorwaerts()')">geheVorwaerts()</button>
+          <button class="btn btn-ghost btn-xs" style="font-family:var(--mono)" onclick="robotIns('dreheRechts()')">dreheRechts()</button>
+          <button class="btn btn-ghost btn-xs" style="font-family:var(--mono)" onclick="robotIns('dreheLinks()')">dreheLinks()</button>
+          <button class="btn btn-ghost btn-xs" style="font-family:var(--mono)" onclick="robotIns('WIEDERHOLE 3 MAL {')">WIEDERHOLE n MAL {}</button>
+          <button class="btn btn-ghost btn-xs" style="font-family:var(--mono)" onclick="robotIns('WENN istZiel() DANN {')">WENN istZiel()</button>
+          <button class="btn btn-ghost btn-xs" style="font-family:var(--mono)" onclick="robotIns('}')">}</button>
+        </div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Pseudocode-Editor</div>
+        <textarea id="robot-editor" style="width:100%;min-height:200px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--text);resize:vertical;line-height:1.8;outline:none;transition:border-color .15s" spellcheck="false" placeholder="// Schreibe deinen Pseudocode hier&#10;// Beispiel Level 1:&#10;WIEDERHOLE 4 MAL {&#10;  geheVorwaerts()&#10;}"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" onclick="robotRun()">▶ Starten</button>
+          <button class="btn btn-ghost btn-sm" onclick="robotReset()">↺ Reset</button>
+          <span style="font-size:12px;color:var(--text3)">Tempo:</span>
+          <input type="range" id="robot-speed" min="1" max="5" value="3" step="1" style="width:80px">
+          <span id="robot-speed-out" style="font-size:12px;color:var(--text2)">3</span>
+        </div>
+        <div id="robot-log" style="margin-top:10px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;font-size:11px;font-family:var(--mono);color:var(--text2);min-height:34px;line-height:1.6">Bereit.</div>
+      </div>
+      <div class="card" style="padding:14px">
+        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Befehlsreferenz</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-family:var(--mono);font-size:11px;color:var(--accent)">geheVorwaerts()</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Roboter 1 Feld in Blickrichtung bewegen</div></div>
+          <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-family:var(--mono);font-size:11px;color:var(--blue)">dreheRechts()</div><div style="font-size:11px;color:var(--text3);margin-top:2px">90° im Uhrzeigersinn drehen</div></div>
+          <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-family:var(--mono);font-size:11px;color:var(--blue)">dreheLinks()</div><div style="font-size:11px;color:var(--text3);margin-top:2px">90° gegen Uhrzeigersinn drehen</div></div>
+          <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-family:var(--mono);font-size:11px;color:var(--amber)">WIEDERHOLE n MAL {</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Block n-mal wiederholen (IHK-Schleife)</div></div>
+          <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-family:var(--mono);font-size:11px;color:var(--purple)">WENN istZiel() DANN {</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Bedingung: Roboter auf Zielfeld?</div></div>
+          <div style="background:var(--bg3);border-radius:var(--r);padding:8px 10px"><div style="font-family:var(--mono);font-size:11px;color:var(--text2)">// Kommentar</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Zeilen mit // werden ignoriert</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:center">
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:center">
+        <button class="btn btn-ghost btn-xs" id="rlvl-0" onclick="robotLoadLevel(0)">L1</button>
+        <button class="btn btn-ghost btn-xs" id="rlvl-1" onclick="robotLoadLevel(1)">L2</button>
+        <button class="btn btn-ghost btn-xs" id="rlvl-2" onclick="robotLoadLevel(2)">L3</button>
+        <button class="btn btn-ghost btn-xs" id="rlvl-3" onclick="robotLoadLevel(3)">L4</button>
+      </div>
+      <div id="robot-grid" style="display:grid;grid-template-columns:repeat(5,46px);grid-template-rows:repeat(5,46px);gap:2px;background:var(--border);border-radius:var(--r2);padding:2px;border:1px solid var(--border2)"></div>
+      <div id="robot-status" style="font-size:12px;font-weight:500;text-align:center;padding:5px 16px;border-radius:20px;background:var(--bg3);color:var(--text2);min-width:160px">Warte auf Start...</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3)"><div style="width:12px;height:12px;border-radius:2px;background:#3C3489"></div>Wand</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3)"><div style="width:12px;height:12px;border-radius:2px;background:#1D9E75"></div>Ziel</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3)"><div style="width:12px;height:12px;border-radius:2px;background:#185FA5;opacity:.4"></div>Spur</div>
+      </div>
+      <div id="robot-hint" class="card" style="font-size:12px;color:var(--text2);line-height:1.55;padding:10px 12px;width:100%">Wähle ein Level.</div>
+    </div>
+  </div>
 </div>
 
 <div class="page" id="page-notes">
@@ -1395,6 +1454,7 @@ function goTo(page){
   if(page==='achievements')renderAchievements();
   if(page==='aufgaben'){aufgFilter(aufgState.lf||'lf1');}
   if(page==='notes')renderNotes();
+  if(page==='robot'){robotLoadLevel(robotState.level||0);}
   if(page==='leaderboard')renderLeaderboard();
 }
 function renderAll(){renderDash();}
@@ -2324,6 +2384,358 @@ function lbTab(tab) {
   renderLeaderboard();
 }
 
+// ══════════════════ ROBOTER-LABYRINTH ══════════════════
+const ROBOT_LEVELS = [
+  {
+    name:'Level 1 – Geradeaus',
+    hint:'🎯 Bringe den Roboter (🤖) zur Flagge (🚩). Er schaut nach Osten (→). Nutze geheVorwaerts() – oder die Schleife WIEDERHOLE n MAL { }!',
+    grid:[
+      [0,0,0,0,0],
+      [0,0,0,0,0],
+      [0,0,0,0,2],
+      [0,0,0,0,0],
+      [0,0,0,0,0],
+    ],
+    start:{r:2,c:0,dir:1},
+  },
+  {
+    name:'Level 2 – Kurve',
+    hint:'🎯 Der Weg führt um eine Ecke. Nutze dreheRechts() und dreheLinks() – der Roboter startet nach Osten (→).',
+    grid:[
+      [0,0,0,0,0],
+      [0,1,1,1,0],
+      [0,1,0,0,2],
+      [0,1,0,1,0],
+      [0,0,0,1,0],
+    ],
+    start:{r:4,c:0,dir:0},
+  },
+  {
+    name:'Level 3 – Schleifen',
+    hint:'🎯 Viele gleiche Schritte? Nutze WIEDERHOLE n MAL { } für eleganten Code! Roboter startet unten links, schaut nach Norden (↑).',
+    grid:[
+      [0,0,0,0,2],
+      [0,1,1,1,0],
+      [0,1,0,1,0],
+      [0,1,0,1,0],
+      [0,0,0,1,0],
+    ],
+    start:{r:4,c:0,dir:0},
+  },
+  {
+    name:'Level 4 – Wände',
+    hint:'🎯 Knifflig! Finde den Weg durch die Wände. Kombiniere alle Befehle. Roboter startet unten links, schaut nach Norden (↑).',
+    grid:[
+      [0,1,0,0,0],
+      [0,1,0,1,0],
+      [0,0,0,1,2],
+      [1,1,0,0,0],
+      [0,0,0,1,0],
+    ],
+    start:{r:4,c:0,dir:0},
+  },
+];
+
+const ROBOT_DIR_DELTA = [
+  {r:-1,c:0},
+  {r:0, c:1},
+  {r:1, c:0},
+  {r:0, c:-1},
+];
+const ROBOT_DIR_EMOJI = ['⬆️','➡️','⬇️','⬅️'];
+
+let robotState = {
+  level: 0,
+  bot: {r:0,c:0,dir:1},
+  trail: new Set(),
+  running: false,
+};
+
+function robotLoadLevel(idx) {
+  if (robotState.running) return;
+  robotState.level = idx;
+  const lv = ROBOT_LEVELS[idx];
+  robotState.bot = {...lv.start};
+  robotState.trail = new Set();
+  robotState.running = false;
+  document.querySelectorAll('[id^="rlvl-"]').forEach((b,i) => {
+    b.style.background = i===idx ? 'var(--accent)' : '';
+    b.style.color = i===idx ? '#0f0f0f' : '';
+    b.style.borderColor = i===idx ? 'var(--accent)' : '';
+  });
+  const hintEl = document.getElementById('robot-hint');
+  if (hintEl) hintEl.textContent = lv.hint;
+  robotSetStatus('idle','Warte auf Start...');
+  robotLog('Level geladen: ' + lv.name);
+  robotRenderGrid();
+}
+
+function robotRenderGrid() {
+  const grid = document.getElementById('robot-grid');
+  if (!grid) return;
+  const lv = ROBOT_LEVELS[robotState.level];
+  const bot = robotState.bot;
+  grid.innerHTML = '';
+  for (let r = 0; r < 5; r++) {
+    for (let c = 0; c < 5; c++) {
+      const cell = document.createElement('div');
+      cell.id = 'rc_' + r + '_' + c;
+      cell.style.cssText = 'width:46px;height:46px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:background .2s,transform .15s;position:relative;cursor:default;';
+      const t = lv.grid[r][c];
+      const isBot = r === bot.r && c === bot.c;
+      const isTrail = robotState.trail.has(r+','+c) && !isBot;
+      if (t === 1) {
+        cell.style.background = '#3C3489';
+        cell.textContent = '🧱';
+      } else if (t === 2 && !isBot) {
+        cell.style.background = '#1D9E7520';
+        cell.style.border = '1px solid #1D9E7560';
+        cell.textContent = '🚩';
+      } else if (isBot) {
+        cell.style.background = 'var(--bg4)';
+        cell.style.border = '1.5px solid var(--accent)';
+        cell.textContent = '🤖';
+        cell.title = 'Richtung: ' + ['Nord','Ost','Süd','West'][bot.dir] + ' ' + ROBOT_DIR_EMOJI[bot.dir];
+      } else if (isTrail) {
+        cell.style.background = '#185FA520';
+        cell.style.border = '1px solid #185FA540';
+        cell.textContent = '·';
+        cell.style.color = '#185FA5';
+        cell.style.fontSize = '16px';
+        cell.style.fontWeight = 'bold';
+      } else {
+        cell.style.background = 'var(--bg2)';
+        cell.style.border = '1px solid var(--border)';
+      }
+      grid.appendChild(cell);
+    }
+  }
+}
+
+function robotSetStatus(type, msg) {
+  const s = document.getElementById('robot-status');
+  if (!s) return;
+  const styles = {
+    idle: 'background:var(--bg3);color:var(--text2)',
+    run:  'background:var(--bluebg);color:var(--blue)',
+    win:  'background:var(--greenbg);color:var(--green)',
+    crash:'background:var(--redbg);color:var(--red)',
+  };
+  s.style.cssText = 'font-size:12px;font-weight:500;text-align:center;padding:5px 16px;border-radius:20px;min-width:160px;' + (styles[type]||styles.idle);
+  s.textContent = msg;
+}
+
+function robotLog(msg) {
+  const log = document.getElementById('robot-log');
+  if (log) log.textContent = msg;
+}
+
+function robotIns(text) {
+  const ta = document.getElementById('robot-editor');
+  if (!ta) return;
+  const start = ta.selectionStart;
+  const before = ta.value.substring(0, start);
+  const after = ta.value.substring(ta.selectionEnd);
+  const needsNewline = before.length > 0 && !before.endsWith('\n');
+  const insert = (needsNewline ? '\n' : '') + text + '\n';
+  ta.value = before + insert + after;
+  ta.selectionStart = ta.selectionEnd = start + insert.length;
+  ta.focus();
+}
+
+function robotReset() {
+  if (robotState.running) return;
+  robotLoadLevel(robotState.level);
+}
+
+function robotGetDelay() {
+  const v = parseInt(document.getElementById('robot-speed').value || 3);
+  return [700, 450, 280, 150, 60][v - 1];
+}
+
+function robotParse(lines) {
+  let i = 0;
+  function parseBlock(stopAtBrace) {
+    const block = [];
+    while (i < lines.length) {
+      const line = lines[i].trim();
+      if (!line || line.startsWith('//')) { i++; continue; }
+      if (stopAtBrace && line === '}') { i++; break; }
+      if (line.startsWith('WIEDERHOLE') && line.includes('MAL')) {
+        const m = line.match(/WIEDERHOLE\s+(\d+)\s+MAL/);
+        if (!m) throw new Error('Syntax-Fehler: WIEDERHOLE n MAL {');
+        const n = parseInt(m[1]);
+        if (n < 1 || n > 99) throw new Error('n muss zwischen 1 und 99 liegen');
+        i++;
+        const inner = parseBlock(true);
+        block.push({type:'repeat', n, body:inner});
+      } else if (line.startsWith('WENN') && line.includes('DANN')) {
+        i++;
+        const inner = parseBlock(true);
+        block.push({type:'if_goal', body:inner});
+      } else if (line === 'geheVorwaerts()') {
+        block.push({type:'forward'}); i++;
+      } else if (line === 'dreheRechts()') {
+        block.push({type:'right'}); i++;
+      } else if (line === 'dreheLinks()') {
+        block.push({type:'left'}); i++;
+      } else if (line === '{') {
+        i++;
+      } else {
+        throw new Error('Unbekannter Befehl: ' + line);
+      }
+    }
+    return block;
+  }
+  return parseBlock(false);
+}
+
+async function robotExecute(steps) {
+  const lv = ROBOT_LEVELS[robotState.level];
+  let stepCount = 0;
+  const MAX_STEPS = 200;
+
+  async function run(block) {
+    for (const step of block) {
+      if (!robotState.running) return;
+      if (stepCount++ > MAX_STEPS) throw new Error('Zu viele Schritte (max. 200) – Endlosschleife?');
+      const delay = robotGetDelay();
+
+      if (step.type === 'forward') {
+        const d = ROBOT_DIR_DELTA[robotState.bot.dir];
+        const nr = robotState.bot.r + d.r;
+        const nc = robotState.bot.c + d.c;
+        if (nr < 0 || nr > 4 || nc < 0 || nc > 4) {
+          robotCrashAt(robotState.bot.r, robotState.bot.c);
+          throw new Error('💥 Roboter hat das Feld verlassen! (' + ROBOT_DIR_EMOJI[robotState.bot.dir] + ' aus Position ' + nr + ',' + nc + ')');
+        }
+        if (lv.grid[nr][nc] === 1) {
+          robotCrashAt(robotState.bot.r, robotState.bot.c);
+          throw new Error('💥 Gegen eine Wand gefahren! Position (' + nr + ',' + nc + ')');
+        }
+        robotState.trail.add(robotState.bot.r + ',' + robotState.bot.c);
+        robotState.bot.r = nr;
+        robotState.bot.c = nc;
+        robotRenderGrid();
+        robotLog('geheVorwaerts() → (' + nr + ',' + nc + ') ' + ROBOT_DIR_EMOJI[robotState.bot.dir]);
+        if (lv.grid[nr][nc] === 2) {
+          robotWin();
+          return;
+        }
+        await robotSleep(delay);
+
+      } else if (step.type === 'right') {
+        robotState.bot.dir = (robotState.bot.dir + 1) % 4;
+        robotRenderGrid();
+        robotLog('dreheRechts() → jetzt: ' + ROBOT_DIR_EMOJI[robotState.bot.dir] + ' ' + ['Nord','Ost','Süd','West'][robotState.bot.dir]);
+        await robotSleep(delay);
+
+      } else if (step.type === 'left') {
+        robotState.bot.dir = (robotState.bot.dir + 3) % 4;
+        robotRenderGrid();
+        robotLog('dreheLinks() → jetzt: ' + ROBOT_DIR_EMOJI[robotState.bot.dir] + ' ' + ['Nord','Ost','Süd','West'][robotState.bot.dir]);
+        await robotSleep(delay);
+
+      } else if (step.type === 'repeat') {
+        robotLog('WIEDERHOLE ' + step.n + ' MAL...');
+        for (let x = 0; x < step.n; x++) {
+          if (!robotState.running) return;
+          robotLog('WIEDERHOLE ' + step.n + ' MAL – Durchlauf ' + (x+1) + '/' + step.n);
+          await run(step.body);
+          if (!robotState.running) return;
+        }
+
+      } else if (step.type === 'if_goal') {
+        const isGoal = lv.grid[robotState.bot.r][robotState.bot.c] === 2;
+        robotLog('WENN istZiel() → ' + (isGoal ? 'WAHR ✓' : 'FALSCH ✗'));
+        if (isGoal) await run(step.body);
+      }
+    }
+  }
+  await run(steps);
+}
+
+function robotSleep(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+
+function robotCrashAt(r, c) {
+  const cell = document.getElementById('rc_' + r + '_' + c);
+  if (cell) {
+    cell.style.background = 'var(--redbg)';
+    cell.textContent = '💥';
+    cell.style.animation = 'none';
+    cell.style.transform = 'scale(1.2)';
+    setTimeout(() => { cell.style.transform = ''; }, 300);
+  }
+}
+
+function robotWin() {
+  robotState.running = false;
+  robotSetStatus('win', '🎉 Ziel erreicht! Gut gemacht!');
+  robotLog('🎉 Ziel erreicht! Roboter hat die Flagge gefunden.');
+  const lv = ROBOT_LEVELS[robotState.level];
+  const cell = document.getElementById('rc_' + robotState.bot.r + '_' + robotState.bot.c);
+  if (cell) {
+    cell.style.background = 'var(--greenbg)';
+    cell.style.border = '1.5px solid var(--green)';
+    cell.textContent = '🤖';
+    cell.style.transform = 'scale(1.15)';
+    setTimeout(() => { cell.style.transform = ''; }, 400);
+  }
+  toast('🤖 Roboter hat das Ziel erreicht!', '🎉');
+}
+
+async function robotRun() {
+  if (robotState.running) return;
+  robotState.running = true;
+  const lv = ROBOT_LEVELS[robotState.level];
+  robotState.bot = {...lv.start};
+  robotState.trail = new Set();
+  robotRenderGrid();
+  robotSetStatus('run', '▶ Läuft...');
+  const raw = (document.getElementById('robot-editor') || {}).value || '';
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('//'));
+  if (!lines.length) {
+    robotSetStatus('idle', 'Kein Code vorhanden.');
+    robotLog('Bitte erst Pseudocode schreiben!');
+    robotState.running = false;
+    return;
+  }
+  try {
+    const steps = robotParse(lines);
+    robotLog('✓ ' + steps.length + ' Hauptbefehle geparst. Ausführung startet...');
+    await robotExecute(steps);
+    if (robotState.running) {
+      robotState.running = false;
+      const reached = lv.grid[robotState.bot.r][robotState.bot.c] === 2;
+      if (!reached) {
+        robotSetStatus('idle', 'Programm fertig – Ziel nicht erreicht.');
+        robotLog('Programm beendet, aber Ziel nicht erreicht. Algorithmus überprüfen!');
+      }
+    }
+  } catch(e) {
+    robotState.running = false;
+    robotSetStatus('crash', '❌ ' + e.message.substring(0, 50));
+    robotLog('Fehler: ' + e.message);
+  }
+}
+
+(function initRobotSpeedListener() {
+  function attachSpeedListener() {
+    const sp = document.getElementById('robot-speed');
+    const spOut = document.getElementById('robot-speed-out');
+    if (sp && spOut) {
+      sp.addEventListener('input', function() { spOut.textContent = this.value; });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachSpeedListener);
+  } else {
+    attachSpeedListener();
+  }
+})();
+
 // ══════════════════ GLOBAL WINDOW REGISTRATIONS (für GitHub Pages / type="module") ══════════════════
 window.toggleTheme      = toggleTheme;
 window.expandAll        = expandAll;
@@ -2362,6 +2774,10 @@ window.aufgNav          = aufgNav;
 window.aufgJump         = aufgJump;
 window.lbTab            = lbTab;
 window.goTo             = goTo;
+window.robotRun         = robotRun;
+window.robotReset       = robotReset;
+window.robotLoadLevel   = robotLoadLevel;
+window.robotIns         = robotIns;
 
 </script>
 </body>
