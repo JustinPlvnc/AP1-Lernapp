@@ -511,115 +511,146 @@ h3{font-size:14px;font-weight:500}
 </div>
 
 <div class="page" id="page-debug">
-  <div style="margin-bottom:22px">
-    <h1>🐛 Pseudocode-Debugger</h1>
-    <div class="sub">Finde & behebe die Fehler im Pseudocode – dann führe ihn aus und beobachte den Roboter</div>
+  <div style="margin-bottom:18px">
+    <h1>🐛 Code-Debugger</h1>
+    <div class="sub">Finde & korrigiere Fehler in echtem Pseudocode – IHK-Stil, endlose Aufgaben, VS Code-Optik</div>
   </div>
 
-  <!-- Top stats -->
-  <div class="stats-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:18px">
-    <div class="stat"><div class="stat-num" id="dbg-level" style="color:var(--accent)">1</div><div class="stat-lbl">Aufgabe</div></div>
-    <div class="stat"><div class="stat-num" id="dbg-score" style="color:var(--blue)">0</div><div class="stat-lbl">Punkte</div></div>
-    <div class="stat"><div class="stat-num" id="dbg-solved" style="color:var(--green)">0</div><div class="stat-lbl">Gelöst</div></div>
-    <div class="stat"><div class="stat-num" id="dbg-streak" style="color:var(--amber)">0</div><div class="stat-lbl">Streak 🔥</div></div>
+  <!-- Stats -->
+  <div class="stats-row" style="grid-template-columns:repeat(5,1fr);margin-bottom:16px">
+    <div class="stat"><div class="stat-num" id="dbg-aufgabe" style="color:var(--accent)">1</div><div class="stat-lbl">Aufgabe</div></div>
+    <div class="stat"><div class="stat-num" id="dbg-score"   style="color:var(--blue)">0</div><div class="stat-lbl">Punkte</div></div>
+    <div class="stat"><div class="stat-num" id="dbg-solved"  style="color:var(--green)">0</div><div class="stat-lbl">Gelöst</div></div>
+    <div class="stat"><div class="stat-num" id="dbg-streak"  style="color:var(--amber)">0</div><div class="stat-lbl">Streak 🔥</div></div>
+    <div class="stat"><div class="stat-num" id="dbg-wrong"   style="color:var(--red)">0</div><div class="stat-lbl">Fehler</div></div>
   </div>
 
-  <!-- Main layout -->
-  <div style="display:grid;grid-template-columns:1fr 260px;gap:16px" id="debug-main-layout">
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:16px">
 
-    <!-- LEFT COLUMN -->
+    <!-- LEFT: Editor -->
     <div style="display:flex;flex-direction:column;gap:12px">
 
-      <!-- Mission Card -->
-      <div class="card" style="padding:16px 20px" id="dbg-mission-card">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <!-- Mission banner -->
+      <div class="card" id="dbg-mission-card" style="padding:14px 18px;border-left:3px solid var(--accent)">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
           <div style="display:flex;align-items:center;gap:8px">
-            <span class="tag tag-red" id="dbg-diff-badge">Stufe 1</span>
-            <span class="tag tag-gray" id="dbg-errors-badge">? Fehler</span>
+            <span class="tag tag-red"    id="dbg-diff-tag">Stufe 1</span>
+            <span class="tag tag-gray"   id="dbg-topic-tag">Variablen</span>
+            <span class="tag tag-amber"  id="dbg-bug-count-tag">? Fehler</span>
           </div>
-          <button class="btn btn-ghost btn-xs" onclick="dbgNewTask()">⟳ Neue Aufgabe</button>
+          <button class="btn btn-ghost btn-xs" onclick="dbgNewTask()">⟳ Nächste Aufgabe</button>
         </div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.6" id="dbg-mission-text">Lade Aufgabe...</div>
+        <div style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.6" id="dbg-mission-text">Lädt...</div>
       </div>
 
-      <!-- Code Editor -->
-      <div class="card" style="padding:16px 20px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
-          <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px">Pseudocode-Editor – Fehler beheben</div>
+      <!-- VSCode Editor -->
+      <div style="border-radius:var(--r2);overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.25)">
+
+        <!-- Title bar -->
+        <div style="background:#1e1e1e;padding:0 14px;height:36px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #333">
           <div style="display:flex;gap:6px">
-            <button class="btn btn-ghost btn-xs" onclick="dbgShowHint()">💡 Hinweis</button>
-            <button class="btn btn-ghost btn-xs" onclick="dbgReset()">↺ Zurücksetzen</button>
+            <div style="width:12px;height:12px;border-radius:50%;background:#ff5f57"></div>
+            <div style="width:12px;height:12px;border-radius:50%;background:#febc2e"></div>
+            <div style="width:12px;height:12px;border-radius:50%;background:#28c840"></div>
+          </div>
+          <span style="font-family:var(--mono);font-size:11px;color:#888;margin-left:8px" id="dbg-filename">aufgabe_01.pseudo</span>
+          <span style="margin-left:auto;font-family:var(--mono);font-size:10px;color:#555">Pseudocode · UTF-8</span>
+        </div>
+
+        <!-- Tab bar -->
+        <div style="background:#252526;padding:0;height:35px;display:flex;align-items:flex-end;border-bottom:1px solid #1a1a1a">
+          <div style="background:#1e1e1e;padding:8px 16px;font-family:var(--mono);font-size:12px;color:#ccc;border-top:2px solid #007acc;display:flex;align-items:center;gap:6px">
+            <span>📄</span>
+            <span id="dbg-tab-name">aufgabe_01.pseudo</span>
           </div>
         </div>
 
-        <!-- Line numbers + editor -->
-        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;background:var(--bg3)">
-          <div id="dbg-line-nums" style="background:var(--bg4);padding:10px 8px;font-family:var(--mono);font-size:12px;color:var(--text3);line-height:1.8;min-width:36px;text-align:right;user-select:none;border-right:1px solid var(--border)"></div>
-          <textarea id="dbg-editor" style="flex:1;min-height:220px;background:transparent;border:none;padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--text);resize:vertical;line-height:1.8;outline:none;tab-size:2" spellcheck="false"></textarea>
+        <!-- Editor body -->
+        <div style="background:#1e1e1e;display:flex;min-height:340px;position:relative" id="dbg-editor-wrap">
+
+          <!-- Gutter: line numbers + error indicators -->
+          <div id="dbg-gutter" style="background:#1e1e1e;min-width:52px;padding:14px 0;display:flex;flex-direction:column;border-right:1px solid #2a2a2a;user-select:none;flex-shrink:0"></div>
+
+          <!-- Code textarea (contenteditable mirror) -->
+          <div style="flex:1;position:relative;overflow:hidden">
+            <textarea id="dbg-editor"
+              style="position:absolute;inset:0;background:transparent;border:none;padding:14px 0 14px 16px;font-family:'Fira Code','Cascadia Code','Consolas',var(--mono);font-size:13px;color:#d4d4d4;line-height:1.75;resize:none;outline:none;width:100%;tab-size:2;white-space:pre;overflow-wrap:normal;overflow-x:auto;caret-color:#d4d4d4"
+              spellcheck="false"></textarea>
+            <!-- Squiggle overlay (SVG lines drawn over editor) -->
+            <div id="dbg-squiggles" style="position:absolute;inset:0;pointer-events:none;padding:14px 0 14px 16px;font-family:'Fira Code','Cascadia Code','Consolas',var(--mono);font-size:13px;line-height:1.75"></div>
+          </div>
         </div>
 
-        <!-- Error markers -->
-        <div id="dbg-error-markers" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px"></div>
-
-        <!-- Action buttons -->
-        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center">
-          <button class="btn btn-primary" id="dbg-run-btn" onclick="dbgRun()">▶ Code prüfen &amp; ausführen</button>
-          <button class="btn btn-ghost btn-sm" onclick="dbgValidateOnly()">🔍 Nur prüfen</button>
-          <span id="dbg-run-status" style="font-size:12px;color:var(--text3)"></span>
+        <!-- Status bar (VSCode style) -->
+        <div style="background:#007acc;padding:2px 12px;display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:11px;color:#fff">
+          <span id="dbg-statusbar-errors">⚠ 0 Fehler</span>
+          <span>|</span>
+          <span id="dbg-statusbar-pos">Zeile 1, Spalte 1</span>
+          <span style="margin-left:auto" id="dbg-statusbar-mode">BEARBEITEN</span>
         </div>
       </div>
 
-      <!-- Feedback -->
-      <div id="dbg-feedback-card" style="display:none" class="card">
-        <div id="dbg-feedback-content" style="padding:4px 0"></div>
+      <!-- Action bar -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-primary" onclick="dbgSubmit()">▶ Ausführen &amp; Prüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="dbgValidate()">🔍 Syntax prüfen</button>
+        <button class="btn btn-ghost btn-sm" onclick="dbgReset()">↺ Zurücksetzen</button>
+        <button class="btn btn-ghost btn-sm" onclick="dbgHint()">💡 Hinweis</button>
+        <button class="btn btn-ghost btn-sm" onclick="dbgSolution()">👁 Lösung</button>
       </div>
 
-      <!-- Reference card -->
-      <div class="card" style="padding:14px">
-        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📖 Befehlsreferenz</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
-          <div style="background:var(--bg3);border-radius:var(--r);padding:6px 9px"><span style="font-family:var(--mono);color:var(--accent)">geheVorwaerts()</span><div style="color:var(--text3);margin-top:2px">1 Feld vorwärts</div></div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:6px 9px"><span style="font-family:var(--mono);color:var(--blue)">dreheRechts()</span><div style="color:var(--text3);margin-top:2px">90° rechts drehen</div></div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:6px 9px"><span style="font-family:var(--mono);color:var(--blue)">dreheLinks()</span><div style="color:var(--text3);margin-top:2px">90° links drehen</div></div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:6px 9px"><span style="font-family:var(--mono);color:var(--amber)">WIEDERHOLE n MAL {</span><div style="color:var(--text3);margin-top:2px">Schleife</div></div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:6px 9px"><span style="font-family:var(--mono);color:var(--purple)">WENN istZiel() DANN {</span><div style="color:var(--text3);margin-top:2px">Bedingung</div></div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:6px 9px"><span style="font-family:var(--mono);color:var(--text3)">} </span><div style="color:var(--text3);margin-top:2px">Block schließen</div></div>
+      <!-- Feedback / Terminal output -->
+      <div id="dbg-terminal" style="border-radius:var(--r);overflow:hidden;border:1px solid var(--border);display:none">
+        <div style="background:#1e1e1e;padding:6px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #333">
+          <span style="font-family:var(--mono);font-size:11px;color:#888">TERMINAL</span>
+          <div style="display:flex;gap:8px;margin-left:auto">
+            <span id="dbg-term-tab-prob" style="font-family:var(--mono);font-size:11px;color:#aaa;cursor:pointer;padding:2px 8px;border-bottom:1px solid #007acc">PROBLEME</span>
+            <span style="font-family:var(--mono);font-size:11px;color:#555;padding:2px 8px">AUSGABE</span>
+          </div>
         </div>
-        <div style="margin-top:8px;font-size:11px;color:var(--text3);line-height:1.5;background:var(--bg3);border-radius:var(--r);padding:8px 10px">
-          <strong style="color:var(--text2)">Häufige Fehler:</strong> falsche Schreibweise, fehlende/extra Klammern (), falsche Zahl bei WIEDERHOLE, fehlendes } am Ende, falsche Richtung
-        </div>
+        <div id="dbg-terminal-body" style="background:#1e1e1e;padding:12px 16px;font-family:var(--mono);font-size:12px;min-height:80px;max-height:200px;overflow-y:auto;line-height:1.7"></div>
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: Grid + Progress -->
-    <div style="display:flex;flex-direction:column;gap:12px;align-items:center">
+    <!-- RIGHT: Info panel -->
+    <div style="display:flex;flex-direction:column;gap:12px">
 
-      <!-- Grid -->
-      <div class="card" style="padding:14px;width:100%;display:flex;flex-direction:column;align-items:center;gap:10px">
-        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;align-self:flex-start">Spielfeld</div>
-        <div id="dbg-grid" style="display:grid;grid-template-columns:repeat(5,44px);grid-template-rows:repeat(5,44px);gap:2px;background:var(--border);border-radius:var(--r2);padding:2px;border:1px solid var(--border2)"></div>
-        <div id="dbg-grid-status" style="font-size:12px;font-weight:500;text-align:center;padding:4px 14px;border-radius:20px;background:var(--bg3);color:var(--text3);min-width:160px">Warte auf Code...</div>
-      </div>
-
-      <!-- Progress tracker -->
-      <div class="card" style="padding:14px;width:100%">
+      <!-- Progress -->
+      <div class="card" style="padding:14px">
         <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Fortschritt</div>
-        <div id="dbg-progress-dots" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px"></div>
-        <div id="dbg-next-level-hint" style="font-size:11px;color:var(--text3)"></div>
+        <div id="dbg-dots" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px"></div>
+        <div id="dbg-progress-label" style="font-size:11px;color:var(--text3)">0 gelöst</div>
       </div>
 
-      <!-- Error log -->
-      <div class="card" style="padding:14px;width:100%">
-        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Fehler-Log</div>
-        <div id="dbg-error-log" style="font-size:11px;font-family:var(--mono);color:var(--text3);line-height:1.7;min-height:40px">Noch kein Code ausgeführt.</div>
+      <!-- Error explanations panel -->
+      <div class="card" style="padding:14px" id="dbg-explain-panel">
+        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📋 Aufgabe</div>
+        <div id="dbg-explain-content" style="font-size:12px;color:var(--text2);line-height:1.65">Klicke "Syntax prüfen" um Fehler anzuzeigen.</div>
       </div>
 
-      <!-- Legend -->
-      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3)"><div style="width:12px;height:12px;border-radius:2px;background:#3C3489"></div>Wand</div>
-        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3)"><div style="width:12px;height:12px;border-radius:2px;background:#1D9E75"></div>Ziel</div>
-        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3)"><div style="width:12px;height:12px;border-radius:2px;background:#185FA5;opacity:.4"></div>Spur</div>
+      <!-- Quick Reference -->
+      <div class="card" style="padding:14px">
+        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📖 Häufige Fehler</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
+          <div style="background:var(--redbg);border-radius:4px;padding:5px 8px;font-family:var(--mono);color:var(--red)">x = y / 0  ← Division durch 0</div>
+          <div style="background:var(--redbg);border-radius:4px;padding:5px 8px;font-family:var(--mono);color:var(--red)">WENN x = 5  ← = statt ==</div>
+          <div style="background:var(--redbg);border-radius:4px;padding:5px 8px;font-family:var(--mono);color:var(--red)">array[5] auf [0..4] ← Off-by-one</div>
+          <div style="background:var(--redbg);border-radius:4px;padding:5px 8px;font-family:var(--mono);color:var(--red)">i &lt;= n statt i &lt; n ← Endlosschleife</div>
+          <div style="background:var(--redbg);border-radius:4px;padding:5px 8px;font-family:var(--mono);color:var(--red)">SONST ohne WENN ← Syntax</div>
+          <div style="background:var(--redbg);border-radius:4px;padding:5px 8px;font-family:var(--mono);color:var(--red)">fehlende Initialisierung</div>
+          <div style="background:var(--redbg);border-radius:4px;padding:5px 8px;font-family:var(--mono);color:var(--red)">falsche AUSGABE-Reihenfolge</div>
+        </div>
       </div>
+
+      <!-- Highscore -->
+      <div class="card" style="padding:14px">
+        <div style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🏆 Session Best</div>
+        <div style="display:flex;justify-content:space-between">
+          <div><div style="font-family:var(--mono);font-size:20px;font-weight:600;color:var(--amber)" id="dbg-hiscore">0</div><div style="font-size:10px;color:var(--text3)">Punkte</div></div>
+          <div><div style="font-family:var(--mono);font-size:20px;font-weight:600;color:var(--green)" id="dbg-histreak">0</div><div style="font-size:10px;color:var(--text3)">Streak</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -2633,997 +2664,952 @@ function lbTab(tab) {
   renderLeaderboard();
 }
 
-// ══════════════════ PSEUDOCODE-DEBUGGER ══════════════════
+// ══════════════════ PSEUDOCODE-DEBUGGER (VSCode Style) ══════════════════
 
-// ── Task definitions ─────────────────────────────────────────────────────────
-// Each task has:
-//   grid        5×5 array (0=free, 1=wall, 2=goal)
-//   start       {r,c,dir}  dir: 0=Nord,1=Ost,2=Süd,3=West
-//   mission     Text shown to user
-//   correct     The correct/working code (string)
-//   buggy       The code with injected bugs (string)
-//   bugs        Array of {line(1-based), desc} descriptions
-//   difficulty  1-3
-//   points      base points
+// ─── Colour tokens for syntax highlighting in the terminal output ────────────
+const DBG_COLOURS = {
+  keyword:  '#569cd6', // WENN DANN SONST SOLANGE FÜR WIEDERHOLE AUSGABE EINGABE ENDE
+  type:     '#4ec9b0', // Integer, String, Boolean, Float, Array
+  string:   '#ce9178',
+  number:   '#b5cea8',
+  comment:  '#6a9955',
+  operator: '#d4d4d4',
+  var:      '#9cdcfe',
+  fn:       '#dcdcaa',
+  error:    '#f48771',
+  ok:       '#4ec9b0',
+  warn:     '#febc2e',
+};
 
-const DBG_TASKS = [
-  // ── DIFFICULTY 1 ────────────────────────────────────────────────────────────
-  {
-    id: 'dbg_01',
-    difficulty: 1,
-    points: 50,
-    mission: 'Der Roboter soll 3 Felder nach Osten gehen, dann 2 Felder nach Süden. Der Code hat <strong>1 Fehler</strong> – er geht zu oft geradeaus.',
-    grid: [
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,2,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-    ],
-    start: {r:0,c:0,dir:1},
-    correct:
-`geheVorwaerts()
-geheVorwaerts()
-geheVorwaerts()
-dreheRechts()
-dreheRechts()
-geheVorwaerts()
-geheVorwaerts()`,
-    buggy:
-`geheVorwaerts()
-geheVorwaerts()
-geheVorwaerts()
-geheVorwaerts()
-dreheRechts()
-dreheRechts()
-geheVorwaerts()
-geheVorwaerts()`,
-    bugs: [
-      { line: 4, desc: 'Zeile 4: ein geheVorwaerts() zu viel – Roboter läuft gegen die Wand' }
-    ]
-  },
-  {
-    id: 'dbg_02',
-    difficulty: 1,
-    points: 50,
-    mission: 'Der Roboter startet im Westen und soll zur Flagge. Drehbefehl ist falsch geschrieben. <strong>1 Tippfehler</strong> verhindern die Ausführung.',
-    grid: [
-      [0,0,0,0,0],
-      [0,1,1,0,0],
-      [0,0,0,0,2],
-      [0,1,1,0,0],
-      [0,0,0,0,0],
-    ],
-    start: {r:2,c:0,dir:1},
-    correct:
-`geheVorwaerts()
-geheVorwaerts()
-geheVorwaerts()
-geheVorwaerts()`,
-    buggy:
-`geheVorwärts()
-geheVorwaerts()
-geheVorwaerts()
-geheVorwaerts()`,
-    bugs: [
-      { line: 1, desc: 'Zeile 1: "geheVorwärts()" – Umlaut ä ist falsch, muss "geheVorwaerts()" sein' }
-    ]
-  },
-  {
-    id: 'dbg_03',
-    difficulty: 1,
-    points: 60,
-    mission: 'Schleife soll den Roboter 4× vorwärts schicken. Der Schleifenzähler ist falsch. <strong>1 Fehler</strong>.',
-    grid: [
-      [0,0,0,0,2],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-    ],
-    start: {r:0,c:0,dir:1},
-    correct:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}`,
-    bugs: [
-      { line: 1, desc: 'Zeile 1: WIEDERHOLE 2 MAL – Roboter geht nur 2 Schritte, braucht aber 4' }
-    ]
-  },
-  {
-    id: 'dbg_04',
-    difficulty: 1,
-    points: 60,
-    mission: 'Schleifenblock wurde nicht geschlossen. <strong>1 fehlendes }</strong>.',
-    grid: [
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,2],
-    ],
-    start: {r:0,c:0,dir:2},
-    correct:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
+// ─── Template library: base snippets that bugs are injected into ─────────────
+// Each template has:
+//   topic      category label
+//   difficulty 1-3
+//   desc       human description of what the algorithm SHOULD do
+//   lines      array of strings (the CORRECT code)
+//   bugTypes   names of bug types that make sense for this snippet
+const DBG_TEMPLATES = [
 
-dreheLinks()
-WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    bugs: [
-      { line: 3, desc: 'Zeile 3: fehlendes } – erste Schleife wurde nicht geschlossen' }
-    ]
-  },
+  // ── VARIABLEN & ZUWEISUNGEN ──────────────────────────────────────────────
+  {topic:'Variablen', difficulty:1, desc:'Tausche die Werte zweier Variablen a und b mithilfe einer Hilfsvariable.',
+   lines:[
+    'INTEGER a ← 5',
+    'INTEGER b ← 8',
+    'INTEGER temp ← a',
+    'a ← b',
+    'b ← temp',
+    'AUSGABE "a = " + a',
+    'AUSGABE "b = " + b',
+   ]},
+  {topic:'Variablen', difficulty:1, desc:'Berechne den Durchschnitt von drei Zahlen und gib ihn aus.',
+   lines:[
+    'INTEGER x ← 10',
+    'INTEGER y ← 20',
+    'INTEGER z ← 30',
+    'FLOAT ergebnis ← (x + y + z) / 3',
+    'AUSGABE "Durchschnitt: " + ergebnis',
+   ]},
+  {topic:'Variablen', difficulty:1, desc:'Berechne den Umfang eines Rechtecks (Länge=12, Breite=5).',
+   lines:[
+    'INTEGER laenge ← 12',
+    'INTEGER breite ← 5',
+    'INTEGER umfang ← 2 * (laenge + breite)',
+    'AUSGABE "Umfang: " + umfang',
+   ]},
 
-  // ── DIFFICULTY 2 ────────────────────────────────────────────────────────────
-  {
-    id: 'dbg_05',
-    difficulty: 2,
-    points: 100,
-    mission: 'Zwei Fehler versteckt: ein falscher Drehbefehl und ein falscher Schleifenzähler. <strong>2 Fehler</strong> finden und beheben.',
-    grid: [
-      [0,0,0,0,0],
-      [0,1,1,1,0],
-      [0,0,0,1,0],
-      [0,1,0,0,0],
-      [0,1,0,1,2],
-    ],
-    start: {r:0,c:0,dir:2},
-    correct:
-`WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-geheVorwaerts()
-geheVorwaerts()
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-geheVorwaerts()
-geheVorwaerts()
-dreheRechts()
-WIEDERHOLE 3 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}`,
-    bugs: [
-      { line: 4,  desc: 'Zeile 4: dreheRechts() statt dreheLinks() – falsche Richtung' },
-      { line: 8,  desc: 'Zeile 8: WIEDERHOLE 3 MAL statt 2 MAL – zu viele Schritte, Wand!' }
-    ]
-  },
-  {
-    id: 'dbg_06',
-    difficulty: 2,
-    points: 100,
-    mission: 'Fehlende Klammern bei Befehlen und falscher Schleifenzähler. <strong>2 Fehler</strong>.',
-    grid: [
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [2,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-    ],
-    start: {r:2,c:4,dir:3},
-    correct:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts(
-}`,
-    bugs: [
-      { line: 2, desc: 'Zeile 2: "geheVorwaerts(" – schließende Klammer ) fehlt' }
-    ]
-  },
-  {
-    id: 'dbg_07',
-    difficulty: 2,
-    points: 110,
-    mission: 'Verschachtelte Schleifen mit <strong>2 Fehlern</strong>: einmal falscher Zähler, einmal falscher Drehbefehl.',
-    grid: [
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [2,0,0,0,0],
-    ],
-    start: {r:0,c:0,dir:2},
-    correct:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-dreheRechts()
-dreheRechts()
-WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-dreheRechts()
-dreheLinks()
-WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    bugs: [
-      { line: 6, desc: 'Zeile 6: dreheLinks() statt dreheRechts() – Roboter zeigt in falsche Richtung' }
-    ]
-  },
-  {
-    id: 'dbg_08',
-    difficulty: 2,
-    points: 120,
-    mission: 'WENN-Block hat falsche Syntax und eine Schleife ist nicht geschlossen. <strong>2 Fehler</strong>.',
-    grid: [
-      [0,0,0,0,2],
-      [0,1,1,1,0],
-      [0,0,0,1,0],
-      [0,1,0,0,0],
-      [0,0,0,0,0],
-    ],
-    start: {r:4,c:0,dir:0},
-    correct:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 4 MAL {
-  geheVorwaerts()`,
-    bugs: [
-      { line: 7, desc: 'Zeile 7 (Ende): fehlendes } – zweite Schleife nicht geschlossen' }
-    ]
-  },
+  // ── VERZWEIGUNGEN ────────────────────────────────────────────────────────
+  {topic:'Verzweigung', difficulty:1, desc:'Prüfe ob eine Zahl positiv, negativ oder null ist.',
+   lines:[
+    'INTEGER zahl ← EINGABE()',
+    'WENN zahl > 0 DANN',
+    '  AUSGABE "positiv"',
+    'SONST WENN zahl < 0 DANN',
+    '  AUSGABE "negativ"',
+    'SONST',
+    '  AUSGABE "null"',
+    'ENDE WENN',
+   ]},
+  {topic:'Verzweigung', difficulty:1, desc:'Prüfe ob eine Zahl gerade oder ungerade ist. Nutze den Modulo-Operator %.',
+   lines:[
+    'INTEGER n ← EINGABE()',
+    'WENN n % 2 == 0 DANN',
+    '  AUSGABE "gerade"',
+    'SONST',
+    '  AUSGABE "ungerade"',
+    'ENDE WENN',
+   ]},
+  {topic:'Verzweigung', difficulty:2, desc:'Berechne den maximalen Rabatt: Bestellwert >= 100 → 10 %, >= 50 → 5 %, sonst 0 %.',
+   lines:[
+    'FLOAT bestellwert ← EINGABE()',
+    'FLOAT rabatt ← 0',
+    'WENN bestellwert >= 100 DANN',
+    '  rabatt ← bestellwert * 0.10',
+    'SONST WENN bestellwert >= 50 DANN',
+    '  rabatt ← bestellwert * 0.05',
+    'SONST',
+    '  rabatt ← 0',
+    'ENDE WENN',
+    'AUSGABE "Rabatt: " + rabatt',
+   ]},
+  {topic:'Verzweigung', difficulty:2, desc:'Prüfe ob ein Jahr ein Schaltjahr ist (teilbar durch 4, aber nicht 100, außer 400).',
+   lines:[
+    'INTEGER jahr ← EINGABE()',
+    'WENN (jahr % 400 == 0) ODER (jahr % 4 == 0 UND jahr % 100 != 0) DANN',
+    '  AUSGABE "Schaltjahr"',
+    'SONST',
+    '  AUSGABE "kein Schaltjahr"',
+    'ENDE WENN',
+   ]},
 
-  // ── DIFFICULTY 3 ────────────────────────────────────────────────────────────
+  // ── SCHLEIFEN ────────────────────────────────────────────────────────────
+  {topic:'Schleife', difficulty:1, desc:'Gib die Zahlen 1 bis 10 auf der Konsole aus.',
+   lines:[
+    'INTEGER i ← 1',
+    'SOLANGE i <= 10',
+    '  AUSGABE i',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+   ]},
+  {topic:'Schleife', difficulty:1, desc:'Berechne die Summe aller Zahlen von 1 bis n.',
+   lines:[
+    'INTEGER n ← EINGABE()',
+    'INTEGER summe ← 0',
+    'INTEGER i ← 1',
+    'SOLANGE i <= n',
+    '  summe ← summe + i',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE "Summe: " + summe',
+   ]},
+  {topic:'Schleife', difficulty:2, desc:'Berechne die Fakultät von n (n! = 1*2*3*...*n).',
+   lines:[
+    'INTEGER n ← EINGABE()',
+    'INTEGER ergebnis ← 1',
+    'INTEGER i ← 1',
+    'SOLANGE i <= n',
+    '  ergebnis ← ergebnis * i',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE n + "! = " + ergebnis',
+   ]},
+  {topic:'Schleife', difficulty:2, desc:'Finde das Maximum in einem Array der Länge 5.',
+   lines:[
+    'INTEGER[] zahlen ← [3, 7, 1, 9, 4]',
+    'INTEGER max ← zahlen[0]',
+    'INTEGER i ← 1',
+    'SOLANGE i < 5',
+    '  WENN zahlen[i] > max DANN',
+    '    max ← zahlen[i]',
+    '  ENDE WENN',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE "Maximum: " + max',
+   ]},
+  {topic:'Schleife', difficulty:2, desc:'Zähle wie viele Elemente eines Arrays größer als 5 sind.',
+   lines:[
+    'INTEGER[] werte ← [2, 8, 5, 11, 3, 7]',
+    'INTEGER zaehler ← 0',
+    'INTEGER i ← 0',
+    'SOLANGE i < 6',
+    '  WENN werte[i] > 5 DANN',
+    '    zaehler ← zaehler + 1',
+    '  ENDE WENN',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE "Anzahl > 5: " + zaehler',
+   ]},
+  {topic:'Schleife', difficulty:3, desc:'Bubble-Sort: Sortiere ein Array [5,3,8,1,4] aufsteigend (1 Durchlauf zeigen).',
+   lines:[
+    'INTEGER[] arr ← [5, 3, 8, 1, 4]',
+    'INTEGER n ← 5',
+    'INTEGER i ← 0',
+    'SOLANGE i < n - 1',
+    '  INTEGER j ← 0',
+    '  SOLANGE j < n - i - 1',
+    '    WENN arr[j] > arr[j + 1] DANN',
+    '      INTEGER temp ← arr[j]',
+    '      arr[j] ← arr[j + 1]',
+    '      arr[j + 1] ← temp',
+    '    ENDE WENN',
+    '    j ← j + 1',
+    '  ENDE SOLANGE',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE arr',
+   ]},
+
+  // ── FUNKTIONEN ───────────────────────────────────────────────────────────
+  {topic:'Funktion', difficulty:2, desc:'Funktion berechnet den absoluten Wert (Betrag) einer Zahl.',
+   lines:[
+    'FUNKTION betrag(INTEGER x) : INTEGER',
+    '  WENN x < 0 DANN',
+    '    RÜCKGABE -x',
+    '  SONST',
+    '    RÜCKGABE x',
+    '  ENDE WENN',
+    'ENDE FUNKTION',
+    'AUSGABE betrag(-7)',
+    'AUSGABE betrag(3)',
+   ]},
+  {topic:'Funktion', difficulty:2, desc:'Funktion prüft ob eine Zahl eine Primzahl ist.',
+   lines:[
+    'FUNKTION istPrim(INTEGER n) : BOOLEAN',
+    '  WENN n < 2 DANN',
+    '    RÜCKGABE FALSCH',
+    '  ENDE WENN',
+    '  INTEGER i ← 2',
+    '  SOLANGE i <= n / 2',
+    '    WENN n % i == 0 DANN',
+    '      RÜCKGABE FALSCH',
+    '    ENDE WENN',
+    '    i ← i + 1',
+    '  ENDE SOLANGE',
+    '  RÜCKGABE WAHR',
+    'ENDE FUNKTION',
+    'AUSGABE istPrim(7)',
+   ]},
+  {topic:'Funktion', difficulty:3, desc:'Rekursive Funktion berechnet Fibonacci-Zahl an Position n.',
+   lines:[
+    'FUNKTION fib(INTEGER n) : INTEGER',
+    '  WENN n <= 1 DANN',
+    '    RÜCKGABE n',
+    '  ENDE WENN',
+    '  RÜCKGABE fib(n - 1) + fib(n - 2)',
+    'ENDE FUNKTION',
+    'AUSGABE fib(6)',
+   ]},
+  {topic:'Funktion', difficulty:2, desc:'Funktion berechnet die Potenz base^exp iterativ.',
+   lines:[
+    'FUNKTION potenz(INTEGER base, INTEGER exp) : INTEGER',
+    '  INTEGER ergebnis ← 1',
+    '  INTEGER i ← 0',
+    '  SOLANGE i < exp',
+    '    ergebnis ← ergebnis * base',
+    '    i ← i + 1',
+    '  ENDE SOLANGE',
+    '  RÜCKGABE ergebnis',
+    'ENDE FUNKTION',
+    'AUSGABE potenz(2, 8)',
+   ]},
+
+  // ── ARRAYS ───────────────────────────────────────────────────────────────
+  {topic:'Array', difficulty:2, desc:'Lineare Suche: finde den Index eines Wertes im Array (-1 wenn nicht vorhanden).',
+   lines:[
+    'INTEGER[] liste ← [10, 25, 3, 47, 8]',
+    'INTEGER ziel ← 47',
+    'INTEGER index ← -1',
+    'INTEGER i ← 0',
+    'SOLANGE i < 5',
+    '  WENN liste[i] == ziel DANN',
+    '    index ← i',
+    '  ENDE WENN',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE "Index: " + index',
+   ]},
+  {topic:'Array', difficulty:2, desc:'Berechne den Durchschnitt aller Elemente eines Arrays der Länge 6.',
+   lines:[
+    'INTEGER[] daten ← [4, 8, 15, 16, 23, 42]',
+    'INTEGER summe ← 0',
+    'INTEGER i ← 0',
+    'SOLANGE i < 6',
+    '  summe ← summe + daten[i]',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'FLOAT durchschnitt ← summe / 6',
+    'AUSGABE "Durchschnitt: " + durchschnitt',
+   ]},
+  {topic:'Array', difficulty:3, desc:'Invertiere ein Array in-place (ohne zweites Array).',
+   lines:[
+    'INTEGER[] arr ← [1, 2, 3, 4, 5]',
+    'INTEGER links ← 0',
+    'INTEGER rechts ← 4',
+    'SOLANGE links < rechts',
+    '  INTEGER temp ← arr[links]',
+    '  arr[links] ← arr[rechts]',
+    '  arr[rechts] ← temp',
+    '  links ← links + 1',
+    '  rechts ← rechts - 1',
+    'ENDE SOLANGE',
+    'AUSGABE arr',
+   ]},
+
+  // ── ALGORITHMEN ──────────────────────────────────────────────────────────
+  {topic:'Algorithmus', difficulty:3, desc:'Binäre Suche: finde Position eines Wertes in sortiertem Array.',
+   lines:[
+    'INTEGER[] sortiert ← [1, 3, 5, 7, 9, 11, 13]',
+    'INTEGER ziel ← 7',
+    'INTEGER links ← 0',
+    'INTEGER rechts ← 6',
+    'INTEGER mitte ← -1',
+    'SOLANGE links <= rechts',
+    '  mitte ← (links + rechts) / 2',
+    '  WENN sortiert[mitte] == ziel DANN',
+    '    AUSGABE "Gefunden bei Index: " + mitte',
+    '    links ← rechts + 1',
+    '  SONST WENN sortiert[mitte] < ziel DANN',
+    '    links ← mitte + 1',
+    '  SONST',
+    '    rechts ← mitte - 1',
+    '  ENDE WENN',
+    'ENDE SOLANGE',
+   ]},
+  {topic:'Algorithmus', difficulty:2, desc:'Euklidischer Algorithmus: berechne ggT von a und b.',
+   lines:[
+    'INTEGER a ← EINGABE()',
+    'INTEGER b ← EINGABE()',
+    'SOLANGE b != 0',
+    '  INTEGER rest ← a % b',
+    '  a ← b',
+    '  b ← rest',
+    'ENDE SOLANGE',
+    'AUSGABE "ggT: " + a',
+   ]},
+  {topic:'Algorithmus', difficulty:3, desc:'Collatz-Folge: Halbiere gerade Zahlen, multipliziere ungerade mit 3 und addiere 1, bis n=1.',
+   lines:[
+    'INTEGER n ← EINGABE()',
+    'INTEGER schritte ← 0',
+    'SOLANGE n != 1',
+    '  WENN n % 2 == 0 DANN',
+    '    n ← n / 2',
+    '  SONST',
+    '    n ← 3 * n + 1',
+    '  ENDE WENN',
+    '  schritte ← schritte + 1',
+    'ENDE SOLANGE',
+    'AUSGABE "Schritte: " + schritte',
+   ]},
+  {topic:'Algorithmus', difficulty:2, desc:'Konvertiere Dezimalzahl in Binärstring.',
+   lines:[
+    'INTEGER dezimal ← EINGABE()',
+    'STRING binaer ← ""',
+    'WENN dezimal == 0 DANN',
+    '  binaer ← "0"',
+    'SONST',
+    '  SOLANGE dezimal > 0',
+    '    INTEGER rest ← dezimal % 2',
+    '    binaer ← rest + binaer',
+    '    dezimal ← dezimal / 2',
+    '  ENDE SOLANGE',
+    'ENDE WENN',
+    'AUSGABE "Binär: " + binaer',
+   ]},
+
+  // ── STRING-VERARBEITUNG ───────────────────────────────────────────────────
+  {topic:'Strings', difficulty:2, desc:'Zähle wie viele Vokale (a,e,i,o,u) ein String enthält.',
+   lines:[
+    'STRING wort ← EINGABE()',
+    'INTEGER anzahl ← 0',
+    'INTEGER i ← 0',
+    'SOLANGE i < LÄNGE(wort)',
+    '  STRING zeichen ← wort[i]',
+    '  WENN zeichen == "a" ODER zeichen == "e" ODER zeichen == "i" ODER zeichen == "o" ODER zeichen == "u" DANN',
+    '    anzahl ← anzahl + 1',
+    '  ENDE WENN',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE "Vokale: " + anzahl',
+   ]},
+  {topic:'Strings', difficulty:2, desc:'Prüfe ob ein String ein Palindrom ist (vorwärts = rückwärts).',
+   lines:[
+    'STRING wort ← EINGABE()',
+    'INTEGER n ← LÄNGE(wort)',
+    'BOOLEAN istPalindrom ← WAHR',
+    'INTEGER i ← 0',
+    'SOLANGE i < n / 2',
+    '  WENN wort[i] != wort[n - 1 - i] DANN',
+    '    istPalindrom ← FALSCH',
+    '  ENDE WENN',
+    '  i ← i + 1',
+    'ENDE SOLANGE',
+    'AUSGABE istPalindrom',
+   ]},
+];
+
+// ─── Bug injection engine ────────────────────────────────────────────────────
+// Each bug type knows how to mutate a line and describe what it does
+const DBG_BUG_TYPES = [
   {
-    id: 'dbg_09',
-    difficulty: 3,
-    points: 180,
-    mission: '⚠️ Schwer! <strong>3 Fehler</strong> sind versteckt. Falscher Zähler, falsche Richtung, fehlende Klammern.',
-    grid: [
-      [0,0,0,0,0],
-      [0,1,0,1,0],
-      [0,1,0,1,0],
-      [0,0,0,1,0],
-      [0,1,1,1,2],
-    ],
-    start: {r:0,c:0,dir:2},
-    correct:
-`WIEDERHOLE 3 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-geheVorwaerts()
-geheVorwaerts()
-dreheRechts()
-geheVorwaerts()
-dreheRechts()
-geheVorwaerts()`,
-    buggy:
-`WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-geheVorwaerts()
-geheVorwaerts()
-dreheLinks()
-geheVorwaerts()
-dreheRechts()
-geheVorwaerts()`,
-    bugs: [
-      { line: 1, desc: 'Zeile 1: WIEDERHOLE 2 MAL – muss 3 MAL sein' },
-      { line: 7, desc: 'Zeile 7: dreheLinks() – muss dreheRechts() sein' }
-    ]
+    id: 'wrong_operator',
+    desc: 'Vergleichsoperator = statt ==',
+    canApply: (line) => /==/.test(line),
+    mutate: (line) => line.replace(/==(?!=)/, '='),
+    explain: (ln) => `Zeile ${ln}: Vergleich "==" wurde zu "=" geändert – Zuweisung statt Vergleich!`,
   },
   {
-    id: 'dbg_10',
-    difficulty: 3,
-    points: 200,
-    mission: '⚠️ Schwer! Drei Probleme: falsche Schreibweise, falscher Zähler, fehlendes }. <strong>3 Fehler</strong>.',
-    grid: [
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,0],
-      [0,0,0,0,2],
-    ],
-    start: {r:0,c:0,dir:1},
-    correct:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreherechts()
-WIEDERHOLE 5 MAL {
-  geheVorwaerts()
-}`,
-    bugs: [
-      { line: 4, desc: 'Zeile 4: "dreherechts()" – Großschreibung fehlt, muss "dreheRechts()" sein' },
-      { line: 5, desc: 'Zeile 5: WIEDERHOLE 5 MAL – zu viele Schritte, muss 4 MAL sein' }
-    ]
+    id: 'off_by_one_lt',
+    desc: 'Off-by-One: <= statt <',
+    canApply: (line) => /\bi\s*<\s*\d/.test(line) && !/<=/.test(line),
+    mutate: (line) => line.replace(/\bi\s*<\s*(\d)/, 'i <= $1'),
+    explain: (ln) => `Zeile ${ln}: "<" wurde zu "<=" – ein Schritt zu viel (Array-Überlauf / Off-by-One)`,
   },
   {
-    id: 'dbg_11',
-    difficulty: 3,
-    points: 220,
-    mission: '⚠️ Experte! Komplexer Weg mit <strong>3 Fehlern</strong> – Zähler, Richtung, Klammer.',
-    grid: [
-      [0,1,0,0,0],
-      [0,1,0,1,0],
-      [0,0,0,1,0],
-      [1,1,0,0,0],
-      [0,0,0,1,2],
-    ],
-    start: {r:0,c:0,dir:2},
-    correct:
-`WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-WIEDERHOLE 3 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}`,
-    bugs: [
-      { line: 5,  desc: 'Zeile 5: WIEDERHOLE 3 MAL – muss 2 MAL sein, sonst Wand' },
-      { line: 12, desc: 'Zeile 12: dreheLinks() – muss dreheRechts() sein' }
-    ]
+    id: 'off_by_one_lte',
+    desc: 'Off-by-One: < statt <=',
+    canApply: (line) => /\bi\s*<=\s*n/.test(line),
+    mutate: (line) => line.replace(/\bi\s*<=\s*n/, 'i < n'),
+    explain: (ln) => `Zeile ${ln}: "<=" wurde zu "<" – letzter Durchlauf fehlt (Off-by-One)`,
   },
   {
-    id: 'dbg_12',
-    difficulty: 3,
-    points: 250,
-    mission: '⚠️ Meister-Level! Der Code hat <strong>3 Fehler</strong>. Alles kann falsch sein: Zähler, Richtung, Syntax.',
-    grid: [
-      [0,0,0,0,0],
-      [0,1,1,1,0],
-      [0,1,0,0,2],
-      [0,1,0,1,0],
-      [0,0,0,1,0],
-    ],
-    start: {r:4,c:0,dir:0},
-    correct:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}`,
-    buggy:
-`WIEDERHOLE 4 MAL {
-  geheVorwaerts()
-}
-dreheRechts()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}
-dreheLinks()
-WIEDERHOLE 2 MAL {
-  geheVorwaerts()
-}`,
-    bugs: [
-      { line: 8, desc: 'Zeile 8: dreheLinks() – muss dreheRechts() sein' }
-    ]
+    id: 'wrong_init',
+    desc: 'Falsche Initialisierung (0 statt 1)',
+    canApply: (line) => /ergebnis\s*←\s*1\b/.test(line),
+    mutate: (line) => line.replace(/ergebnis\s*←\s*1/, 'ergebnis ← 0'),
+    explain: (ln) => `Zeile ${ln}: ergebnis ← 0 statt 1 – Multiplikation mit 0 ergibt immer 0!`,
+  },
+  {
+    id: 'wrong_init_sum',
+    desc: 'Falsche Initialisierung (1 statt 0)',
+    canApply: (line) => /summe\s*←\s*0/.test(line) || /zaehler\s*←\s*0/.test(line),
+    mutate: (line) => line.replace(/←\s*0/, '← 1'),
+    explain: (ln) => `Zeile ${ln}: Initialisierung mit 1 statt 0 – Summe/Zähler startet falsch`,
+  },
+  {
+    id: 'wrong_direction',
+    desc: 'Falsches Inkrement (- statt +)',
+    canApply: (line) => /i\s*←\s*i\s*\+\s*1/.test(line),
+    mutate: (line) => line.replace(/i\s*←\s*i\s*\+\s*1/, 'i ← i - 1'),
+    explain: (ln) => `Zeile ${ln}: i ← i - 1 statt i + 1 – Endlosschleife / falsche Richtung!`,
+  },
+  {
+    id: 'missing_increment',
+    desc: 'Fehlender Index-Schritt in Schleife',
+    canApply: (line, allLines, idx) => {
+      return /i\s*←\s*i\s*\+\s*1/.test(line);
+    },
+    mutate: (line) => '  // ' + line.trim() + '  ← FEHLER: auskommentiert',
+    explain: (ln) => `Zeile ${ln}: Inkrement auskommentiert – Zählvariable wird nie erhöht → Endlosschleife!`,
+  },
+  {
+    id: 'wrong_comparison_sign',
+    desc: 'Falsches Vergleichszeichen > statt <',
+    canApply: (line) => /arr\[j\]\s*>\s*arr\[j/.test(line),
+    mutate: (line) => line.replace(/arr\[j\]\s*>\s*arr\[j/, 'arr[j] < arr[j'),
+    explain: (ln) => `Zeile ${ln}: ">" statt "<" – Sortierung läuft in falsche Richtung (absteigend statt aufsteigend)`,
+  },
+  {
+    id: 'wrong_return_value',
+    desc: 'Falscher Rückgabewert',
+    canApply: (line) => /RÜCKGABE\s+-x/.test(line),
+    mutate: (line) => line.replace('RÜCKGABE -x', 'RÜCKGABE x'),
+    explain: (ln) => `Zeile ${ln}: RÜCKGABE x statt -x – negativer Betrag wird nicht invertiert`,
+  },
+  {
+    id: 'wrong_modulo',
+    desc: 'Falscher Modulo (% 3 statt % 2)',
+    canApply: (line) => /n\s*%\s*2/.test(line),
+    mutate: (line) => line.replace(/n\s*%\s*2/, 'n % 3'),
+    explain: (ln) => `Zeile ${ln}: "% 3" statt "% 2" – Gerade/Ungerade-Prüfung falsch`,
+  },
+  {
+    id: 'missing_else_init',
+    desc: 'Fehlende SONST-Initialisierung',
+    canApply: (line) => /rabatt\s*←\s*0\s*$/.test(line) && !/WENN|SONST/.test(line.split('←')[0]),
+    mutate: (line) => line.replace(/rabatt\s*←\s*0/, 'rabatt ← -1'),
+    explain: (ln) => `Zeile ${ln}: rabatt ← -1 statt 0 – kein Rabatt wird als -1 ausgegeben`,
+  },
+  {
+    id: 'wrong_recursion',
+    desc: 'Falsche Rekursion (n-2 fehlt)',
+    canApply: (line) => /fib\(n\s*-\s*1\)\s*\+\s*fib\(n\s*-\s*2\)/.test(line),
+    mutate: (line) => line.replace('fib(n - 1) + fib(n - 2)', 'fib(n - 1) + fib(n - 1)'),
+    explain: (ln) => `Zeile ${ln}: fib(n-1) + fib(n-1) statt fib(n-1) + fib(n-2) – falsche Fibonacci-Formel`,
+  },
+  {
+    id: 'wrong_logical_and_or',
+    desc: 'UND statt ODER',
+    canApply: (line) => /\bODER\b/.test(line) && (line.match(/\bODER\b/g)||[]).length >= 2,
+    mutate: (line) => { const parts = line.split(' ODER '); parts[1] = parts[1].replace(' ODER ', ' UND '); return parts.join(' ODER '); },
+    explain: (ln) => `Zeile ${ln}: "UND" statt "ODER" in der Bedingung – Logik falsch`,
+  },
+  {
+    id: 'swap_vars_wrong',
+    desc: 'Vertauschung ohne Hilfsvariable',
+    canApply: (line) => /^a\s*←\s*b$/.test(line.trim()),
+    mutate: (line) => line.replace(/temp/, 'a'),
+    explain: (ln) => `Zeile ${ln}: Zuweisung nutzt falsche Variable – Wert geht verloren`,
+  },
+  {
+    id: 'wrong_boundary_binary',
+    desc: 'Binärsuche: links statt rechts',
+    canApply: (line) => /links\s*←\s*rechts\s*\+\s*1/.test(line),
+    mutate: (line) => line.replace('links ← rechts + 1', 'rechts ← links - 1'),
+    explain: (ln) => `Zeile ${ln}: Abbruchbedingung falsch – Schleife terminiert nicht korrekt`,
+  },
+  {
+    id: 'division_by_wrong',
+    desc: 'Falscher Divisor',
+    canApply: (line) => /\/\s*3\b/.test(line) && /Durchschnitt|durchschnitt/.test(line),
+    mutate: (line) => line.replace('/ 3', '/ 2'),
+    explain: (ln) => `Zeile ${ln}: Division durch 2 statt 3 – Durchschnitt von 3 Zahlen falsch`,
+  },
+  {
+    id: 'wrong_string_concat',
+    desc: 'Falsche Verkettungsreihenfolge',
+    canApply: (line) => /binaer\s*←\s*rest\s*\+\s*binaer/.test(line),
+    mutate: (line) => line.replace('binaer ← rest + binaer', 'binaer ← binaer + rest'),
+    explain: (ln) => `Zeile ${ln}: binaer + rest statt rest + binaer – Bits werden falsch herum angehängt`,
+  },
+  {
+    id: 'wrong_boundary_left',
+    desc: 'Grenze links/rechts vertauscht',
+    canApply: (line) => /rechts\s*←\s*mitte\s*-\s*1/.test(line),
+    mutate: (line) => line.replace('rechts ← mitte - 1', 'rechts ← mitte + 1'),
+    explain: (ln) => `Zeile ${ln}: rechts ← mitte + 1 statt - 1 – Suchbereich wird falsch verkleinert`,
+  },
+  {
+    id: 'wrong_array_index',
+    desc: 'Array-Index off-by-one (n statt n-1)',
+    canApply: (line) => /wort\[n\s*-\s*1\s*-\s*i\]/.test(line),
+    mutate: (line) => line.replace('wort[n - 1 - i]', 'wort[n - i]'),
+    explain: (ln) => `Zeile ${ln}: wort[n - i] statt wort[n - 1 - i] – Array-Zugriff außerhalb der Grenzen`,
+  },
+  {
+    id: 'wrong_max_init',
+    desc: 'Maximum-Initialisierung falsch',
+    canApply: (line) => /max\s*←\s*zahlen\[0\]/.test(line),
+    mutate: (line) => line.replace('zahlen[0]', '0'),
+    explain: (ln) => `Zeile ${ln}: max ← 0 statt zahlen[0] – bei negativen Zahlen wäre max immer 0`,
+  },
+  {
+    id: 'collatz_multiply',
+    desc: 'Collatz: 3*n statt 3*n+1',
+    canApply: (line) => /3\s*\*\s*n\s*\+\s*1/.test(line),
+    mutate: (line) => line.replace('3 * n + 1', '3 * n'),
+    explain: (ln) => `Zeile ${ln}: 3 * n statt 3 * n + 1 – Collatz-Formel unvollständig`,
   },
 ];
 
-// ── State ─────────────────────────────────────────────────────────────────────
-let DBG = {
-  taskIdx: 0,
-  taskOrder: [],
-  currentTask: null,
-  score: 0,
-  solved: 0,
-  streak: 0,
-  results: [],       // per-task: 'solved'|'failed'|'skipped'
-  running: false,
+// ─── Task generator ──────────────────────────────────────────────────────────
+function dbgGenerateTask(forceTemplate, forceDifficulty) {
+  // Pick a template weighted by difficulty
+  let pool = DBG_TEMPLATES;
+  if (forceDifficulty) pool = pool.filter(t => t.difficulty === forceDifficulty);
+  if (!pool.length) pool = DBG_TEMPLATES;
+
+  const tpl = forceTemplate !== undefined
+    ? DBG_TEMPLATES[forceTemplate]
+    : pool[Math.floor(Math.random() * pool.length)];
+
+  const lines = [...tpl.lines];
+  const numBugs = tpl.difficulty === 1 ? 1 : tpl.difficulty === 2 ? (Math.random() < 0.5 ? 1 : 2) : (Math.random() < 0.4 ? 2 : 3);
+
+  // Find applicable bugs
+  const applied = [];
+  const shuffledBugTypes = [...DBG_BUG_TYPES].sort(() => Math.random() - 0.5);
+
+  for (const bugType of shuffledBugTypes) {
+    if (applied.length >= numBugs) break;
+    // Find a line this bug can apply to
+    for (let li = 0; li < lines.length; li++) {
+      if (bugType.canApply(lines[li], lines, li)) {
+        // Make sure we don't apply two bugs to the same line
+        if (!applied.some(a => a.lineIdx === li)) {
+          lines[li] = bugType.mutate(lines[li]);
+          applied.push({ lineIdx: li, lineNum: li + 1, bugType, explain: bugType.explain(li + 1) });
+          break;
+        }
+      }
+    }
+  }
+
+  // If we couldn't inject any bugs (no applicable), inject a simple one manually
+  if (applied.length === 0) {
+    // Find any line with SOLANGE and change <= to <
+    for (let li = 0; li < lines.length; li++) {
+      if (/SOLANGE\s+i\s*<=/.test(lines[li])) {
+        lines[li] = lines[li].replace('<=', '<');
+        applied.push({ lineIdx: li, lineNum: li + 1,
+          explain: `Zeile ${li+1}: "<" statt "<=" – letzter Schleifendurchlauf fehlt` });
+        break;
+      }
+    }
+  }
+
+  return {
+    topic: tpl.topic,
+    difficulty: tpl.difficulty,
+    desc: tpl.desc,
+    correct: tpl.lines,
+    buggy: lines,
+    bugs: applied,
+    numBugs: applied.length,
+  };
+}
+
+// ─── State ────────────────────────────────────────────────────────────────────
+const DBG2 = {
+  score: 0, solved: 0, streak: 0, wrong: 0,
+  hiscore: 0, histreak: 0,
+  results: [],
+  aufgabe: 0,
+  task: null,
   hintsUsed: 0,
   attempts: 0,
-  bot: {r:0,c:0,dir:0},
-  trail: new Set(),
-  animTimer: null,
+  difficultyProgress: { 1:0, 2:0, 3:0 },
 };
 
-// ── Direction helpers (reuse robot engine) ───────────────────────────────────
-const DBG_DIR_DELTA = [{r:-1,c:0},{r:0,c:1},{r:1,c:0},{r:0,c:-1}];
-const DBG_DIR_EMOJI = ['⬆️','➡️','⬇️','⬅️'];
-
-// ── Init ──────────────────────────────────────────────────────────────────────
+// ─── Init ─────────────────────────────────────────────────────────────────────
 function dbgInit() {
-  // Shuffle tasks for variety
-  DBG.taskOrder = DBG_TASKS.map((_,i)=>i).sort(()=>Math.random()-.5);
-  DBG.taskIdx = 0;
-  DBG.score = 0;
-  DBG.solved = 0;
-  DBG.streak = 0;
-  DBG.results = [];
-  DBG.hintsUsed = 0;
+  DBG2.score = 0; DBG2.solved = 0; DBG2.streak = 0; DBG2.wrong = 0;
+  DBG2.hiscore = 0; DBG2.histreak = 0; DBG2.results = []; DBG2.aufgabe = 0;
   dbgUpdateStats();
-  dbgLoadTask(DBG.taskOrder[0]);
+  dbgLoadNewTask();
 }
 
 function dbgNewTask() {
-  if (DBG.running) return;
-  DBG.taskIdx = (DBG.taskIdx + 1) % DBG.taskOrder.length;
-  // Re-shuffle if we've gone through all
-  if (DBG.taskIdx === 0) {
-    DBG.taskOrder = DBG_TASKS.map((_,i)=>i).sort(()=>Math.random()-.5);
-  }
-  dbgLoadTask(DBG.taskOrder[DBG.taskIdx]);
+  dbgLoadNewTask();
 }
 
-function dbgLoadTask(idx) {
-  if (DBG.running) return;
-  DBG.currentTask = DBG_TASKS[idx];
-  DBG.attempts = 0;
-  DBG.hintsUsed = 0;
-  const task = DBG.currentTask;
-
-  // Reset bot
-  DBG.bot = {...task.start};
-  DBG.trail = new Set();
-
-  // Update badges
-  const diffColors = ['','tag-accent','tag-amber','tag-red'];
-  const diffLabels = ['','Stufe 1','Stufe 2','Stufe 3'];
-  const diffBadge = document.getElementById('dbg-diff-badge');
-  if (diffBadge) {
-    diffBadge.className = 'tag ' + (diffColors[task.difficulty] || 'tag-gray');
-    diffBadge.textContent = diffLabels[task.difficulty] || 'Stufe ?';
+function dbgLoadNewTask(forceDiff) {
+  // Progressive difficulty: after 3 solves per tier unlock next
+  let diff = forceDiff || 1;
+  if (!forceDiff) {
+    const s = DBG2.solved;
+    if (s >= 9) diff = [1,2,3][Math.floor(Math.random()*3)];
+    else if (s >= 4) diff = [1,2][Math.floor(Math.random()*2)];
+    else diff = 1;
   }
-  const errBadge = document.getElementById('dbg-errors-badge');
-  if (errBadge) errBadge.textContent = task.bugs.length + (task.bugs.length === 1 ? ' Fehler' : ' Fehler');
 
-  // Mission text
+  DBG2.task = dbgGenerateTask(undefined, diff);
+  DBG2.aufgabe++;
+  DBG2.hintsUsed = 0;
+  DBG2.attempts = 0;
+
+  // Update UI
+  const diffLabels = {1:'Stufe 1', 2:'Stufe 2', 3:'Stufe 3'};
+  const diffClass  = {1:'tag-accent', 2:'tag-amber', 3:'tag-red'};
+  const diffEl = document.getElementById('dbg-diff-tag');
+  if (diffEl) { diffEl.className = 'tag ' + diffClass[diff]; diffEl.textContent = diffLabels[diff]; }
+  const topicEl = document.getElementById('dbg-topic-tag');
+  if (topicEl) topicEl.textContent = DBG2.task.topic;
+  const bugEl = document.getElementById('dbg-bug-count-tag');
+  if (bugEl) bugEl.textContent = DBG2.task.numBugs + (DBG2.task.numBugs === 1 ? ' Fehler' : ' Fehler');
   const missionEl = document.getElementById('dbg-mission-text');
-  if (missionEl) missionEl.innerHTML = task.mission;
+  if (missionEl) missionEl.textContent = DBG2.task.desc;
 
-  // Load buggy code into editor
+  const fname = 'aufgabe_' + String(DBG2.aufgabe).padStart(2,'0') + '.pseudo';
+  const fnameEl = document.getElementById('dbg-filename');
+  if (fnameEl) fnameEl.textContent = fname;
+  const tabEl = document.getElementById('dbg-tab-name');
+  if (tabEl) tabEl.textContent = fname;
+
+  // Load buggy code
   const editor = document.getElementById('dbg-editor');
-  if (editor) {
-    editor.value = task.buggy;
-    editor.style.borderColor = '';
-  }
+  if (editor) editor.value = DBG2.task.buggy.join('\n');
 
-  // Clear error markers, feedback, log
-  const markers = document.getElementById('dbg-error-markers');
-  if (markers) markers.innerHTML = '';
-  const fbCard = document.getElementById('dbg-feedback-card');
-  if (fbCard) fbCard.style.display = 'none';
-  const log = document.getElementById('dbg-error-log');
-  if (log) log.textContent = 'Noch kein Code ausgeführt.';
-  const status = document.getElementById('dbg-run-status');
-  if (status) status.textContent = '';
+  // Reset UI
+  dbgUpdateGutter();
+  dbgClearTerminal();
+  dbgSetStatus(DBG2.task.numBugs + ' Fehler versteckt – finde und behebe sie!');
+  const statusBar = document.getElementById('dbg-statusbar-errors');
+  if (statusBar) { statusBar.textContent = '⚠ ' + DBG2.task.numBugs + ' Fehler'; statusBar.style.color = '#febc2e'; }
+  const sbMode = document.getElementById('dbg-statusbar-mode');
+  if (sbMode) sbMode.textContent = 'BEARBEITEN';
+  const explainEl = document.getElementById('dbg-explain-content');
+  if (explainEl) explainEl.innerHTML = `<strong style="color:var(--text)">Aufgabe:</strong><br>${DBG2.task.desc}<br><br><span style="color:var(--text3)">Es gibt ${DBG2.task.numBugs} Fehler. Nutze "Syntax prüfen" für Hinweise.</span>`;
 
-  dbgUpdateLineNums();
-  dbgRenderGrid();
-  dbgGridStatus('idle', 'Warte auf Code...');
-  dbgUpdateProgress();
   dbgUpdateStats();
+  dbgUpdateDots();
 }
 
-// ── Line numbers ──────────────────────────────────────────────────────────────
-function dbgUpdateLineNums() {
+// ─── Gutter (line numbers) ────────────────────────────────────────────────────
+function dbgUpdateGutter(errorLines) {
   const editor = document.getElementById('dbg-editor');
-  const lnEl   = document.getElementById('dbg-line-nums');
-  if (!editor || !lnEl) return;
-  const lines = editor.value.split('\n').length;
-  lnEl.innerHTML = Array.from({length: lines}, (_,i) => `<div>${i+1}</div>`).join('');
+  const gutter = document.getElementById('dbg-gutter');
+  if (!editor || !gutter) return;
+  const lines = editor.value.split('\n');
+  const errSet = new Set(errorLines || []);
+  gutter.innerHTML = lines.map((_, i) => {
+    const ln = i + 1;
+    const hasErr = errSet.has(ln);
+    return `<div style="height:1.75em;line-height:1.75em;padding:0 8px;font-family:var(--mono);font-size:12px;color:${hasErr?'#f48771':'#6e7681'};display:flex;align-items:center;justify-content:flex-end;gap:5px">
+      ${hasErr ? '<span title="Fehler auf dieser Zeile" style="color:#f48771;font-size:10px">●</span>' : ''}${ln}
+    </div>`;
+  }).join('');
 }
 
-// ── Grid render ───────────────────────────────────────────────────────────────
-function dbgRenderGrid(crashCell) {
-  const grid = document.getElementById('dbg-grid');
-  if (!grid || !DBG.currentTask) return;
-  const lv   = DBG.currentTask;
-  const bot  = DBG.bot;
-  grid.innerHTML = '';
-  for (let r = 0; r < 5; r++) {
-    for (let c = 0; c < 5; c++) {
-      const cell  = document.createElement('div');
-      cell.id     = 'dbg_c_' + r + '_' + c;
-      cell.style.cssText = 'width:44px;height:44px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:background .2s,transform .15s;';
-      const t     = lv.grid[r][c];
-      const isBot = r === bot.r && c === bot.c;
-      const isTrl = DBG.trail.has(r+','+c) && !isBot;
-      const isCrash = crashCell && crashCell.r === r && crashCell.c === c;
-
-      if (isCrash) {
-        cell.style.background = 'var(--redbg)';
-        cell.style.border = '1.5px solid var(--red)';
-        cell.style.transform = 'scale(1.15)';
-        cell.textContent = '💥';
-      } else if (t === 1) {
-        cell.style.background = '#3C3489';
-        cell.style.color = '#AFA9EC';
-        cell.textContent = '🧱';
-      } else if (t === 2 && !isBot) {
-        cell.style.background = '#1D9E7520';
-        cell.style.border = '1px solid #1D9E7560';
-        cell.textContent = '🚩';
-      } else if (isBot) {
-        cell.style.background = 'var(--bg4)';
-        cell.style.border = '1.5px solid var(--accent)';
-        cell.textContent = '🤖';
-        cell.title = DBG_DIR_EMOJI[bot.dir];
-      } else if (isTrl) {
-        cell.style.background = '#185FA520';
-        cell.style.border = '1px solid #185FA540';
-        cell.style.color = '#185FA5';
-        cell.style.fontSize = '16px';
-        cell.style.fontWeight = 'bold';
-        cell.textContent = '·';
-      } else {
-        cell.style.background = 'var(--bg2)';
-        cell.style.border = '1px solid var(--border)';
-      }
-      grid.appendChild(cell);
-    }
-  }
-}
-
-function dbgGridStatus(type, msg) {
-  const el = document.getElementById('dbg-grid-status');
-  if (!el) return;
-  const styles = {
-    idle:  'background:var(--bg3);color:var(--text3)',
-    run:   'background:var(--bluebg);color:var(--blue)',
-    win:   'background:var(--greenbg);color:var(--green)',
-    crash: 'background:var(--redbg);color:var(--red)',
-    error: 'background:var(--amberbg);color:var(--amber)',
-  };
-  el.style.cssText = 'font-size:12px;font-weight:500;text-align:center;padding:4px 14px;border-radius:20px;min-width:160px;' + (styles[type]||styles.idle);
-  el.textContent = msg;
-}
-
-// ── Parser (same logic as robot, standalone) ──────────────────────────────────
-function dbgParse(code) {
-  const lines = code.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('//'));
-  let i = 0;
-  const errors = [];
-
-  function parseBlock(stopAtBrace) {
-    const block = [];
-    while (i < lines.length) {
-      const raw  = lines[i];
-      const line = raw.trim();
-
-      if (stopAtBrace && line === '}') { i++; break; }
-      if (line === '{') { i++; continue; }
-
-      // Check for common mistakes
-      if (/gehe\s*vorw[äa]rts\s*\(/i.test(line) && line !== 'geheVorwaerts()') {
-        errors.push({ line: i + 1, msg: '"' + line + '" – korrekt: geheVorwaerts()' });
-        i++; continue;
-      }
-      if (/drehe\s*rechts\s*\(/i.test(line) && line !== 'dreheRechts()') {
-        errors.push({ line: i + 1, msg: '"' + line + '" – korrekt: dreheRechts()' });
-        i++; continue;
-      }
-      if (/drehe\s*links\s*\(/i.test(line) && line !== 'dreheLinks()') {
-        errors.push({ line: i + 1, msg: '"' + line + '" – korrekt: dreheLinks()' });
-        i++; continue;
-      }
-      if (/geheVorwaerts\s*\(/.test(line) && line !== 'geheVorwaerts()') {
-        errors.push({ line: i + 1, msg: '"' + line + '" – schließende ) fehlt oder Tippfehler' });
-        i++; continue;
-      }
-
-      if (/^WIEDERHOLE\s+\d+\s+MAL/i.test(line)) {
-        const m = line.match(/WIEDERHOLE\s+(\d+)\s+MAL/i);
-        if (!m) { errors.push({line: i+1, msg: 'Syntax-Fehler bei WIEDERHOLE'}); i++; continue; }
-        const n = parseInt(m[1]);
-        i++;
-        const inner = parseBlock(true);
-        block.push({type:'repeat', n, body:inner, srcLine: i});
-      } else if (/^WENN\s+istZiel\(\)\s+DANN/i.test(line)) {
-        i++;
-        const inner = parseBlock(true);
-        block.push({type:'if_goal', body:inner});
-      } else if (line === 'geheVorwaerts()') {
-        block.push({type:'forward'}); i++;
-      } else if (line === 'dreheRechts()') {
-        block.push({type:'right'}); i++;
-      } else if (line === 'dreheLinks()') {
-        block.push({type:'left'}); i++;
-      } else if (line === '}') {
-        if (!stopAtBrace) errors.push({line: i+1, msg: 'Unerwartetes } ohne öffnende Schleife'});
-        i++;
-      } else if (line) {
-        errors.push({line: i+1, msg: 'Unbekannter Befehl: "' + line + '"'});
-        i++;
-      } else {
-        i++;
-      }
-    }
-    return block;
-  }
-
-  const ast = parseBlock(false);
-  return { ast, errors };
-}
-
-// ── Executor (async, animated) ────────────────────────────────────────────────
-async function dbgExecute(ast) {
-  const task  = DBG.currentTask;
-  let steps   = 0;
-  const MAX   = 200;
-
-  async function run(block) {
-    for (const node of block) {
-      if (!DBG.running) return 'stopped';
-      if (steps++ > MAX) throw new Error('Zu viele Schritte (Max. 200) – mögliche Endlosschleife?');
-
-      if (node.type === 'forward') {
-        const d  = DBG_DIR_DELTA[DBG.bot.dir];
-        const nr = DBG.bot.r + d.r;
-        const nc = DBG.bot.c + d.c;
-        if (nr < 0 || nr > 4 || nc < 0 || nc > 4) {
-          dbgRenderGrid({r: DBG.bot.r, c: DBG.bot.c});
-          throw new Error('💥 Roboter hat das Feld verlassen bei (' + nr + ',' + nc + ')');
-        }
-        if (task.grid[nr][nc] === 1) {
-          dbgRenderGrid({r: DBG.bot.r, c: DBG.bot.c});
-          throw new Error('💥 Roboter gegen Wand bei (' + nr + ',' + nc + ')');
-        }
-        DBG.trail.add(DBG.bot.r + ',' + DBG.bot.c);
-        DBG.bot.r = nr;
-        DBG.bot.c = nc;
-        dbgRenderGrid();
-        if (task.grid[nr][nc] === 2) {
-          return 'goal';
-        }
-        await dbgSleep(280);
-
-      } else if (node.type === 'right') {
-        DBG.bot.dir = (DBG.bot.dir + 1) % 4;
-        dbgRenderGrid();
-        await dbgSleep(200);
-
-      } else if (node.type === 'left') {
-        DBG.bot.dir = (DBG.bot.dir + 3) % 4;
-        dbgRenderGrid();
-        await dbgSleep(200);
-
-      } else if (node.type === 'repeat') {
-        for (let x = 0; x < node.n; x++) {
-          if (!DBG.running) return 'stopped';
-          const res = await run(node.body);
-          if (res === 'goal' || res === 'stopped') return res;
-          if (res === 'crash') return 'crash';
-        }
-
-      } else if (node.type === 'if_goal') {
-        const onGoal = task.grid[DBG.bot.r][DBG.bot.c] === 2;
-        if (onGoal) {
-          const res = await run(node.body);
-          if (res) return res;
-        }
-      }
-    }
-    return null;
-  }
-
-  return await run(ast);
-}
-
-function dbgSleep(ms) {
-  return new Promise(res => setTimeout(res, ms));
-}
-
-// ── Validate only (no animation) ──────────────────────────────────────────────
-function dbgValidateOnly() {
+// ─── Validate (syntax check, compare to correct) ──────────────────────────────
+function dbgValidate() {
   const editor = document.getElementById('dbg-editor');
-  if (!editor) return;
-  const code = editor.value;
-  const { ast, errors } = dbgParse(code);
-  const log = document.getElementById('dbg-error-log');
-  const markers = document.getElementById('dbg-error-markers');
+  if (!editor || !DBG2.task) return;
+  const userLines = editor.value.split('\n').map(l => l.trimEnd());
+  const correctLines = DBG2.task.correct;
+  const issues = [];
 
-  if (errors.length === 0) {
-    if (log) log.textContent = '✓ Keine Syntax-Fehler gefunden. Code kann ausgeführt werden!';
-    if (markers) markers.innerHTML = '';
-    const status = document.getElementById('dbg-run-status');
-    if (status) { status.textContent = '✓ Syntax OK'; status.style.color = 'var(--green)'; }
+  for (let i = 0; i < Math.max(userLines.length, correctLines.length); i++) {
+    const u = (userLines[i] || '').trim();
+    const c = (correctLines[i] || '').trim();
+    if (u !== c && u !== '' && c !== '') {
+      // Check if difference is significant
+      if (u.replace(/\s+/g,'') !== c.replace(/\s+/g,'')) {
+        issues.push({ line: i+1, user: u, correct: c });
+      }
+    }
+  }
+
+  // Show in terminal with VSCode-style output
+  const termEl = document.getElementById('dbg-terminal');
+  if (termEl) termEl.style.display = 'block';
+  const body = document.getElementById('dbg-terminal-body');
+  const statusBar = document.getElementById('dbg-statusbar-errors');
+  const sbMode = document.getElementById('dbg-statusbar-mode');
+
+  if (issues.length === 0) {
+    if (body) body.innerHTML = `<div style="color:#4ec9b0">✔ Keine Syntax-Abweichungen gefunden. Bereit zum Ausführen.</div>`;
+    if (statusBar) { statusBar.textContent = '✔ 0 Fehler'; statusBar.style.color = '#4ec9b0'; }
+    if (sbMode) sbMode.textContent = 'OK';
+    dbgUpdateGutter([]);
   } else {
-    if (log) log.innerHTML = errors.map(e => `❌ Zeile ${e.line}: ${e.msg}`).join('<br>');
-    if (markers) {
-      markers.innerHTML = errors.map(e =>
-        `<span class="tag tag-red" style="font-size:10px">⚠ Zeile ${e.line}</span>`
-      ).join('');
+    const errLines = issues.map(i => i.line);
+    if (body) {
+      body.innerHTML = issues.map(issue => `
+        <div style="margin-bottom:8px">
+          <div style="color:#f48771">⚠ Zeile ${issue.line}: Abweichung erkannt</div>
+          <div style="color:#808080;margin-left:16px;margin-top:2px">Dein Code:  <span style="color:#ce9178">"${dbgEscape(issue.user)}"</span></div>
+        </div>`).join('');
     }
-    const status = document.getElementById('dbg-run-status');
-    if (status) { status.textContent = errors.length + ' Syntaxfehler'; status.style.color = 'var(--red)'; }
+    if (statusBar) { statusBar.textContent = '⚠ ' + issues.length + ' Abweichung(en)'; statusBar.style.color = '#febc2e'; }
+    if (sbMode) sbMode.textContent = 'PRÜFEN';
+    dbgUpdateGutter(errLines);
+  }
+
+  const explainEl = document.getElementById('dbg-explain-content');
+  if (explainEl && issues.length > 0) {
+    explainEl.innerHTML = `<strong style="color:var(--amber)">⚠ ${issues.length} Stelle(n) unterscheiden sich vom Korrektcode</strong><br><br>${issues.map(i=>`<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">Zeile ${i.line}</span><br>`).join('')}`;
+  } else if (explainEl) {
+    explainEl.innerHTML = `<span style="color:var(--green)">✔ Kein Unterschied zum Korrektcode gefunden</span>`;
   }
 }
 
-// ── Run ───────────────────────────────────────────────────────────────────────
-async function dbgRun() {
-  if (DBG.running) return;
+// ─── Submit (compare user code to correct) ────────────────────────────────────
+function dbgSubmit() {
   const editor = document.getElementById('dbg-editor');
-  if (!editor || !DBG.currentTask) return;
+  if (!editor || !DBG2.task) return;
+  DBG2.attempts++;
 
-  const code = editor.value;
-  const { ast, errors } = dbgParse(code);
+  const userLines = editor.value.split('\n').map(l => l.trimEnd());
+  const correctLines = DBG2.task.correct;
 
-  // Show parse errors
-  const log      = document.getElementById('dbg-error-log');
-  const markers  = document.getElementById('dbg-error-markers');
-  const fbCard   = document.getElementById('dbg-feedback-card');
-  const fbContent= document.getElementById('dbg-feedback-content');
+  // Flexible comparison: ignore leading/trailing whitespace per line
+  const userNorm    = userLines.map(l => l.trim()).join('\n');
+  const correctNorm = correctLines.map(l => l.trim()).join('\n');
+  const isCorrect   = userNorm === correctNorm;
 
-  if (errors.length > 0) {
-    if (log) log.innerHTML = errors.map(e => `❌ Zeile ${e.line}: ${e.msg}`).join('<br>');
-    if (markers) markers.innerHTML = errors.map(e =>
-      `<span class="tag tag-red" style="font-size:10px">⚠ Zeile ${e.line}</span>`
-    ).join('');
-    dbgGridStatus('error', '⚠ Syntaxfehler gefunden');
-    if (fbCard) { fbCard.style.display = 'block'; }
-    if (fbContent) {
-      fbContent.innerHTML = `<div style="background:var(--redbg);border:1px solid #ef535040;border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--red)">
-        <strong>❌ Syntaxfehler im Code</strong><br><div style="margin-top:6px;font-family:var(--mono);font-size:11px;line-height:1.7">${errors.map(e=>`Zeile ${e.line}: ${e.msg}`).join('<br>')}</div>
-        <div style="margin-top:8px;font-size:12px;color:var(--text2)">Behebe die Syntaxfehler und versuche es erneut.</div>
-      </div>`;
-    }
-    DBG.attempts++;
-    return;
-  }
+  const termEl = document.getElementById('dbg-terminal');
+  if (termEl) termEl.style.display = 'block';
+  const body = document.getElementById('dbg-terminal-body');
+  const sbMode = document.getElementById('dbg-statusbar-mode');
+  const statusBar = document.getElementById('dbg-statusbar-errors');
 
-  if (log) log.textContent = '✓ Syntax OK. Roboter startet...';
-  if (markers) markers.innerHTML = '';
-  if (fbCard) fbCard.style.display = 'none';
+  if (isCorrect) {
+    // SUCCESS
+    const bonus = Math.max(0, 30 - (DBG2.attempts - 1) * 8 - DBG2.hintsUsed * 10);
+    const base  = DBG2.task.difficulty * 40;
+    const pts   = base + bonus;
+    DBG2.score += pts;
+    DBG2.solved++;
+    DBG2.streak++;
+    DBG2.wrong = Math.max(0, DBG2.wrong);
+    if (DBG2.score > DBG2.hiscore) DBG2.hiscore = DBG2.score;
+    if (DBG2.streak > DBG2.histreak) DBG2.histreak = DBG2.streak;
+    DBG2.results.push('solved');
 
-  // Reset bot to start
-  DBG.bot = {...DBG.currentTask.start};
-  DBG.trail = new Set();
-  DBG.running = true;
-  DBG.attempts++;
-  dbgRenderGrid();
-  dbgGridStatus('run', '▶ Läuft...');
+    if (body) body.innerHTML = `
+      <div style="color:#4ec9b0;font-size:13px;margin-bottom:10px">✔ Alle Fehler korrekt behoben! Code wird ausgeführt...</div>
+      ${dbgSimulateOutput(DBG2.task.correct, DBG2.task.topic)}
+      <div style="color:#569cd6;margin-top:10px">Prozess beendet mit Exitcode 0</div>`;
+    if (statusBar) { statusBar.textContent = '✔ 0 Fehler'; statusBar.style.color = '#4ec9b0'; }
+    if (sbMode) sbMode.textContent = 'ERFOLG';
+    dbgUpdateGutter([]);
 
-  let result = null;
-  let errorMsg = null;
-
-  try {
-    result = await dbgExecute(ast);
-  } catch(e) {
-    errorMsg = e.message;
-    result = 'crash';
-  }
-
-  DBG.running = false;
-
-  if (result === 'goal') {
-    // SUCCESS!
-    dbgGridStatus('win', '🎉 Ziel erreicht!');
-    const pts = DBG.currentTask.points - (DBG.attempts - 1) * 15 - DBG.hintsUsed * 10;
-    const earned = Math.max(pts, 10);
-    DBG.score  += earned;
-    DBG.solved++;
-    DBG.streak++;
-    DBG.results.push('solved');
-
-    // Win cell flash
-    const winCell = document.getElementById('dbg_c_' + DBG.bot.r + '_' + DBG.bot.c);
-    if (winCell) {
-      winCell.style.background = 'var(--greenbg)';
-      winCell.style.border = '1.5px solid var(--green)';
-      winCell.style.transform = 'scale(1.2)';
-      setTimeout(() => { winCell.style.transform = ''; }, 400);
+    const explainEl = document.getElementById('dbg-explain-content');
+    if (explainEl) {
+      explainEl.innerHTML = `<div style="color:var(--green);margin-bottom:8px"><strong>✅ Korrekt! +${pts} Punkte ${DBG2.streak>=3?'🔥 Streak ×'+DBG2.streak:''}</strong></div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Die Fehler waren:</div>
+        ${DBG2.task.bugs.map(b=>`<div style="background:var(--bg3);border-radius:4px;padding:5px 8px;margin-bottom:4px;font-size:11px;font-family:var(--mono);color:var(--text2)">${b.explain}</div>`).join('')}
+        <div style="margin-top:10px"><button class="btn btn-primary btn-xs" onclick="dbgNewTask()">Nächste Aufgabe →</button></div>`;
     }
 
-    if (fbCard) fbCard.style.display = 'block';
-    if (fbContent) {
-      fbContent.innerHTML = `<div style="background:var(--greenbg);border:1px solid #69f0ae40;border-radius:var(--r);padding:14px 16px;font-size:13px;color:var(--green)">
-        <div style="font-size:15px;font-weight:600;margin-bottom:6px">✅ Perfekt! Alle Fehler behoben!</div>
-        <div style="color:var(--text2);font-size:12px">+${earned} Punkte ${DBG.streak >= 3 ? '🔥 Streak ×' + DBG.streak : ''}</div>
-        <div style="margin-top:12px">
-          <button class="btn btn-primary btn-sm" onclick="dbgNewTask()" style="margin-right:8px">Nächste Aufgabe →</button>
-          <button class="btn btn-ghost btn-sm" onclick="dbgShowSolution()">Musterlösung anzeigen</button>
-        </div>
-      </div>`;
-    }
-    if (log) log.textContent = '✓ Code korrekt ausgeführt! Ziel erreicht.';
-    toast('🐛 Fehler gefunden und behoben! +' + earned + ' Punkte', '✅');
+    toast('🐛 Alle Fehler behoben! +' + pts + ' Punkte', '✅');
 
-  } else if (result === 'crash') {
-    dbgGridStatus('crash', '💥 Crash!');
-    DBG.results.push('failed');
-    DBG.streak = 0;
-    if (fbCard) fbCard.style.display = 'block';
-    if (fbContent) {
-      fbContent.innerHTML = `<div style="background:var(--redbg);border:1px solid #ef535040;border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--red)">
-        <strong>💥 Laufzeitfehler</strong><br>
-        <div style="font-family:var(--mono);font-size:11px;margin-top:6px">${errorMsg || 'Roboter ist abgestürzt'}</div>
-        <div style="margin-top:8px;font-size:12px;color:var(--text2)">Code läuft, führt den Roboter aber in die falsche Richtung. Logik prüfen!</div>
-      </div>`;
-    }
-    if (log) log.textContent = '💥 ' + (errorMsg || 'Laufzeitfehler');
+  } else {
+    // WRONG – show what's still different
+    DBG2.wrong++;
+    DBG2.streak = 0;
+    DBG2.results.push('wrong');
 
-  } else if (result === null || result === undefined) {
-    // Code finished but goal not reached
-    dbgGridStatus('error', '🚩 Ziel nicht erreicht');
-    DBG.results.push('failed');
-    DBG.streak = 0;
-    if (fbCard) fbCard.style.display = 'block';
-    if (fbContent) {
-      fbContent.innerHTML = `<div style="background:var(--amberbg);border:1px solid #ffd54f40;border-radius:var(--r);padding:12px 14px;font-size:13px;color:var(--amber)">
-        <strong>⚠️ Ziel nicht erreicht</strong><br>
-        <div style="margin-top:6px;font-size:12px;color:var(--text2)">Der Roboter läuft durch, kommt aber nicht zur Flagge. Stimmen Zähler und Richtungen?</div>
-      </div>`;
+    const diffs = [];
+    for (let i = 0; i < Math.max(userLines.length, correctLines.length); i++) {
+      const u = (userLines[i]||'').trim();
+      const c = (correctLines[i]||'').trim();
+      if (u !== c) diffs.push(i + 1);
     }
-    if (log) log.textContent = '⚠ Code beendet ohne Ziel.';
+    dbgUpdateGutter(diffs);
+
+    if (body) body.innerHTML = `
+      <div style="color:#f48771;font-size:13px;margin-bottom:8px">✖ Code stimmt noch nicht überein. ${diffs.length} Zeile(n) falsch.</div>
+      ${diffs.slice(0,5).map(ln=>`<div style="color:#808080;margin-left:8px">→ Zeile ${ln}: noch nicht korrekt</div>`).join('')}
+      ${diffs.length > 5 ? `<div style="color:#808080;margin-left:8px">... und ${diffs.length-5} weitere</div>` : ''}
+      <div style="color:#febc2e;margin-top:8px">Tipp: Nutze "Syntax prüfen" um Details zu sehen.</div>`;
+    if (statusBar) { statusBar.textContent = '✖ ' + diffs.length + ' Fehler'; statusBar.style.color = '#f48771'; }
+    if (sbMode) sbMode.textContent = 'FEHLER';
+
+    const explainEl = document.getElementById('dbg-explain-content');
+    if (explainEl) {
+      explainEl.innerHTML = `<div style="color:var(--red);margin-bottom:8px"><strong>❌ Noch ${diffs.length} Zeile(n) fehlerhaft</strong></div>
+        <div style="font-size:11px;color:var(--text3)">Nutze "💡 Hinweis" für mehr Hilfe oder "Syntax prüfen" für Details.</div>`;
+    }
   }
 
   dbgUpdateStats();
-  dbgUpdateProgress();
+  dbgUpdateDots();
 }
 
-// ── Hint ──────────────────────────────────────────────────────────────────────
-function dbgShowHint() {
-  if (!DBG.currentTask) return;
-  DBG.hintsUsed++;
-  const task = DBG.currentTask;
-  const hint = task.bugs[DBG.hintsUsed <= task.bugs.length
-    ? DBG.hintsUsed - 1
-    : task.bugs.length - 1];
-  if (hint) {
-    toast('💡 Hinweis: ' + hint.desc, '💡');
-    const log = document.getElementById('dbg-error-log');
-    if (log) log.innerHTML = (log.innerHTML === 'Noch kein Code ausgeführt.' ? '' : log.innerHTML + '<br>') + '💡 ' + hint.desc;
+// ─── Simulate output (makes it feel like code actually ran) ───────────────────
+function dbgSimulateOutput(lines, topic) {
+  const outputs = [];
+  // Extract AUSGABE lines
+  for (const line of lines) {
+    const m = line.match(/AUSGABE\s+"?([^"]+)"?\s*\+?\s*(\w+)?/);
+    if (m) {
+      let out = m[1].replace(/^"|"$/g,'');
+      // Add plausible fake values based on topic
+      if (m[2]) {
+        const fakes = {
+          ergebnis: '120', summe: '55', max: '9', index: '3',
+          durchschnitt: '18.0', zaehler: '3', binaer: '101010',
+          istPalindrom: 'WAHR', rabatt: '10.0', arr: '[1, 2, 3, 4, 5]'
+        };
+        out += fakes[m[2]] || '42';
+      }
+      outputs.push(out);
+    }
   }
+  if (!outputs.length) outputs.push('(keine Ausgabe)');
+  return outputs.map(o =>
+    `<div style="color:#d4d4d4;margin-left:8px">> ${dbgEscape(o)}</div>`
+  ).join('');
 }
 
-// ── Show solution ─────────────────────────────────────────────────────────────
-function dbgShowSolution() {
-  if (!DBG.currentTask) return;
+// ─── Hint ─────────────────────────────────────────────────────────────────────
+function dbgHint() {
+  if (!DBG2.task) return;
+  DBG2.hintsUsed++;
+  const hintIdx = Math.min(DBG2.hintsUsed - 1, DBG2.task.bugs.length - 1);
+  const bug = DBG2.task.bugs[hintIdx];
+  if (!bug) { toast('Keine weiteren Hinweise', '💡'); return; }
+
+  const termEl = document.getElementById('dbg-terminal');
+  if (termEl) termEl.style.display = 'block';
+  const body = document.getElementById('dbg-terminal-body');
+  if (body) body.innerHTML += `<div style="color:#febc2e;margin-top:6px">💡 Hinweis ${DBG2.hintsUsed}: ${bug.explain}</div>`;
+
+  dbgUpdateGutter([bug.lineNum]);
+  toast('💡 ' + bug.explain, '💡');
+}
+
+// ─── Solution ─────────────────────────────────────────────────────────────────
+function dbgSolution() {
+  if (!DBG2.task) return;
   const editor = document.getElementById('dbg-editor');
-  if (editor) editor.value = DBG.currentTask.correct;
-  dbgUpdateLineNums();
-  const log = document.getElementById('dbg-error-log');
-  if (log) log.textContent = 'Musterlösung geladen.';
-  toast('Musterlösung angezeigt', '📖');
+  if (editor) editor.value = DBG2.task.correct.join('\n');
+  dbgUpdateGutter([]);
+  const termEl = document.getElementById('dbg-terminal');
+  if (termEl) termEl.style.display = 'block';
+  const body = document.getElementById('dbg-terminal-body');
+  if (body) body.innerHTML = `<div style="color:#6a9955">// Musterlösung angezeigt. Fehler waren:</div>` +
+    DBG2.task.bugs.map(b=>`<div style="color:#ce9178;margin-left:8px">// ${b.explain}</div>`).join('');
+  toast('Musterlösung geladen', '📖');
 }
 
-// ── Reset to buggy ────────────────────────────────────────────────────────────
+// ─── Reset ────────────────────────────────────────────────────────────────────
 function dbgReset() {
-  if (DBG.running) return;
-  if (!DBG.currentTask) return;
+  if (!DBG2.task) return;
   const editor = document.getElementById('dbg-editor');
-  if (editor) editor.value = DBG.currentTask.buggy;
-  dbgUpdateLineNums();
-  DBG.bot = {...DBG.currentTask.start};
-  DBG.trail = new Set();
-  const fbCard = document.getElementById('dbg-feedback-card');
-  if (fbCard) fbCard.style.display = 'none';
-  const markers = document.getElementById('dbg-error-markers');
-  if (markers) markers.innerHTML = '';
-  const log = document.getElementById('dbg-error-log');
-  if (log) log.textContent = 'Zurückgesetzt.';
-  dbgRenderGrid();
-  dbgGridStatus('idle', 'Warte auf Code...');
+  if (editor) editor.value = DBG2.task.buggy.join('\n');
+  dbgUpdateGutter([]);
+  dbgClearTerminal();
+  dbgSetStatus(DBG2.task.numBugs + ' Fehler versteckt.');
+  const statusBar = document.getElementById('dbg-statusbar-errors');
+  if (statusBar) { statusBar.textContent = '⚠ ' + DBG2.task.numBugs + ' Fehler'; statusBar.style.color = '#febc2e'; }
 }
 
-// ── Stats & Progress ──────────────────────────────────────────────────────────
+function dbgClearTerminal() {
+  const termEl = document.getElementById('dbg-terminal');
+  if (termEl) termEl.style.display = 'none';
+  const body = document.getElementById('dbg-terminal-body');
+  if (body) body.innerHTML = '';
+}
+
+function dbgSetStatus(msg) {
+  const s = document.getElementById('dbg-run-status');
+  if (s) s.textContent = msg;
+}
+
+// ─── Stats & dots ─────────────────────────────────────────────────────────────
 function dbgUpdateStats() {
-  const s = (id, v) => { const e = document.getElementById(id); if(e) e.textContent = v; };
-  s('dbg-level',  DBG.taskIdx + 1);
-  s('dbg-score',  DBG.score);
-  s('dbg-solved', DBG.solved);
-  s('dbg-streak', DBG.streak > 0 ? DBG.streak + (DBG.streak >= 3 ? ' 🔥' : '') : '0');
+  const s = (id, v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  s('dbg-aufgabe', DBG2.aufgabe);
+  s('dbg-score',   DBG2.score);
+  s('dbg-solved',  DBG2.solved);
+  s('dbg-streak',  DBG2.streak > 0 ? DBG2.streak + (DBG2.streak >= 3 ? ' 🔥' : '') : '0');
+  s('dbg-wrong',   DBG2.wrong);
+  s('dbg-hiscore', DBG2.hiscore);
+  s('dbg-histreak',DBG2.histreak);
 }
 
-function dbgUpdateProgress() {
-  const container = document.getElementById('dbg-progress-dots');
-  if (!container) return;
-  const last = DBG.results.slice(-15);
-  container.innerHTML = last.map(r => {
-    const bg = r==='solved' ? 'var(--green)' : r==='skipped' ? 'var(--amber)' : 'var(--red)';
-    return `<div style="width:16px;height:16px;border-radius:3px;background:${bg}" title="${r}"></div>`;
-  }).join('') + (last.length < 15 ? Array(15-last.length).fill(
-    '<div style="width:16px;height:16px;border-radius:3px;background:var(--bg4);border:1px solid var(--border)"></div>'
-  ).join('') : '');
-
-  const hint = document.getElementById('dbg-next-level-hint');
-  if (hint) hint.textContent = DBG.solved + ' Aufgaben gelöst · Streak: ' + DBG.streak;
+function dbgUpdateDots() {
+  const c = document.getElementById('dbg-dots');
+  if (!c) return;
+  const last = DBG2.results.slice(-20);
+  c.innerHTML = last.map(r=>`<div style="width:14px;height:14px;border-radius:3px;background:${r==='solved'?'var(--green)':'var(--red)'}" title="${r}"></div>`).join('')
+    + Array(Math.max(0,20-last.length)).fill('<div style="width:14px;height:14px;border-radius:3px;background:var(--bg4);border:1px solid var(--border)"></div>').join('');
+  const pl = document.getElementById('dbg-progress-label');
+  if (pl) pl.textContent = DBG2.solved + ' gelöst · ' + DBG2.wrong + ' Fehler';
 }
 
-// ── Auto line-number update ────────────────────────────────────────────────────
-(function dbgEditorInit() {
-  function attach() {
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function dbgEscape(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── Editor: auto line-nums, cursor pos ───────────────────────────────────────
+(function dbgEditorSetup() {
+  function setup() {
     const editor = document.getElementById('dbg-editor');
     if (!editor) return;
-    editor.addEventListener('input', dbgUpdateLineNums);
-    editor.addEventListener('scroll', () => {
-      const lnEl = document.getElementById('dbg-line-nums');
-      if (lnEl) lnEl.scrollTop = editor.scrollTop;
+    editor.addEventListener('input', () => {
+      dbgUpdateGutter();
     });
     editor.addEventListener('keydown', e => {
       if (e.key === 'Tab') {
         e.preventDefault();
         const s = editor.selectionStart;
-        editor.value = editor.value.substring(0, s) + '  ' + editor.value.substring(editor.selectionEnd);
+        editor.value = editor.value.substring(0,s) + '  ' + editor.value.substring(editor.selectionEnd);
         editor.selectionStart = editor.selectionEnd = s + 2;
-        dbgUpdateLineNums();
       }
     });
+    editor.addEventListener('click', dbgUpdateCursorPos);
+    editor.addEventListener('keyup', dbgUpdateCursorPos);
+    editor.addEventListener('scroll', () => {
+      const gutter = document.getElementById('dbg-gutter');
+      if (gutter) gutter.scrollTop = editor.scrollTop;
+    });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', attach);
-  else attach();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setup);
+  else setup();
 })();
+
+function dbgUpdateCursorPos() {
+  const editor = document.getElementById('dbg-editor');
+  const el = document.getElementById('dbg-statusbar-pos');
+  if (!editor || !el) return;
+  const before = editor.value.substring(0, editor.selectionStart);
+  const line = (before.match(/\n/g)||[]).length + 1;
+  const col  = before.length - before.lastIndexOf('\n');
+  el.textContent = 'Zeile ' + line + ', Spalte ' + col;
+}
 
 // ══════════════════ SUBNETZ-RECHNER SPIEL ══════════════════
 
@@ -4695,9 +4681,10 @@ window.dbgInit          = dbgInit;
 window.dbgRun           = dbgRun;
 window.dbgReset         = dbgReset;
 window.dbgNewTask       = dbgNewTask;
-window.dbgShowHint      = dbgShowHint;
-window.dbgShowSolution  = dbgShowSolution;
-window.dbgValidateOnly  = dbgValidateOnly;
+window.dbgHint          = dbgHint;
+window.dbgSolution      = dbgSolution;
+window.dbgValidate      = dbgValidate;
+window.dbgSubmit        = dbgSubmit;
 window.snInitGame       = snInitGame;
 window.snSubmit         = snSubmit;
 window.snSkip           = snSkip;
