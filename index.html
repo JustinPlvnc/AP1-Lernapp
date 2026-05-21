@@ -339,6 +339,25 @@ h3{font-size:14px;font-weight:500}
   .exam-card{flex-direction:column;text-align:center}
   .ach-grid{grid-template-columns:1fr 1fr}
 }
+
+/* LEADERBOARD */
+.lb-table{width:100%;border-collapse:collapse}
+.lb-table th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);padding:8px 14px;border-bottom:1px solid var(--border);text-align:left;font-weight:500}
+.lb-table th.num{text-align:right}
+.lb-table td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.lb-table td.num{text-align:right;font-family:var(--mono);font-size:12px}
+.lb-table tr:last-child td{border-bottom:none}
+.lb-table tr:hover td{background:var(--bg3)}
+.lb-rank{font-family:var(--mono);font-size:13px;font-weight:600;width:36px;display:inline-flex;align-items:center;justify-content:center}
+.lb-rank.gold{color:#ffd700}.lb-rank.silver{color:#c0c0c0}.lb-rank.bronze{color:#cd7f32}
+.lb-name{font-weight:500;display:flex;align-items:center;gap:8px}
+.lb-you{font-size:10px;font-family:var(--mono);background:var(--accentbg);color:var(--accent);border:1px solid #c8ff0030;padding:1px 6px;border-radius:10px}
+.lb-bar-wrap{width:100px;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:8px}
+.lb-bar{height:5px;border-radius:3px}
+.lb-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px}
+.lb-tab{padding:9px 18px;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-family:var(--mono)}
+.lb-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.lb-spinner{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--text3);font-size:13px}
 </style>
 </head>
 <body>
@@ -383,6 +402,7 @@ h3{font-size:14px;font-weight:500}
     <div class="nav-tab" id="tab-review" onclick="goTo('review')">🔁 Wiederholen</div>
     <div class="nav-tab" id="tab-achievements" onclick="goTo('achievements')">🏆 Erfolge</div>
     <div class="nav-tab" id="tab-aufgaben" onclick="goTo('aufgaben')">📖 Aufgabenheft</div>
+    <div class="nav-tab" id="tab-leaderboard" onclick="goTo('leaderboard')">🏅 Rangliste</div>
     <div class="nav-tab" id="tab-notes" onclick="goTo('notes')">📝 Notizen</div>
   </div>
   <div class="nav-right">
@@ -522,13 +542,27 @@ h3{font-size:14px;font-weight:500}
   </div>
   <div id="notes-list"></div>
 </div>
+
+<!-- LEADERBOARD -->
+<div class="page" id="page-leaderboard">
+  <div style="margin-bottom:22px"><h1>🏅 Rangliste</h1><div class="sub">Alle Nutzer im Vergleich – wer ist am weitesten?</div></div>
+  <div class="lb-tabs">
+    <div class="lb-tab active" id="lbt-score" onclick="lbTab('score')">⭐ Ø Test-Score</div>
+    <div class="lb-tab" id="lbt-tests" onclick="lbTab('tests')">🎯 Tests absolviert</div>
+    <div class="lb-tab" id="lbt-compass" onclick="lbTab('compass')">🧭 Lernkompass</div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div id="lb-content"><div class="lb-spinner"><div class="spinner"></div> Lade Rangliste...</div></div>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--text3);font-family:var(--mono)">🔄 Wird beim Öffnen live aus der Cloud geladen.</div>
+</div>
 </div><!-- end main-app -->
 
 <div class="toast" id="toast"></div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB0sgOxAYZROhVIBvY6c6xYJ327jC95i-0",
@@ -2181,8 +2215,118 @@ function aufgNav(dir){
 function aufgJump(i){aufgState.idx=i;aufgState.revealed=false;renderAufgaben();}
 
 
+// ══════════════════ LEADERBOARD ══════════════════
+let lbCurrentTab = 'score';
+const COMPASS_TOTAL = COMPASS_DATA.reduce((a, s) => a + s.topics.length, 0);
+
+async function renderLeaderboard() {
+  const container = document.getElementById('lb-content');
+  if (!container) return;
+  container.innerHTML = '<div class="lb-spinner"><div class="spinner"></div> Lade Rangliste...</div>';
+  try {
+    const snapshot = await getDocs(collection(db, 'users'));
+    const entries = [];
+    snapshot.forEach(docSnap => {
+      const d = docSnap.data();
+      const testVals = Object.values(d.testResults || {});
+      const avgScore = testVals.length
+        ? Math.round(testVals.reduce((a, r) => a + (r.pct || 0), 0) / testVals.length)
+        : 0;
+      const testsCount = testVals.length;
+      const compassDone = Object.values(d.compassChecked || {}).filter(Boolean).length;
+      const compassPct = Math.round(compassDone / COMPASS_TOTAL * 100);
+      entries.push({
+        name: d.name || d.email || 'Anonym',
+        uid: docSnap.id,
+        avgScore,
+        testsCount,
+        compassPct,
+        compassDone,
+      });
+    });
+    lbRender(entries);
+  } catch (e) {
+    container.innerHTML = '<div class="lb-spinner">⚠️ Fehler beim Laden der Rangliste.</div>';
+    console.error(e);
+  }
+}
+
+function lbRender(entries) {
+  const container = document.getElementById('lb-content');
+  if (!container) return;
+  const tab = lbCurrentTab;
+  let sorted;
+  if (tab === 'score')   sorted = [...entries].sort((a, b) => b.avgScore   - a.avgScore);
+  if (tab === 'tests')   sorted = [...entries].sort((a, b) => b.testsCount - a.testsCount);
+  if (tab === 'compass') sorted = [...entries].sort((a, b) => b.compassPct - a.compassPct);
+
+  const myUid = CUR_USER ? CUR_USER.uid : null;
+  const rankSymbol = i => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
+  const rankCls    = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+
+  const maxScore   = sorted[0]?.avgScore   || 1;
+  const maxTests   = sorted[0]?.testsCount || 1;
+  const maxCompass = sorted[0]?.compassPct || 1;
+
+  const colHeaders = {
+    score:   ['Rang', 'Name', 'Ø Score', 'Tests', 'Kompass'],
+    tests:   ['Rang', 'Name', 'Tests', 'Ø Score', 'Kompass'],
+    compass: ['Rang', 'Name', 'Kompass', 'Ø Score', 'Tests'],
+  };
+
+  const rows = sorted.map((e, i) => {
+    const isMe = e.uid === myUid;
+    const barColor = i === 0 ? '#c8ff00' : i === 1 ? '#4fc3f7' : i === 2 ? '#ff8a65' : 'var(--border2)';
+
+    let mainVal, mainBar, maxMain;
+    if (tab === 'score')   { mainVal = e.avgScore + '%';   mainBar = e.avgScore;   maxMain = maxScore; }
+    if (tab === 'tests')   { mainVal = e.testsCount;        mainBar = e.testsCount; maxMain = maxTests; }
+    if (tab === 'compass') { mainVal = e.compassPct + '%';  mainBar = e.compassPct; maxMain = maxCompass; }
+
+    const barW = maxMain > 0 ? Math.round(mainBar / maxMain * 100) : 0;
+
+    return `<tr>
+      <td><span class="lb-rank ${rankCls(i)}">${rankSymbol(i)}</span></td>
+      <td><div class="lb-name">${e.name}${isMe ? '<span class="lb-you">Du</span>' : ''}</div></td>
+      <td class="num">
+        <span style="color:var(--accent);font-weight:600">${mainVal}</span>
+        <span class="lb-bar-wrap"><span class="lb-bar" style="width:${barW}%;background:${barColor}"></span></span>
+      </td>
+      <td class="num" style="color:var(--text2)">${tab === 'score'   ? e.testsCount   : tab === 'tests' ? e.avgScore + '%' : e.avgScore + '%'}</td>
+      <td class="num" style="color:var(--text2)">${tab === 'compass' ? e.testsCount   : e.compassPct + '%'}</td>
+    </tr>`;
+  }).join('');
+
+  const [h1, h2, h3, h4, h5] = colHeaders[tab];
+  container.innerHTML = `
+    <table class="lb-table">
+      <thead><tr>
+        <th>${h1}</th><th>${h2}</th>
+        <th class="num">${h3}</th>
+        <th class="num">${h4}</th>
+        <th class="num">${h5}</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function lbTab(tab) {
+  lbCurrentTab = tab;
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+  const el = document.getElementById('lbt-' + tab);
+  if (el) el.classList.add('active');
+  // Re-render by re-fetching (fast since Firestore caches)
+  renderLeaderboard();
+}
+
+// Patch goTo to trigger leaderboard load
+const _goToOriginal = goTo;
+function goTo(page) {
+  _goToOriginal(page);
+  if (page === 'leaderboard') renderLeaderboard();
+}
+
 // ══════════════════ GLOBAL WINDOW REGISTRATIONS (für GitHub Pages / type="module") ══════════════════
-window.goTo             = goTo;
 window.toggleTheme      = toggleTheme;
 window.expandAll        = expandAll;
 window.collapseAll      = collapseAll;
@@ -2218,6 +2362,8 @@ window.aufgFilter       = aufgFilter;
 window.revealAufg       = revealAufg;
 window.aufgNav          = aufgNav;
 window.aufgJump         = aufgJump;
+window.lbTab            = lbTab;
+window.goTo             = goTo;
 
 </script>
 </body>
