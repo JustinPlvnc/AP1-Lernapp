@@ -40,7 +40,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
 /* AUTH */
-#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
 .auth-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:36px 32px;width:100%;max-width:400px}
 .auth-logo{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--accent);margin-bottom:6px}
 .auth-sub{font-size:13px;color:var(--text3);margin-bottom:28px}
@@ -363,7 +363,7 @@ h3{font-size:14px;font-weight:500}
 <body>
 
 <!-- AUTH -->
-<div id="auth-screen">
+<div id="auth-screen" style="display:flex">
   <div class="auth-box">
     <div class="auth-logo">⚡ AP1 Schlachtplan</div>
     <div class="auth-sub">FiSi Prüfungsvorbereitung – All-in-One</div>
@@ -1226,25 +1226,29 @@ window.authTab = function authTab(tab) {
 function showErr(msg) {
   const e = document.getElementById('auth-err');
   e.textContent = msg;
-  e.classList.add('show');
+  e.classList.toggle('show', !!msg);
 }
 
 window.doLogin = async function doLogin() {
   const email = document.getElementById('lin-email').value.trim();
   const pw = document.getElementById('lin-pw').value;
   if (!email || !pw) { showErr('Bitte alle Felder ausfüllen.'); return; }
+  showErr('');
   try {
     await signInWithEmailAndPassword(auth, email, pw);
     // onAuthStateChanged takes over from here
   } catch (err) {
+    console.error('Login error:', err);
     const msgs = {
       'auth/user-not-found':     'Kein Account mit dieser E-Mail.',
       'auth/wrong-password':     'Falsches Passwort.',
       'auth/invalid-email':      'Ungültige E-Mail-Adresse.',
       'auth/invalid-credential': 'E-Mail oder Passwort falsch.',
       'auth/too-many-requests':  'Zu viele Versuche. Bitte später erneut versuchen.',
+      'auth/network-request-failed': 'Netzwerkfehler – bitte Verbindung prüfen.',
+      'auth/unauthorized-domain': 'Diese Domain ist in Firebase nicht autorisiert.',
     };
-    showErr(msgs[err.code] || 'Login fehlgeschlagen: ' + err.message);
+    showErr(msgs[err.code] || ('Fehler: ' + err.code + ' – ' + err.message));
   }
 };
 
@@ -1391,6 +1395,7 @@ function goTo(page){
   if(page==='achievements')renderAchievements();
   if(page==='aufgaben'){aufgFilter(aufgState.lf||'lf1');}
   if(page==='notes')renderNotes();
+  if(page==='leaderboard')renderLeaderboard();
 }
 function renderAll(){renderDash();}
 
@@ -2317,13 +2322,6 @@ function lbTab(tab) {
   if (el) el.classList.add('active');
   // Re-render by re-fetching (fast since Firestore caches)
   renderLeaderboard();
-}
-
-// Patch goTo to trigger leaderboard load
-const _goToOriginal = goTo;
-function goTo(page) {
-  _goToOriginal(page);
-  if (page === 'leaderboard') renderLeaderboard();
 }
 
 // ══════════════════ GLOBAL WINDOW REGISTRATIONS (für GitHub Pages / type="module") ══════════════════
