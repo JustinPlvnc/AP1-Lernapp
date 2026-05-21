@@ -525,7 +525,24 @@ h3{font-size:14px;font-weight:500}
 </div><!-- end main-app -->
 
 <div class="toast" id="toast"></div>
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB0sgOxAYZROhVIBvY6c6xYJ327jC95i-0",
+  authDomain: "ap1-lern-app.firebaseapp.com",
+  projectId: "ap1-lern-app",
+  storageBucket: "ap1-lern-app.firebasestorage.app",
+  messagingSenderId: "233546224522",
+  appId: "1:233546224522:web:f56939be01a7082b59ee73"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
 // ═══════════════════════════ DATA ═══════════════════════════
 
 const PHASES=[
@@ -1125,77 +1142,205 @@ const ACHIEVEMENTS=[
   {id:'streak_5',icon:'🌟',title:'5 Wochen Lernstreak',desc:'5 Wochen nacheinander gelernt',condition:s=>(s.weekStreak||0)>=5},
 ];
 
-// ══════════════════ STATE & STORAGE ══════════════════
-let STATE={};
-let CUR_USER=null;
+// ══════════════════ STATE & CLOUD ══════════════════
+let STATE = { theme: 'dark' };
+let CUR_USER = null;
+let cloudSaveTimer = null;
 
-function loadState(){
-  try{const raw=localStorage.getItem('ap1pro_state');if(raw)STATE=JSON.parse(raw);}catch(e){STATE={};}
-  if(!STATE.users)STATE.users={};
-  if(!STATE.theme)STATE.theme='dark';
+function getUD() {
+  return STATE.userData || {};
 }
-function saveState(){try{localStorage.setItem('ap1pro_state',JSON.stringify(STATE));}catch(e){}}
-function userKey(email){return email.replace(/[^a-z0-9]/gi,'_').toLowerCase();}
-function getUD(){return STATE.users[userKey(CUR_USER)]||{};}
-function setUD(data){STATE.users[userKey(CUR_USER)]=data;saveState();}
+function setUD(data) {
+  STATE.userData = data;
+  cloudSpeichern();
+}
+
+// ══════════════════ CLOUD SAVE (DEBOUNCED) ══════════════════
+window.cloudSpeichern = function cloudSpeichern() {
+  if (cloudSaveTimer) clearTimeout(cloudSaveTimer);
+  cloudSaveTimer = setTimeout(async () => {
+    if (!CUR_USER) return;
+    try {
+      const ud = getUD();
+      await updateDoc(doc(db, 'users', CUR_USER.uid), {
+        testResults:    ud.testResults    || {},
+        examResults:    ud.examResults    || {},
+        reviewItems:    ud.reviewItems    || [],
+        notes:          ud.notes          || [],
+        checkedTasks:   ud.checkedTasks   || {},
+        compassChecked: ud.compassChecked || {},
+        achievements:   ud.achievements   || [],
+        weekStreak:     ud.weekStreak     || 0,
+        totalLogins:    ud.totalLogins    || 0,
+        name:           ud.name           || '',
+        theme:          STATE.theme       || 'dark',
+      });
+    } catch (e) {
+      console.warn('Cloud-Speichern fehlgeschlagen:', e);
+    }
+  }, 1000);
+};
 
 // ══════════════════ AUTH ══════════════════
-function authTab(tab){
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='login'?0:1)));
-  document.getElementById('auth-form-login').style.display=tab==='login'?'':'none';
-  document.getElementById('auth-form-register').style.display=tab==='register'?'':'none';
+window.authTab = function authTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t, i) => t.classList.toggle('active', i === (tab === 'login' ? 0 : 1)));
+  document.getElementById('auth-form-login').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('auth-form-register').style.display = tab === 'register' ? '' : 'none';
   document.getElementById('auth-err').classList.remove('show');
+};
+
+function showErr(msg) {
+  const e = document.getElementById('auth-err');
+  e.textContent = msg;
+  e.classList.add('show');
 }
-function showErr(msg){const e=document.getElementById('auth-err');e.textContent=msg;e.classList.add('show');}
-function doLogin(){
-  const email=document.getElementById('lin-email').value.trim().toLowerCase();
-  const pw=document.getElementById('lin-pw').value;
-  if(!email||!pw){showErr('Bitte alle Felder ausfüllen.');return;}
-  const uk=userKey(email);
-  if(!STATE.users[uk]){showErr('Kein Account mit dieser E-Mail.');return;}
-  if(STATE.users[uk].pw!==btoa(pw)){showErr('Falsches Passwort.');return;}
-  CUR_USER=email;
-  STATE.lastUser=email;
-  saveState();
+
+window.doLogin = async function doLogin() {
+  const email = document.getElementById('lin-email').value.trim();
+  const pw = document.getElementById('lin-pw').value;
+  if (!email || !pw) { showErr('Bitte alle Felder ausfüllen.'); return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, pw);
+    // onAuthStateChanged takes over from here
+  } catch (err) {
+    const msgs = {
+      'auth/user-not-found':     'Kein Account mit dieser E-Mail.',
+      'auth/wrong-password':     'Falsches Passwort.',
+      'auth/invalid-email':      'Ungültige E-Mail-Adresse.',
+      'auth/invalid-credential': 'E-Mail oder Passwort falsch.',
+      'auth/too-many-requests':  'Zu viele Versuche. Bitte später erneut versuchen.',
+    };
+    showErr(msgs[err.code] || 'Login fehlgeschlagen: ' + err.message);
+  }
+};
+
+window.doRegister = async function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pw    = document.getElementById('reg-pw').value;
+  if (!name || !email || !pw) { showErr('Bitte alle Felder ausfüllen.'); return; }
+  if (pw.length < 6) { showErr('Passwort min. 6 Zeichen.'); return; }
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pw);
+    // Create user document in Firestore
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      name,
+      email,
+      created:        Date.now(),
+      testResults:    {},
+      examResults:    {},
+      reviewItems:    [],
+      notes:          [],
+      checkedTasks:   {},
+      compassChecked: {},
+      achievements:   [],
+      weekStreak:     0,
+      totalLogins:    0,
+      theme:          'dark',
+    });
+    // onAuthStateChanged takes over from here
+  } catch (err) {
+    const msgs = {
+      'auth/email-already-in-use': 'Diese E-Mail ist bereits registriert.',
+      'auth/invalid-email':        'Ungültige E-Mail-Adresse.',
+      'auth/weak-password':        'Passwort zu schwach (min. 6 Zeichen).',
+    };
+    showErr(msgs[err.code] || 'Registrierung fehlgeschlagen: ' + err.message);
+  }
+};
+
+window.doLogout = async function doLogout() {
+  await signOut(auth);
+  CUR_USER = null;
+  STATE.userData = {};
+  document.getElementById('main-app').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('lin-email').value = '';
+  document.getElementById('lin-pw').value = '';
+};
+
+// ══════════════════ AUTH STATE OBSERVER ══════════════════
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    // Not logged in
+    document.getElementById('app-loading').style.display = 'none';
+    document.getElementById('main-app').style.display = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+    return;
+  }
+
+  // User is logged in
+  CUR_USER = user;
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app-loading').style.display = 'flex';
+
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if (snap.exists()) {
+      const data = snap.data();
+      STATE.userData = data;
+      STATE.theme = data.theme || 'dark';
+    } else {
+      // New user – create skeleton document
+      const skeleton = {
+        name:           user.email,
+        email:          user.email,
+        created:        Date.now(),
+        testResults:    {},
+        examResults:    {},
+        reviewItems:    [],
+        notes:          [],
+        checkedTasks:   {},
+        compassChecked: {},
+        achievements:   [],
+        weekStreak:     0,
+        totalLogins:    0,
+        theme:          'dark',
+      };
+      await setDoc(doc(db, 'users', user.uid), skeleton);
+      STATE.userData = skeleton;
+      STATE.theme = 'dark';
+    }
+  } catch (err) {
+    console.error('Firestore Fehler:', err);
+    STATE.userData = {};
+    STATE.theme = 'dark';
+  }
+
   bootApp();
-}
-function doRegister(){
-  const name=document.getElementById('reg-name').value.trim();
-  const email=document.getElementById('reg-email').value.trim().toLowerCase();
-  const pw=document.getElementById('reg-pw').value;
-  if(!name||!email||!pw){showErr('Bitte alle Felder ausfüllen.');return;}
-  if(pw.length<6){showErr('Passwort min. 6 Zeichen.');return;}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showErr('Ungültige E-Mail.');return;}
-  const uk=userKey(email);
-  if(STATE.users[uk]){showErr('Diese E-Mail ist bereits registriert.');return;}
-  STATE.users[uk]={name,email,pw:btoa(pw),created:Date.now(),testResults:{},examResults:{},reviewItems:[],notes:[],checkedTasks:{},compassChecked:{},achievements:[],weekStreak:0,totalLogins:0};
-  CUR_USER=email;STATE.lastUser=email;saveState();bootApp();
-}
-function doLogout(){CUR_USER=null;document.getElementById('main-app').style.display='none';document.getElementById('auth-screen').style.display='flex';document.getElementById('lin-email').value='';document.getElementById('lin-pw').value='';}
-function bootApp(){
-  document.getElementById('auth-screen').style.display='none';
-  document.getElementById('app-loading').style.display='flex';
-  setTimeout(()=>{
-    document.getElementById('app-loading').style.display='none';
-    document.getElementById('main-app').style.display='block';
-    const ud=getUD();
-    ud.totalLogins=(ud.totalLogins||0)+1;
-    setUD(ud);
-    document.getElementById('nav-email').textContent=ud.name||CUR_USER;
-    applyTheme();
+});
+
+function bootApp() {
+  const ud = getUD();
+  // Increment login count and save
+  ud.totalLogins = (ud.totalLogins || 0) + 1;
+  STATE.userData = ud;
+  cloudSpeichern();
+
+  document.getElementById('nav-email').textContent = ud.name || (CUR_USER && CUR_USER.email) || '';
+  applyTheme();
+
+  setTimeout(() => {
+    document.getElementById('app-loading').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
     renderAll();
     goTo('dash');
     checkAchievements();
-  },600);
+  }, 600);
 }
 
 // ══════════════════ THEME ══════════════════
-function applyTheme(){
-  const t=STATE.theme||'dark';
-  document.documentElement.setAttribute('data-theme',t==='light'?'light':'');
-  document.getElementById('theme-btn').textContent=t==='light'?'🌙':'☀️';
+function applyTheme() {
+  const t = STATE.theme || 'dark';
+  document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : '');
+  const btn = document.getElementById('theme-btn');
+  if (btn) btn.textContent = t === 'light' ? '🌙' : '☀️';
 }
-function toggleTheme(){STATE.theme=STATE.theme==='light'?'dark':'light';saveState();applyTheme();}
+window.toggleTheme = function toggleTheme() {
+  STATE.theme = STATE.theme === 'light' ? 'dark' : 'light';
+  applyTheme();
+  cloudSpeichern();
+};
 
 // ══════════════════ NAVIGATION ══════════════════
 function goTo(page){
@@ -2035,12 +2180,44 @@ function aufgNav(dir){
 }
 function aufgJump(i){aufgState.idx=i;aufgState.revealed=false;renderAufgaben();}
 
-// ══════════════════ INIT ══════════════════
-loadState();
-// Auto-login
-if(STATE.lastUser&&STATE.users[userKey(STATE.lastUser)]){
-  CUR_USER=STATE.lastUser;bootApp();
-}
+
+// ══════════════════ GLOBAL WINDOW REGISTRATIONS (für GitHub Pages / type="module") ══════════════════
+window.goTo             = goTo;
+window.toggleTheme      = toggleTheme;
+window.expandAll        = expandAll;
+window.collapseAll      = collapseAll;
+window.toggleWeek       = toggleWeek;
+window.toggleCheck      = toggleCheck;
+window.filterCompass    = filterCompass;
+window.toggleLK         = toggleLK;
+window.toggleCompassChk = toggleCompassChk;
+window.goToCompass      = goToCompass;
+window.startQuiz        = startQuiz;
+window.selectOpt        = selectOpt;
+window.submitOpt        = submitOpt;
+window.nextQ            = nextQ;
+window.toggleMark       = toggleMark;
+window.finishQuiz       = finishQuiz;
+window.renderExam       = renderExam;
+window.startExam        = startExam;
+window.selectExamOpt    = selectExamOpt;
+window.examNext         = examNext;
+window.examPrev         = examPrev;
+window.jumpExam         = jumpExam;
+window.finishExam       = finishExam;
+window.removeReview     = removeReview;
+window.clearAllReview   = clearAllReview;
+window.toggleNoteForm   = toggleNoteForm;
+window.cancelNote       = cancelNote;
+window.toggleNTag       = toggleNTag;
+window.saveNote         = saveNote;
+window.filterNotes      = filterNotes;
+window.editNote         = editNote;
+window.deleteNote       = deleteNote;
+window.aufgFilter       = aufgFilter;
+window.revealAufg       = revealAufg;
+window.aufgNav          = aufgNav;
+window.aufgJump         = aufgJump;
 
 </script>
 </body>
