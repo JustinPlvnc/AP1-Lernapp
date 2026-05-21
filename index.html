@@ -365,7 +365,7 @@ h3{font-size:14px;font-weight:500}
 <!-- AUTH -->
 <div id="auth-screen" style="display:flex">
   <div class="auth-box">
-    <div class="auth-logo">⚡ AP1 Schlachtplan</div>
+    <div class="auth-logo">⚡ FiSi Pro</div>
     <div class="auth-sub">FiSi Prüfungsvorbereitung – All-in-One</div>
     <div class="auth-tabs">
       <div class="auth-tab active" onclick="authTab('login')">Login</div>
@@ -392,7 +392,7 @@ h3{font-size:14px;font-weight:500}
 <!-- MAIN APP -->
 <div id="main-app">
 <nav class="nav">
-  <div class="nav-logo">⚡ AP1 Pro</div>
+  <div class="nav-logo">⚡ FiSi Pro</div>
   <div class="nav-tabs">
     <div class="nav-tab active" id="tab-dash" onclick="goTo('dash')">📊 Dashboard</div>
     <div class="nav-tab" id="tab-plan" onclick="goTo('plan')">📅 Lernplan</div>
@@ -430,7 +430,7 @@ h3{font-size:14px;font-weight:500}
 <!-- LERNPLAN -->
 <div class="page" id="page-plan">
   <div style="margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-    <div><h1>📅 19-Wochen-Lernplan</h1><div class="sub">Strukturierter AP1-Schlachtplan – FiSi</div></div>
+    <div><h1>📅 Ausbildungsplan – 3 Jahre FiSi</h1><div class="sub">Vollständiger Ausbildungsplan – Fachinformatiker Systemintegration (3 Jahre)</div></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn btn-ghost btn-sm" onclick="expandAll()">Alle aufklappen</button>
       <button class="btn btn-ghost btn-sm" onclick="collapseAll()">Alle zuklappen</button>
@@ -441,7 +441,7 @@ h3{font-size:14px;font-weight:500}
 
 <!-- LERNKOMPASS -->
 <div class="page" id="page-compass">
-  <div style="margin-bottom:22px"><h1>🧭 Lernkompass</h1><div class="sub">Alle Prüfungsthemen nach Lernfeld – Lernquellen, Checkboxen, Links</div></div>
+  <div style="margin-bottom:22px"><h1>🧭 Lernkompass</h1><div class="sub">Alle Lernfelder LF 1–12b – Fachinformatiker Systemintegration (3 Ausbildungsjahre)</div></div>
   <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap" id="compass-filter">
     <button class="btn btn-ghost btn-sm" onclick="filterCompass('all')">Alle</button>
     <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf1')">LF 1</button>
@@ -449,6 +449,13 @@ h3{font-size:14px;font-weight:500}
     <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf3')">LF 3</button>
     <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf4')">LF 4</button>
     <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf5')">LF 5</button>
+    <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf6')">LF 6</button>
+    <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf7')">LF 7</button>
+    <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf8')">LF 8</button>
+    <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf9')">LF 9</button>
+    <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf10b')">LF 10b</button>
+    <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf11b')">LF 11b</button>
+    <button class="btn btn-ghost btn-sm" onclick="filterCompass('lf12b')">LF 12b</button>
     <button class="btn btn-ghost btn-sm" onclick="filterCompass('undone')">🔴 Offen</button>
   </div>
   <div style="font-size:12px;color:var(--text3);margin-bottom:14px" id="compass-stats"></div>
@@ -917,193 +924,252 @@ const db = getFirestore(app);
 // ═══════════════════════════ DATA ═══════════════════════════
 
 const PHASES=[
-  {name:'Phase 0: Orientierung & WiSo-Fundament',color:'#ce93d8',weeks:'W1–W4'},
-  {name:'Phase 1: Hardware, Software & Kaufmännisch',color:'#4fc3f7',weeks:'W5–W8'},
-  {name:'Phase 2: Netzwerke, Security & DSGVO',color:'#c8ff00',weeks:'W9–W13'},
-  {name:'Phase 3: PM, Datenbanken, KI & Algorithmen',color:'#ff8a65',weeks:'W14–W17'},
-  {name:'Phase 4: Intensiv, Generalprobe & Feinschliff',color:'#69f0ae',weeks:'W18–W19'},
+  {name:'1. Ausbildungsjahr – Grundstufe (LF 1–5)',color:'#ce93d8',weeks:'LF 1–5'},
+  {name:'2. Ausbildungsjahr – Fachstufe I (LF 6–9)',color:'#4fc3f7',weeks:'LF 6–9'},
+  {name:'3. Ausbildungsjahr – Fachstufe II Systemintegration (LF 10b–12b)',color:'#c8ff00',weeks:'LF 10b–12b'},
 ];
 
 const COMPASS_DATA=[
-  {id:'lf1',lf:'LF 1',title:'Das Unternehmen & die eigene Rolle',icon:'🏢',color:'#ce93d8',topics:[
-    {id:'c_lf1_1',t:'1.1 Rechtlicher Rahmen & Arbeitsrecht',desc:'Ausbildungsvertrag (BBiG §§14–22), JArbSchG, ArbZG, BUrlG, Probezeit 1–4 Monate, BetrVG, Betriebsrat, JAV, Gewerkschaften, Tarifverträge.',local:['Modul_A/Skript_LF1.pdf','Modul_A/Aufgaben_Recht.pdf'],g:'IHK Arbeitsrecht Ausbildungsvertrag BBiG Rechte Pflichten Azubi'},
-    {id:'c_lf1_2',t:'1.2 Unternehmensorganisation & Rechtsformen',desc:'Rechtsformen: GbR, OHG, KG, GmbH (25k€), UG, AG (50k€), e.K. – Haftung, Organe, Mindestkapital. Aufbau-/Ablauforganisation: Einlinie, Stablinie, Matrix, Sparte.',local:['Modul_A/Präsentation_LF1.pptx'],g:'Rechtsformen GmbH AG KG Haftung Vergleich IHK Übersicht'},
-    {id:'c_lf1_3',t:'1.3 Markt, Preisbildung & Verträge',desc:'Wirtschaftskreislauf (einfach/erweitert). Marktformen: Monopol, Oligopol, Polypol. Preisbildung, Gleichgewichtspreis, Kaufvertrag (Antrag+Annahme), Geschäftsfähigkeit, Vertragsstörungen, Gewährleistung 24 Mo. vs. Garantie.',local:['Modul_A/Skript_gesamt.pdf','Modul_A/Aufgaben_WiSo.pdf'],g:'Wirtschaftskreislauf Marktformen Kaufvertrag Gewährleistung IHK'},
-    {id:'c_lf1_4',t:'1.4 Sozialversicherung',desc:'5 Säulen: Kranken-, Renten-, Arbeitslosen-, Unfall- (AG allein!), Pflegeversicherung. Beitragsfinanzierung paritätisch.',local:['Modul_A/Skript_gesamt.pdf'],g:'Sozialversicherung 5 Säulen Deutschland IHK Beiträge'},
-    {id:'c_lf1_5',t:'1.5 Arbeitsschutz, Ergonomie & Umweltschutz',desc:'UVV, Berufsgenossenschaften. Feuerlöscherklassen A/B/C/D/F. Bildschirmarbeitsplatzverordnung: 500 Lux, Sehabstand, Stuhlhöhe. ElektroG. Green IT, ACPI S0–S5. DIN 66399.',local:['Modul_A/Handout_Ergonomie.pdf'],g:'Ergonomie Bildschirmarbeitsplatz IT ElektroG Green IT IHK'},
+  {id:'lf1',lf:'LF 1',title:'Das Unternehmen und die eigene Rolle im Betrieb',icon:'🏢',color:'#ce93d8',topics:[
+    {id:'c_lf1_1',t:'1.1 Berufsbild & Ausbildungsvertrag',desc:'Rechte und Pflichten aus dem Ausbildungsvertrag (BBiG §§14–22). Probezeit 1–4 Monate. JArbSchG, ArbZG, BUrlG. Ausbildungsrahmenplan FiSi.',g:'FiSi Ausbildungsvertrag BBiG Rechte Pflichten Azubi Berufsschule'},
+    {id:'c_lf1_2',t:'1.2 Betriebliche Organisation & Rechtsformen',desc:'Aufbau- und Ablauforganisation. Einlinie, Stablinie, Matrix. Rechtsformen: GbR, OHG, KG, GmbH (25k€), AG (50k€), e.K. – Haftung, Organe, Kapital.',g:'Rechtsformen GmbH AG KG Haftung Vergleich Übersicht IHK'},
+    {id:'c_lf1_3',t:'1.3 Markt, Preisbildung & Geschäftsfelder',desc:'Marktformen: Monopol, Oligopol, Polypol. Preisbildung, Gleichgewichtspreis. Wirtschaftskreislauf. IT-Geschäftsfelder und Marktpositionierung.',g:'Marktformen Wirtschaftskreislauf Preisbildung IT Unternehmen'},
+    {id:'c_lf1_4',t:'1.4 Ökonomische & ökologische Zielkonflikte',desc:'Nachhaltigkeitsziele, Green IT, Energieeffizienz. Konflikt Wirtschaftlichkeit vs. Umweltschutz. Unternehmensverantwortung (CSR).',g:'Ökologische ökonomische Zielkonflikte Nachhaltigkeit IT Unternehmen'},
+    {id:'c_lf1_5',t:'1.5 Arbeitssicherheit, Gesundheitsschutz & Umweltschutz',desc:'UVV, Berufsgenossenschaften, Feuerlöscher A/B/C/D/F. Bildschirmarbeitsplatz: ~500 Lux, Sehabstand, Ergonomie. ElektroG, DIN 66399.',g:'Arbeitssicherheit Bildschirmarbeitsplatz Ergonomie IT ElektroG'},
   ]},
   {id:'lf2',lf:'LF 2',title:'Arbeitsplätze nach Kundenwunsch ausstatten',icon:'💻',color:'#4fc3f7',topics:[
-    {id:'c_lf2_1',t:'2.1 CPU, RAM & Mainboard',desc:'CPU: Kerne, Threads, Takt, TDP, Cache L1/L2/L3, x86/ARM. RAM: DDR4/5, ECC, Dual-Channel. Mainboard: Chipsatz, PCIe, Formfaktoren ATX/mATX/ITX, BIOS/UEFI, Secure Boot.',local:['Modul_B/Handout_CPU.pdf','Modul_B/Handout_Mainboard.pdf'],g:'CPU Cache L1 L2 L3 Intel AMD Mainboard UEFI IHK'},
-    {id:'c_lf2_2',t:'2.2 Massenspeicher',desc:'HDD (RPM, mechanisch), SSD (SLC/MLC/TLC/QLC), Schnittstellen: SATA (550 MB/s), NVMe/PCIe (bis 7000 MB/s), M.2.',local:['Modul_B/Handout_Speicher.pdf'],g:'SSD NVMe SATA M.2 Unterschied Geschwindigkeit IHK'},
-    {id:'c_lf2_3',t:'2.3 Dateisysteme & Betriebssysteme',desc:'NTFS (Win, Rechte, >4GB), FAT32 (Limit 4GB), exFAT (USB), ext4 (Linux). Betriebssystem-Aufgaben, Kernel. Installationsverfahren: manuell, Unattended, PXE, Image.',local:['Modul_B/Skript_Lernfeld_2.pdf'],g:'Dateisysteme NTFS FAT32 ext4 Betriebssystem Installation IHK'},
-    {id:'c_lf2_4',t:'2.4 Lizenzmodelle',desc:'Proprietär, Open-Source (GPL=Copyleft, MIT=permissiv), Volumenlizenzen (MAK/KMS), OEM (hardwaregebunden!), Retail, SaaS/Cloud-Abo.',local:['Modul_B/Handout_Lizenzen.pdf'],g:'Softwarelizenzen OEM GPL MIT Open Source IHK'},
-    {id:'c_lf2_5',t:'2.5 Handelskalkulation & Angebotsvergleich',desc:'Vorwärts: Listeneinkaufspreis → -Rabatt → -Skonto → +Bezugskosten → Bezugspreis → +HK → Selbstkosten → +Gewinn → +Skonto → +Rabatt → Listenverkaufspreis. Rückwärtskalkulation. NWA: Gewichten (100%), Bewerten, Entscheiden. TCO. USt. 19%/7%.',local:['Modul_A/Aufgaben_Kalkulation.pdf','Modul_B/Aufgaben_Angebotsvergleich.pdf'],g:'Handelskalkulation Vorwärts Rückwärts Nutzwertanalyse TCO IHK'},
-    {id:'c_lf2_6',t:'2.6 Techn. Einheiten & Übertragungsberechnungen',desc:'Dezimal (KB/MB/GB, ×1000) vs. Binär (KiB/MiB/GiB, ×1024). Übertragungszeit = Datenmenge(Bit) / Rate(Bit/s). 1 Byte = 8 Bit.',local:['Modul_B/Aufgaben_Datenmengen.pdf'],g:'KiB MiB GiB Umrechnung Datenübertragungsrate Formel IHK'},
-    {id:'c_lf2_7',t:'2.7 Logische Schaltungen',desc:'Grundgatter: NOT, AND, OR. Zusammengesetzt: NAND, NOR, XOR. Wahrheitstabellen. De Morgan: NOT(A AND B) = NOT A OR NOT B.',local:['Modul_B/Digitaltechnik_Handout.pdf','Modul_B/Aufgaben_Digitaltechnik.pdf'],g:'Logikgatter AND OR NAND XOR Wahrheitstabelle IHK Digitaltechnik'},
-    {id:'c_lf2_8',t:'2.8 RAID, USV & Backup',desc:'RAID 0 (kein Schutz), 1 (Spiegel), 5 (n-1)×GB, 6 (n-2)×GB, 10 (n/2)×GB. USV Online/Offline/LI. W=VA×cosφ. Backup: Voll (Archivbit↓), differenziell (seit Voll), inkrementell (seit letzt., Archivbit↓). 3-2-1-Regel. GVS-Prinzip.',local:['Modul_B/Handout_RAID.pdf','Modul_B/Handout_Backup.pdf','Modul_B/Handout_USV.pdf'],g:'RAID 5 Kapazität Berechnung USV Backup 3-2-1 IHK'},
+    {id:'c_lf2_1',t:'2.1 Hardwarekomponenten',desc:'CPU: Kerne, Takt, Cache L1/L2/L3, TDP, x86/ARM. RAM: DDR4/5, ECC, Dual-Channel. Mainboard: Chipsatz, PCIe, Formfaktoren, UEFI/BIOS, Secure Boot.',g:'CPU Cache RAM Mainboard UEFI Hardware Komponenten IHK'},
+    {id:'c_lf2_2',t:'2.2 Massenspeicher & Schnittstellen',desc:'HDD vs. SSD (SLC/MLC/TLC/QLC). SATA (550 MB/s) vs. NVMe/PCIe (7000 MB/s). M.2. Dateisysteme: NTFS, FAT32, exFAT, ext4.',g:'SSD NVMe SATA M.2 Dateisysteme NTFS FAT32 IHK'},
+    {id:'c_lf2_3',t:'2.3 Betriebssysteme – Architektur & Installation',desc:'Kernel-Konzept, Betriebssystem-Aufgaben. Installationsverfahren: manuell, Unattended, PXE, Image. Windows vs. Linux-Distributionen.',g:'Betriebssystem Installation PXE Unattended Windows Linux IHK'},
+    {id:'c_lf2_4',t:'2.4 Peripheriegeräte & Schnittstellen',desc:'Monitore (Auflösung, Anschlüsse: HDMI, DisplayPort, VGA). Drucker (Laser, Tinten). Eingabegeräte. USB-Standards. Bildschirmarbeitsplatzverordnung.',g:'Peripheriegeräte Monitore Drucker USB Schnittstellen IHK'},
+    {id:'c_lf2_5',t:'2.5 Green IT & Energieeffizienz',desc:'ACPI-Zustände S0–S5. 80-Plus-Zertifizierung. Virtualisierung zur Konsolidierung. Stromverbrauchsberechnung E=P×t. TCO, ElektroG-Entsorgung.',g:'Green IT Energieeffizienz ACPI 80Plus Virtualisierung Stromkosten'},
+    {id:'c_lf2_6',t:'2.6 Kundengespräch, Angebote & Kalkulation',desc:'Handelskalkulation: Vorwärts/Rückwärts. Nutzwertanalyse (NWA). TCO-Berechnung. Angebotsvergleich qualitativ/quantitativ. USt. 19%/7%.',g:'Handelskalkulation NWA TCO Angebotsvergleich Nutzwertanalyse IHK'},
+    {id:'c_lf2_7',t:'2.7 Technische Einheiten & Berechnungen',desc:'Dezimal (KB/MB/GB ×1000) vs. Binär (KiB/MiB/GiB ×1024). Übertragungszeit = Datenmenge(Bit)/Rate(Bit/s). Bilddateigrößen: B×H×Farbtiefe/8.',g:'Datenmengen Umrechnung KiB MiB Übertragungsrate Berechnung IHK'},
+    {id:'c_lf2_8',t:'2.8 RAID & USV',desc:'RAID 0/1/5/6/10: Kapazitätsformel, Ausfalltoleranz. USV: Online/Offline/LI. W=VA×cosφ. Backup: Voll/Differenziell/Inkrementell. 3-2-1-Regel.',g:'RAID 5 USV Backup 3-2-1 Kapazität Berechnung IHK'},
   ]},
   {id:'lf3',lf:'LF 3',title:'Clients in Netzwerke einbinden',icon:'🌐',color:'#c8ff00',topics:[
-    {id:'c_lf3_1',t:'3.1 OSI-Modell & TCP/IP',desc:'OSI: 1 Bitübertragung (Hub), 2 Sicherung (Switch/MAC), 3 Vermittlung (Router/IP), 4 Transport (TCP/UDP), 5 Sitzung, 6 Darstellung, 7 Anwendung. TCP/IP: 4 Schichten. Dateneinheiten: Bits, Frames, Pakete, Segmente, Daten.',local:['Modul_B/Handout_OSI.pdf','Modul_C/Lernzettel_Netzwerk.pdf'],g:'OSI Modell 7 Schichten Protokolle Hub Switch Router IHK'},
-    {id:'c_lf3_2',t:'3.2 Protokolle & Ports',desc:'TCP (verbindungsorientiert, 3-Way-Handshake SYN→SYN-ACK→ACK) vs. UDP (verbindungslos). HTTP:80, HTTPS:443, FTP:21, SSH:22, SMTP:25, IMAP:143, POP3:110, DNS:53, DHCP:67/68.',local:['Modul_C/Protokolle_Handout.pdf'],g:'Netzwerkprotokolle Ports HTTP HTTPS FTP SSH SMTP IMAP DNS IHK'},
-    {id:'c_lf3_3',t:'3.3 IPv4: Subnetting & CIDR',desc:'IPv4: 32 Bit. Private: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. CIDR: Hosts=2^(32-n)-2. Netzadresse, Broadcast, erste/letzte Host. APIPA: 169.254.x.x. Loopback: 127.0.0.1. NAT/PAT.',local:['Modul_C/Subnetting_Anleitung.pdf','Modul_C/subnettingAufgaben.pdf'],g:'IPv4 Subnetting CIDR Berechnung Netzwerkadresse Broadcast IHK'},
-    {id:'c_lf3_4',t:'3.4 IPv6',desc:'128 Bit, 8 Blöcke à 16 Bit Hex. Kürzen: führende Nullen, :: für Nullblöcke (einmal!). Loopback: ::1. Link-Local: fe80::/10. Unique Local: fc00::/7. Global Unicast: 2000::/3. SLAAC, EUI-64, DHCPv6.',local:['Modul_C/IPv6_Handout.pdf'],g:'IPv6 Grundlagen Adresstypen SLAAC EUI-64 IHK Prüfung'},
-    {id:'c_lf3_5',t:'3.5 DHCP & DNS',desc:'DHCP: DORA (Discover → Offer → Request → Acknowledge), Lease-Time. DNS: Hierarchie Root→TLD→SLD, Forward/Reverse Lookup, iterativ vs. rekursiv. Records: A (IPv4), AAAA (IPv6), CNAME, MX, TXT.',local:['Modul_C/DHCP_Aufgaben.pdf','Modul_C/DNS_Aufgaben.pdf'],g:'DHCP DORA DNS Hierarchie Recordtypen Namensauflösung IHK'},
-    {id:'c_lf3_6',t:'3.6 WLAN & Übertragungsmedien',desc:'802.11: b(2,4GHz), g(2,4GHz), n(Dual), ac/WiFi5(5GHz), ax/WiFi6(2,4+5+6GHz). WPA2(AES) vs. WPA3(SAE). Cat5e–Cat8, Schirmung UTP/STP. PoE 802.3af(15W)/at(30W)/bt(90W). LWL: Singlemode OS1/OS2(Laser,km) vs. Multimode OM1-OM5(LED,kurz).',local:['Modul_C/WLAN_Handout.pdf','Modul_C/Verkabelung_Handout.pdf'],g:'WLAN 802.11ax WPA3 Glasfaser Cat6a PoE IHK Netzwerk'},
-    {id:'c_lf3_7',t:'3.7 VLANs & Netzwerkgeräte',desc:'VLAN: logische Segmentierung IEEE 802.1Q, Access-Port (untagged), Trunk-Port (tagged, mehrere VLANs). Hub (Layer1, kein Intelligence) vs. Switch (Layer2, MAC-Table) vs. Router (Layer3, IP). NAT/PAT.',local:['Modul_C/VLAN_Handout.pdf','Modul_C/Netzwerk_Geräte.pdf'],g:'VLAN 802.1Q Trunk Access Port Switch Router IHK'},
-    {id:'c_lf3_8',t:'3.8 Netzwerkdiagnose (CMD)',desc:'ping (ICMP Echo), ipconfig/ifconfig (IP-Konfig anzeigen), tracert/traceroute (Hops), nslookup/dig (DNS), arp -a (IP→MAC), netstat/ss (aktive Verbindungen, offene Ports).',local:['Modul_C/CMD_Befehle.pdf'],g:'ping tracert ipconfig nslookup netstat arp Diagnose CMD IHK'},
+    {id:'c_lf3_1',t:'3.1 Netzwerkarchitekturen & Topologien',desc:'LAN, WLAN, MAN, WAN. Topologien: Bus, Stern, Ring, Mesh. Strukturierte Verkabelung. Home-Office vs. Firmennetz.',g:'Netzwerktopologien LAN WLAN Stern Bus Ring Verkabelung IHK'},
+    {id:'c_lf3_2',t:'3.2 ISO/OSI-Modell & TCP/IP',desc:'OSI: 7 Schichten, Protokolle, Geräte je Schicht. TCP/IP: 4 Schichten. Dateneinheiten: Bits, Frames, Pakete, Segmente. Hub(1), Switch(2), Router(3).',g:'OSI Modell 7 Schichten TCP/IP Hub Switch Router IHK'},
+    {id:'c_lf3_3',t:'3.3 IPv4 & Subnetting',desc:'IPv4 32-Bit. Private Bereiche: 10/8, 172.16/12, 192.168/16. CIDR: Hosts=2^(32-n)-2. Netzadresse, Broadcast. APIPA 169.254.x.x. NAT/PAT.',g:'IPv4 Subnetting CIDR Netzwerkadresse Broadcast Berechnung IHK'},
+    {id:'c_lf3_4',t:'3.4 IPv6',desc:'128 Bit, Kürzungsregeln. Loopback ::1, Link-Local fe80::/10, Global Unicast 2000::/3. SLAAC, EUI-64, DHCPv6.',g:'IPv6 Grundlagen Adresstypen SLAAC Link-Local IHK'},
+    {id:'c_lf3_5',t:'3.5 DHCP & DNS',desc:'DHCP DORA (Discover→Offer→Request→Acknowledge). Lease-Time. DNS Hierarchie, iterativ/rekursiv. Records: A, AAAA, CNAME, MX, TXT.',g:'DHCP DORA DNS Namensauflösung Records IHK'},
+    {id:'c_lf3_6',t:'3.6 WLAN-Standards & Sicherheit',desc:'802.11 b/g/n/ac(WiFi5)/ax(WiFi6). WPA2-AES vs. WPA3-SAE. 2,4 GHz vs. 5 GHz. SSID, Kanäle. PoE 802.3af/at/bt.',g:'WLAN 802.11ax WPA3 WiFi6 SSID Kanäle IHK'},
+    {id:'c_lf3_7',t:'3.7 Netzwerkkomponenten & Leitungsmedien',desc:'Cat5e–Cat8, Schirmung UTP/STP. LWL: Singlemode vs. Multimode. Switches (managed/unmanaged). Netzwerkkarten. Protokollanalyse Wireshark.',g:'Netzwerkkabel Cat6 Glasfaser Wireshark Protokollanalyse IHK'},
+    {id:'c_lf3_8',t:'3.8 Netzwerkdiagnose (CMD)',desc:'ping (ICMP), ipconfig/ifconfig, tracert/traceroute, nslookup/dig, arp -a, netstat/ss. Verbindungsfehler systematisch eingrenzen.',g:'ping tracert ipconfig nslookup netstat Netzwerkdiagnose CMD IHK'},
   ]},
-  {id:'lf4',lf:'LF 4',title:'Schutzbedarfsanalyse durchführen',icon:'🔐',color:'#ef5350',topics:[
-    {id:'c_lf4_1',t:'4.1 CIA-Triade & Schutzziele',desc:'CIA: Confidentiality (Vertraulichkeit), Integrity (Integrität), Availability (Verfügbarkeit). Erweitert: Verbindlichkeit, Authentizität.',local:['Modul_D/FW_DMZ_Proxy.pdf'],g:'CIA Triade IT Sicherheit Schutzziele IHK'},
-    {id:'c_lf4_2',t:'4.2 Angriffe & Bedrohungen',desc:'Malware: Virus (braucht Wirt), Wurm (selbst-verbreitend), Trojaner (tarnt sich), Ransomware (Erpressung), Spyware. Phishing, Social Engineering, Spoofing, MitM, DoS/DDoS, Brute-Force, SQL-Injection.',local:['Modul_D/Datenschutz_Handout.pdf'],g:'Ransomware Phishing Social Engineering DDoS Brute Force IHK Sicherheit'},
-    {id:'c_lf4_3',t:'4.3 TOM – Schutzmaßnahmen',desc:'Technisch: Firewall (Paketfilter, Stateful, ALG), IDS/IPS, Antivirensoftware, DMZ (2 Firewalls), VPN (Site-to-Site, Remote Access), Proxy. Organisatorisch: Policies, Schulungen, Least Privilege, MFA (Wissen/Besitz/Sein).',local:['Modul_D/FW_DMZ_Proxy.pdf'],g:'Firewall DMZ VPN IDS IPS MFA Least Privilege IT Sicherheit IHK'},
-    {id:'c_lf4_4',t:'4.4 Kryptografie & Zertifikate',desc:'Symmetrisch (AES: 1 Schlüssel, schnell, Verteilungsproblem). Asymmetrisch (RSA/ECC: Public+Private Key, langsam). Hybrid (TLS: Asym für Schlüsselaustausch, dann Sym). Hash: SHA-256 (sicher), MD5/SHA-1 (unsicher). Digitale Signatur (privat signieren → Authentizität). X.509, PKI, CA.',local:['Modul_C/Verschlüsselung_Handout.pdf','Modul_C/TLS_Handshake.pdf'],g:'Verschlüsselung AES RSA TLS Hashfunktion Digitale Signatur IHK'},
-    {id:'c_lf4_5',t:'4.5 DSGVO & Datenschutz',desc:'7 Grundsätze Art. 5: Rechtmäßigkeit, Transparenz, Zweckbindung, Datenminimierung, Richtigkeit, Speicherbegrenzung, Integrität. Rechte Art.15–21: Auskunft, Berichtigung, Löschung(Art.17), Portabilität, Widerspruch. AVV Art.28. DSB ab 20 Personen. 72h-Meldepflicht. Art.9: Gesundheit, Biometrie. DIN 66399.',local:['Modul_D/DSGVO_Handout.pdf','Modul_D/DSGVO_Präsentation.pptx'],g:'DSGVO Grundsätze Betroffenenrechte DSB 72h Meldepflicht IHK'},
-    {id:'c_lf4_6',t:'4.6 Risiko- & Schutzbedarfsanalyse',desc:'BSI IT-Grundschutz: Strukturanalyse (Inventar), Schutzbedarfsfeststellung (normal/hoch/sehr hoch). Risiko = Eintrittswahrscheinlichkeit × Schadensausmaß. Risikobehandlung: Vermeiden, Reduzieren, Verlagern (Versicherung), Akzeptieren.',local:['Modul_D/Schutzbedarfsanalyse_Handout.pdf'],g:'BSI IT-Grundschutz Schutzbedarfsanalyse Risikoanalyse IHK'},
+  {id:'lf4',lf:'LF 4',title:'Schutz von IT-Systemen und Daten gewährleisten',icon:'🔐',color:'#ef5350',topics:[
+    {id:'c_lf4_1',t:'4.1 Schutzziele der Informationssicherheit (CIA)',desc:'Confidentiality (Vertraulichkeit), Integrity (Integrität), Availability (Verfügbarkeit). Erweitert: Verbindlichkeit, Authentizität.',g:'CIA Triade Schutzziele IT Sicherheit Informationssicherheit IHK'},
+    {id:'c_lf4_2',t:'4.2 Bedrohungsszenarien & Angriffe',desc:'Schadsoftware: Virus, Wurm, Trojaner, Ransomware, Spyware. Phishing, Social Engineering, MitM, DoS/DDoS, Brute-Force, SQL-Injection.',g:'Schadsoftware Ransomware Phishing Social Engineering DDoS IHK'},
+    {id:'c_lf4_3',t:'4.3 Kryptografische Verfahren',desc:'Symmetrisch (AES: 1 Schlüssel, schnell). Asymmetrisch (RSA: Public/Private Key). Hybrid (TLS). Hash: SHA-256 (sicher), MD5/SHA-1 (unsicher). Digitale Signatur. X.509/PKI.',g:'Verschlüsselung AES RSA TLS SHA256 digitale Signatur PKI IHK'},
+    {id:'c_lf4_4',t:'4.4 Technische & organisatorische Maßnahmen',desc:'Firewall (Paketfilter, Stateful, ALG), IDS/IPS, Antivirus. DMZ. VPN (Site-to-Site, Remote Access). Proxy. MFA (Wissen/Besitz/Sein). Least Privilege.',g:'Firewall DMZ VPN MFA IDS IPS Least Privilege IT Sicherheit IHK'},
+    {id:'c_lf4_5',t:'4.5 DSGVO, BDSG & Urheberrecht',desc:'DSGVO Art.5 Grundsätze. Art.15–21 Betroffenenrechte. Art.17 Löschrecht. AVV Art.28. DSB ab 20 Personen. 72h-Meldepflicht. BDSG-Ergänzungen. Urheberrecht im IT-Kontext.',g:'DSGVO Grundsätze BDSG Urheberrecht IT Datenschutzbeauftragter IHK'},
+    {id:'c_lf4_6',t:'4.6 Schutzbedarfsanalyse',desc:'BSI IT-Grundschutz. Schutzbedarfskategorien: normal/hoch/sehr hoch. Risiko = Eintrittswahrscheinlichkeit × Schadensausmaß. Risikobehandlung: vermeiden/reduzieren/verlagern/akzeptieren.',g:'Schutzbedarfsanalyse BSI IT-Grundschutz Risikoanalyse IHK'},
   ]},
-  {id:'lf5',lf:'LF 5',title:'Software zur Bearbeitung von Geschäftsprozessen',icon:'📊',color:'#ff8a65',topics:[
-    {id:'c_lf5_1',t:'5.1 Projektmanagement',desc:'Merkmale nach DIN 69901. Magisches Dreieck: Zeit–Kosten–Qualität. Wasserfall (sequentiell, unflexibel). V-Modell (Entwicklung+Test parallel). Scrum: PO, SM, Dev-Team, Sprint(1-4W), Product Backlog, Sprint Backlog, Increment, Daily(15Min), Review, Retrospective. Kanban. Lastenheft(AG: WAS) vs. Pflichtenheft(AN: WIE).',local:['Modul_E/Projektmanagement_Präsentation.pptx','Modul_E/Scrum_Handout.pdf'],g:'Scrum Projektmanagement Lastenheft Pflichtenheft V-Modell IHK'},
-    {id:'c_lf5_2',t:'5.2 Netzplantechnik & Gantt',desc:'MPM: Vorwärts: FEZ=FAZ+Dauer, FAZ=MAX(FEZ Vorgänger). Rückwärts: SAZ=SEZ-Dauer, SEZ=MIN(SAZ Nachfolger). GP=SAZ-FAZ=SEZ-FEZ. FP=FAZ(Nachf)-FEZ(akt). Kritischer Pfad: GP=0. Gantt: Balken, Meilensteine (Dauer=0).',local:['Modul_E/Netzplan_Uebungsaufgaben.docx','Modul_E/Handout_PM.pdf'],g:'Netzplantechnik FAZ FEZ SAZ SEZ Gesamtpuffer kritischer Pfad IHK'},
-    {id:'c_lf5_3',t:'5.3 Programmierlogik',desc:'Variablen & Typen: Integer, Float/Double, Char, String, Boolean, Array (Index ab 0!). Operatoren: arithmetisch(+,-,*,/,%), relational(==,!=,<,>), logisch(&&,||,!). Kontrollstrukturen: Sequenz, if/else, switch-case, for (Zähler), while (kopfgesteuert), do-while (fußgesteuert, min. 1×).',local:['Modul_F/Algorithmen_Aufgabenheft.pdf'],g:'Pseudocode Programmierlogik Variablen if else while Schleife IHK'},
-    {id:'c_lf5_4',t:'5.4 PAP, Struktogramm & UML',desc:'PAP DIN 66001: Oval(Start/Stop), Rechteck(Anweisung), Raute(Entscheidung), Parallelogramm(I/O). Struktogramm DIN 66261: keine Pfeile/Sprünge, verschachtelte Blöcke. UML: Use-Case(Akteure+Funktionen), Aktivitätsdiagramm(Workflows, Fork/Join), Klassendiagramm(+public, -private). Pseudocode, Schreibtischtest.',local:['Modul_F/Algorithmen_Aufgabenheft.pdf','Modul_F/Algorithmen_Loesungsheft.pdf'],g:'PAP Programmablaufplan Struktogramm UML Aktivitätsdiagramm IHK'},
-    {id:'c_lf5_5',t:'5.5 ERM & Normalisierung',desc:'ERM: Entität(Rechteck), Attribut(Ellipse), Beziehung(Raute). Kardinalitäten: 1:1, 1:n, m:n(→Zwischentabelle). PK(eindeutig, NOT NULL), FK(→PK). 1NF: atomar. 2NF: 1NF+keine partiellen Abh. vom PK. 3NF: 2NF+keine transitiven Abh. (PLZ→Ort=eigene Tabelle!).',local:['Modul_F/Datenbank_Präsentation.pptx','Modul_F/Normalisierung_Aufgaben.pdf'],g:'ERM Normalisierung 1NF 2NF 3NF Primärschlüssel Fremdschlüssel IHK'},
-    {id:'c_lf5_6',t:'5.6 KI-Grundlagen & BPMN',desc:'KI: schwach(spezifisch, real) vs. stark(AGI, fiktiv). ML: supervised(labelliert), unsupervised, reinforcement. Deep Learning(tiefe Netze). KI-Bias. EU AI Act: verboten(Social Scoring), hoch, begrenzt, minimal. BPMN 2.0: Start(dünner Kreis), Ende(dicker Kreis), Task(Rechteck), XOR(X), AND(+), OR(O) Gateway, Pool(Teilnehmer), Lane(Abteilung).',local:['Modul_F/Datenbank_Präsentation.pptx'],g:'KI Machine Learning EU AI Act BPMN Symbole Gateways IHK'},
-    {id:'c_lf5_7',t:'5.7 Zahlensysteme',desc:'Dezimal↔Binär(Divisions-/Multiplikationsverfahren). Binär↔Hex(4-Bit-Gruppen). Zweierkomplement: invertieren+1. Positionswerte 2^0=1, 2^1=2, ..., 2^7=128. Hexziffern: A=10,B=11,C=12,D=13,E=14,F=15.',local:['Modul_F/Zahlensysteme_Ppt.pptx','Modul_F/Zahlensysteme_Aufgaben.pdf'],g:'Zahlensysteme Binär Hexadezimal Dezimal Zweierkomplement IHK'},
+  {id:'lf5',lf:'LF 5',title:'Software zur Verfügung stellen und betreuen',icon:'📦',color:'#ff8a65',topics:[
+    {id:'c_lf5_1',t:'5.1 Softwarekategorien & Lizenzmodelle',desc:'Systemsoftware vs. Anwendungssoftware. Proprietär, Open-Source (GPL Copyleft, MIT permissiv), Volumenlizenzen (MAK/KMS), OEM, SaaS/Cloud-Abo.',g:'Softwarelizenzen Open Source GPL MIT OEM SaaS IHK'},
+    {id:'c_lf5_2',t:'5.2 Datenbankgrundlagen & ER-Modell',desc:'Relationale Datenbanken. ERM: Entität, Attribut, Beziehung, Kardinalitäten 1:1/1:n/m:n. PK/FK. Normalisierung 1NF/2NF/3NF.',g:'ERM Normalisierung Datenbank Primärschlüssel Fremdschlüssel IHK'},
+    {id:'c_lf5_3',t:'5.3 SQL-Grundlagen',desc:'SELECT, FROM, WHERE, ORDER BY, GROUP BY. JOIN (INNER, LEFT). INSERT, UPDATE, DELETE. CREATE TABLE, Datentypen.',g:'SQL Grundlagen SELECT JOIN WHERE Datenbank IHK Fachinformatiker'},
+    {id:'c_lf5_4',t:'5.4 Installationsroutinen & Update-Strategien',desc:'Manuelle Installation, Softwareverteilung (MSI, SCCM, Intune). Patch-Management, Windows Update, apt/yum. Rollback-Strategien.',g:'Softwareverteilung Patch Management Windows Update apt IHK'},
+    {id:'c_lf5_5',t:'5.5 Datensicherungsverfahren',desc:'Vollsicherung (Archivbit↓), differenziell (seit Voll), inkrementell (seit letztem, Archivbit↓). 3-2-1-Regel. GVS-Generationenprinzip. Recovery-Tests.',g:'Backup Vollsicherung differenziell inkrementell 3-2-1 Regel IHK'},
+    {id:'c_lf5_6',t:'5.6 Programmierlogik & Algorithmen',desc:'Variablen & Datentypen. Kontrollstrukturen: if/else, while, for, do-while. PAP DIN 66001. Struktogramm DIN 66261. Pseudocode, Schreibtischtest.',g:'Programmierlogik Pseudocode PAP Struktogramm Algorithmen IHK'},
+    {id:'c_lf5_7',t:'5.7 Zahlensysteme',desc:'Dezimal↔Binär↔Hex. Zweierkomplement. BPMN 2.0. KI-Grundlagen: schwach/stark, ML-Typen, EU AI Act.',g:'Zahlensysteme Binär Hexadezimal Zweierkomplement BPMN KI IHK'},
+  ]},
+  {id:'lf6',lf:'LF 6',title:'Netzwerke und Dienste bereitstellen',icon:'🔀',color:'#4fc3f7',topics:[
+    {id:'c_lf6_1',t:'6.1 Routing & Switching',desc:'Statisches Routing (Routingtabelle manuell). Dynamisches Routing: RIP, OSPF, BGP Grundlagen. VLANs (IEEE 802.1Q), Access-/Trunk-Port. Inter-VLAN-Routing.',g:'Routing OSPF VLANs 802.1Q Trunk Port statisch dynamisch IHK'},
+    {id:'c_lf6_2',t:'6.2 Netzwerkdienste: DNS & DHCP-Server',desc:'DNS-Serverrollen: Primär, Sekundär, Forwarder, Resolver. Zonendateien, SOA, NS Records. DHCP-Scopes, Reservierungen, Optionen 3/6/15.',g:'DNS Server Konfiguration DHCP Scope Zonendatei Forwarder IHK'},
+    {id:'c_lf6_3',t:'6.3 Protokolle der Anwendungsschicht',desc:'HTTP/HTTPS (TLS-Handshake). FTP (aktiv/passiv). SMTP/IMAP/POP3. SNMP (Monitoring). NTP (Zeitsynchronisation). Ports auswendig.',g:'HTTP HTTPS FTP SMTP IMAP SNMP NTP Anwendungsschicht Ports IHK'},
+    {id:'c_lf6_4',t:'6.4 WAN-Technologien & Fernzugriffe',desc:'VPN-Arten: Site-to-Site, Remote Access, SSL-VPN. IPSec (AH, ESP, IKE). OpenVPN. MPLS-Grundlagen. DSL, Glasfaser WAN-Anbindungen.',g:'VPN IPSec OpenVPN Site-to-Site Remote Access WAN MPLS IHK'},
+  ]},
+  {id:'lf7',lf:'LF 7',title:'Zur Entwicklung und Bereitstellung von IT-Lösungen beitragen',icon:'⚙️',color:'#ce93d8',topics:[
+    {id:'c_lf7_1',t:'7.1 Grundlagen der Programmierung',desc:'Variablen, Datentypen, Operatoren. Schleifen (for, while, do-while). Funktionen/Methoden. Arrays. OOP-Grundbegriffe: Klasse, Objekt, Attribut, Methode.',g:'Programmierung Grundlagen Variablen Schleifen Funktionen OOP IHK'},
+    {id:'c_lf7_2',t:'7.2 Software-Entwicklungszyklen',desc:'Wasserfallmodell, V-Modell, Spiralmodell. Agile Methoden: Scrum (Rollen, Events, Artefakte), Kanban. Lastenheft (AG) vs. Pflichtenheft (AN). Projektphasen.',g:'Scrum Wasserfall V-Modell Agile Lastenheft Pflichtenheft IHK'},
+    {id:'c_lf7_3',t:'7.3 Versionsverwaltung mit Git',desc:'git init, clone, add, commit, push, pull. Branching, Merging, Konflikte lösen. GitHub/GitLab Workflows. Feature Branches, Pull Requests.',g:'Git Versionsverwaltung GitHub Branch Merge Commit IHK'},
+    {id:'c_lf7_4',t:'7.4 Software-Tests & Fehlerbehebung',desc:'Black-Box vs. White-Box-Tests. Unit-Tests, Integrationstests, Systemtests. Äquivalenzklassen, Grenzwertanalyse. Debugging-Techniken, Fehlerprotokoll.',g:'Software Tests Unit Test Debugging Äquivalenzklassen IHK'},
+    {id:'c_lf7_5',t:'7.5 UML-Diagramme',desc:'Use-Case (Akteure, Systemfunktionen). Aktivitätsdiagramm (Fork/Join). Klassendiagramm (+public, -private). Sequenzdiagramm. BPMN-Grundlagen.',g:'UML Diagramme Use Case Aktivitätsdiagramm Klassendiagramm IHK'},
+  ]},
+  {id:'lf8',lf:'LF 8',title:'IT-Systeme und Dienste administrieren',icon:'🖥️',color:'#69f0ae',topics:[
+    {id:'c_lf8_1',t:'8.1 Server-Betriebssysteme',desc:'Windows Server: Editionen, Rollen (AD DS, DNS, DHCP, IIS, File Server). Linux: Distributionen (Ubuntu, CentOS, Debian), Paketmanager, Dienste mit systemctl.',g:'Windows Server Rollen Linux Administration systemctl IHK'},
+    {id:'c_lf8_2',t:'8.2 Active Directory & LDAP',desc:'AD DS: Domänen, Forests, Trusts. Organisationseinheiten (OUs). Benutzer/Gruppen anlegen. Gruppenrichtlinien (GPOs). LDAP-Grundstruktur DN, CN, OU.',g:'Active Directory LDAP GPO Gruppenrichtlinien Domäne IHK'},
+    {id:'c_lf8_3',t:'8.3 Rechte- & Rollenkonzepte',desc:'NTFS-Berechtigungen (lesen, schreiben, ausführen). ACLs. Freigaben (Share Permissions). Linux: chmod, chown, rwx. Least-Privilege-Prinzip. RBAC.',g:'NTFS Berechtigungen ACL chmod chown Least Privilege RBAC IHK'},
+    {id:'c_lf8_4',t:'8.4 System-Monitoring & Logging',desc:'Windows Event Viewer, Protokollkategorien. Linux: syslog, journalctl. Performance-Monitor, Task-Manager. SNMP-Monitoring. Nagios/Zabbix Grundlagen.',g:'System Monitoring Logging Event Viewer syslog SNMP Nagios IHK'},
+  ]},
+  {id:'lf9',lf:'LF 9',title:'Daten und Prozesse analysieren und visualisieren',icon:'📊',color:'#ff8a65',topics:[
+    {id:'c_lf9_1',t:'9.1 Geschäftsprozessanalyse & EPK',desc:'Ereignisgesteuerte Prozesskette (EPK): Ereignisse, Funktionen, Konnektoren (UND/ODER/XOR). BPMN 2.0 Vertiefung. Ist-/Soll-Prozessanalyse.',g:'EPK Ereignisgesteuerte Prozesskette BPMN Geschäftsprozess IHK'},
+    {id:'c_lf9_2',t:'9.2 Datenimport, -transformation & -aufbereitung',desc:'ETL-Prozess (Extract, Transform, Load). Datenformate: CSV, JSON, XML. Datenbereinigung, Normalisierung. SQL für Datenanalyse: Aggregatfunktionen, Joins.',g:'ETL Datenimport CSV JSON XML SQL Aggregatfunktionen IHK'},
+    {id:'c_lf9_3',t:'9.3 Big-Data & statistische Grundlagen',desc:'Charakteristika Big Data (5 Vs). Hadoop, Spark Grundlagen. Deskriptive Statistik: Mittelwert, Median, Standardabweichung. Korrelation.',g:'Big Data Hadoop Spark Statistik Mittelwert Standardabweichung IHK'},
+    {id:'c_lf9_4',t:'9.4 Dashboards & Visualisierungstools',desc:'KPIs definieren und messen. Power BI, Tableau Grundlagen. Diagrammtypen: Balken, Linien, Kreis, Scatter. Datenschutz bei Auswertungen.',g:'Power BI Dashboard KPI Visualisierung Diagramme Management IHK'},
+  ]},
+  {id:'lf10b',lf:'LF 10b',title:'Serverdienste bereitstellen und Automatisierung',icon:'🤖',color:'#4fc3f7',topics:[
+    {id:'c_lf10b_1',t:'10b.1 Webserver & Applikationsserver',desc:'Apache/Nginx: VirtualHosts, SSL/TLS einrichten, .htaccess. IIS Grundlagen. Node.js/PHP-FPM. Reverse Proxy. HTTP/2, HTTPS-Zertifikate (Let\'s Encrypt).',g:'Apache Nginx Webserver VirtualHost SSL TLS IIS Reverse Proxy'},
+    {id:'c_lf10b_2',t:'10b.2 Mailserver & Kollaboration',desc:'Postfix/Exim (MTA), Dovecot (IMAP). SPF, DKIM, DMARC-Einträge. Exchange Grundlagen. Spam-Filter. Mailflow-Diagnose mit Telnet.',g:'Postfix Mailserver SPF DKIM DMARC Exchange Dovecot Mailflow'},
+    {id:'c_lf10b_3',t:'10b.3 Datenbankserver-Administration',desc:'MySQL/MariaDB: Installation, Nutzer, Berechtigungen, Backups (mysqldump). PostgreSQL Grundlagen. Replikation Master/Slave. Performance-Tuning.',g:'MySQL MariaDB Datenbankserver mysqldump Replikation PostgreSQL'},
+    {id:'c_lf10b_4',t:'10b.4 Skriptsprachen zur Automatisierung',desc:'PowerShell: Cmdlets, Pipeline, Skripte, AD-Automatisierung. Bash: Variablen, Schleifen, Funktionen, Cronjobs. Python Grundlagen für Systemadministration.',g:'PowerShell Automation Bash Skript Cronjob Python Systemadministration'},
+    {id:'c_lf10b_5',t:'10b.5 Konfigurationsmanagement',desc:'Infrastructure as Code (IaC). Ansible: Playbooks, Inventories, Module. Puppet/Chef Grundlagen. Idempotenz. Terraform Einführung.',g:'Ansible Playbook Konfigurationsmanagement IaC Terraform Puppet'},
+    {id:'c_lf10b_6',t:'10b.6 Verteilte Systeme & Ausfallsicherheit',desc:'Load Balancing: Round-Robin, Least-Connection, HAProxy, nginx upstream. Cluster: Active/Active, Active/Passive. Heartbeat, Pacemaker. STONITH.',g:'Load Balancing Cluster HAProxy Ausfallsicherheit Hochverfügbarkeit'},
+  ]},
+  {id:'lf11b',lf:'LF 11b',title:'Betrieb und Sicherheit vernetzter Systeme',icon:'🛡️',color:'#ef5350',topics:[
+    {id:'c_lf11b_1',t:'11b.1 IT-Sicherheitsarchitekturen',desc:'DMZ-Konzept (2-Firewall-Modell). Next-Generation-Firewalls (NGFW): Deep Packet Inspection, Application Awareness. IDS/IPS: signatur-/anomalie-basiert. Zero Trust.',g:'DMZ NGFW Firewall IDS IPS Zero Trust Sicherheitsarchitektur'},
+    {id:'c_lf11b_2',t:'11b.2 Virtualisierung',desc:'Hypervisor Typ 1 (bare-metal: VMware ESXi, Hyper-V) vs. Typ 2 (hosted: VirtualBox). Snapshots, Templates, vMotion. Ressourcenzuteilung CPU/RAM.',g:'Virtualisierung VMware ESXi Hyper-V Hypervisor Snapshots vMotion'},
+    {id:'c_lf11b_3',t:'11b.3 Container-Technologien',desc:'Docker: Images, Container, Dockerfile, docker-compose. Kubernetes Grundlagen: Pods, Services, Deployments, Ingress. Container Registry.',g:'Docker Container Dockerfile docker-compose Kubernetes Pods IHK'},
+    {id:'c_lf11b_4',t:'11b.4 Cloud-Infrastrukturen',desc:'IaaS, PaaS, SaaS Unterschiede. AWS (EC2, S3, VPC), Azure (VMs, Blob, AD), Google Cloud Grundlagen. Hybrid-Cloud, Multi-Cloud. CapEx vs. OpEx.',g:'Cloud IaaS PaaS SaaS AWS Azure Google Cloud Hybrid Multi-Cloud'},
+    {id:'c_lf11b_5',t:'11b.5 Sicherheitskonzepte nach BSI',desc:'BSI IT-Grundschutz Methodik: Strukturanalyse, Schutzbedarfsfeststellung, Modellierung, Risikoanalyse. Sicherheitskonzept erstellen. ISO 27001 Grundlagen.',g:'BSI IT-Grundschutz Sicherheitskonzept ISO 27001 Risikoanalyse'},
+  ]},
+  {id:'lf12b',lf:'LF 12b',title:'Kundenspezifische Systemintegration durchführen',icon:'🏗️',color:'#c8ff00',topics:[
+    {id:'c_lf12b_1',t:'12b.1 Migrations- & Integrationsprojekte',desc:'Migrationsphasen: Ist-Analyse, Planung, Test, Go-Live, Nachbetrieb. P2V (Physical-to-Virtual). Datenmigration, Rollback-Plan. Integrationsarchitekturen.',g:'IT Migration P2V Datenmigration Rollback Integrationsarchitektur'},
+    {id:'c_lf12b_2',t:'12b.2 Wirtschaftlichkeitsberechnungen',desc:'TCO (Total Cost of Ownership): Hardware + Software + Betrieb + Support. ROI (Return on Investment): Gewinn/Investition ×100. Amortisationsrechnung. Break-Even.',g:'TCO ROI Amortisation Wirtschaftlichkeit IT Investition Berechnung'},
+    {id:'c_lf12b_3',t:'12b.3 Projektmanagement vertieft',desc:'Netzplantechnik: FAZ, FEZ, SAZ, SEZ, GP, FP, kritischer Pfad. Gantt-Diagramm. Scrum vertieft. Ressourcenplanung, Risikoregister, Stakeholder-Management.',g:'Netzplantechnik FAZ FEZ kritischer Pfad Gantt Projektmanagement IHK'},
+    {id:'c_lf12b_4',t:'12b.4 Dokumentation & Übergabe',desc:'Anlagendokumentation (Netzwerktopologie, IP-Pläne, Konfigurationen). Benutzerhandbuch. Change-Management. Abnahmeprotokoll. Schulungsdurchführung.',g:'IT Dokumentation Netzwerkdokumentation Benutzerhandbuch Übergabe'},
+    {id:'c_lf12b_5',t:'12b.5 SLA, Vertragsrecht & Einkauf',desc:'Service Level Agreement: Verfügbarkeit, RTO, RPO, Reaktionszeit, Pönalen. Werkvertrag vs. Dienstvertrag vs. Kaufvertrag. Vergaberecht Grundlagen.',g:'SLA Service Level Agreement Werkvertrag Dienstvertrag Vergabe IT'},
   ]},
 ];
 
 const PLAN=[
-  {id:'w1',phase:0,title:'Ausbildungsrecht, Rechtsformen & Wirtschaftskreislauf',tagColors:['tag-purple'],days:[
-    {focus:'Ausbildungsvertrag & BBiG',tasks:[{t:'BBiG §§ 14–22: Rechte und Pflichten lesen',m:'📄 Modul_A/Skript_LF1.pdf',lf:'lf1'},{t:'Probezeit, Kündigung, JArbSchG, ArbZG notieren',m:'📄 Modul_A/Handout_Recht.pdf',lf:'lf1'},{t:'5 Säulen Sozialversicherung lernen (Unfallvers. = AG allein!)',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'}],tip:'Probezeit: 1–4 Monate. Kündigung in Probezeit jederzeit ohne Frist.'},
-    {focus:'Unternehmensorganisation & Rechtsformen',tasks:[{t:'Rechtsformen vergleichen: GbR, OHG, KG, GmbH, AG, e.K.',m:'📄 Modul_A/Präsentation_LF1.pptx',lf:'lf1'},{t:'Haftung, Mindestkapital, Organe je Rechtsform',m:'📄 Modul_A/Präsentation_LF1.pptx',lf:'lf1'},{t:'BetrVG: Betriebsrat (ab 5 MA), JAV',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'}],tip:'GmbH: 25.000€ · AG: 50.000€ Mindestkapital – immer in der Prüfung!'},
-    {focus:'Wirtschaftskreislauf & Marktformen',tasks:[{t:'Einfacher/erweiterter Wirtschaftskreislauf',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'},{t:'Marktformen: Monopol, Oligopol, Polypol',m:'📄 Modul_A/Aufgaben_WiSo.pdf',lf:'lf1'},{t:'Preisbildung: Angebot/Nachfrage, Gleichgewichtspreis',m:'📄 Modul_A/Aufgaben_WiSo.pdf',lf:'lf1'}],tip:''},
-    {focus:'Vertragsrecht & Geschäftsfähigkeit',tasks:[{t:'Willenserklärungen: einseitig, mehrseitig',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'},{t:'Geschäftsfähigkeit: Stufen, § 110 BGB',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'},{t:'Kaufvertrag: Antrag + Annahme',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'}],tip:''},
-    {focus:'Wochentest W1',tasks:[{t:'📝 WOCHENTEST W1 absolvieren',m:'🎯 App → Wochentests → Woche 1',lf:'lf1'},{t:'Fehler in Wiederholungsliste eintragen',m:'📌 App → Wiederholen',lf:'lf1'}],tip:''},
+  // ── 1. AUSBILDUNGSJAHR ──────────────────────────────────────────────────────
+  {id:'lf1_plan',phase:0,title:'LF 1 – Das Unternehmen und die eigene Rolle',tagColors:['tag-purple'],days:[
+    {focus:'Berufsbild & Ausbildungsvertrag',tasks:[
+      {t:'BBiG §§14–22: Rechte & Pflichten des Azubis',lf:'lf1'},{t:'Probezeit, Kündigung, JArbSchG, ArbZG kennen',lf:'lf1'},{t:'Organigramm des eigenen Betriebs analysieren',lf:'lf1'}],tip:'Probezeit max. 4 Monate – Kündigung jederzeit ohne Frist möglich.'},
+    {focus:'Rechtsformen & Organisation',tasks:[
+      {t:'GmbH vs. AG vs. OHG: Kapital & Haftung vergleichen',lf:'lf1'},{t:'Aufbau- vs. Ablauforganisation unterscheiden',lf:'lf1'},{t:'Stablinie, Matrix: Vor-/Nachteile',lf:'lf1'}],tip:'GmbH=25k€, AG=50k€ Mindestkapital.'},
+    {focus:'Markt & Wirtschaftskreislauf',tasks:[
+      {t:'Marktformen: Monopol/Oligopol/Polypol',lf:'lf1'},{t:'Einfachen & erweiterten Wirtschaftskreislauf zeichnen',lf:'lf1'},{t:'Ökonomische vs. ökologische Ziele erläutern',lf:'lf1'}],tip:''},
+    {focus:'Arbeitssicherheit & Umweltschutz',tasks:[
+      {t:'Feuerlöscherklassen A/B/C/D/F auswendig lernen',lf:'lf1'},{t:'Bildschirmarbeitsplatz-Vorschriften (500 Lux, Ergonomie)',lf:'lf1'},{t:'ElektroG & DIN 66399 Grundlagen',lf:'lf1'}],tip:'Klasse B = flüssige Stoffe (Benzin/Öl).'},
+    {focus:'Kalkulation & Angebotsvergleich',tasks:[
+      {t:'Handelskalkulation Vorwärts: 8-Stufen-Schema',lf:'lf1'},{t:'Rückwärtskalkulation: max. EK berechnen',lf:'lf1'},{t:'Nutzwertanalyse (NWA) mit Gewichtung',lf:'lf1'}],tip:''},
   ]},
-  {id:'w2',phase:0,title:'Handelskalkulation, Nutzwertanalyse & Vertragsstörungen',tagColors:['tag-purple'],days:[
-    {focus:'Handelskalkulation Vorwärts',tasks:[{t:'Kalkulationsschema auswendig lernen (8 Stufen)',m:'📄 Modul_A/Aufgaben_Kalkulation.pdf',lf:'lf2'},{t:'10 Vorwärtskalkulationen durchrechnen',m:'📄 Modul_A/Aufgaben_Kalkulation.pdf',lf:'lf2'},{t:'USt. 19% und 7%: draufschlagen und rausrechnen',m:'📄 Modul_A/Aufgaben_Kalkulation.pdf',lf:'lf2'}],tip:'Schema: Listeneinkaufspreis → Bezugspreis → Selbstkosten → Listenverkaufspreis'},
-    {focus:'Rückwärtskalkulation & Nutzwertanalyse',tasks:[{t:'Rückwärts: vom Verkaufspreis zum max. EK',m:'📄 Modul_A/Aufgaben_Kalkulation.pdf',lf:'lf2'},{t:'NWA: Kriterien → Gewichtung (100%) → Punkte → Entscheidung',m:'📄 Modul_A/Aufgaben_NWA.pdf',lf:'lf2'},{t:'3 NWA-Aufgaben komplett lösen',m:'📄 Modul_A/Aufgaben_NWA.pdf',lf:'lf2'}],tip:''},
-    {focus:'Vertragsstörungen & Gewährleistung',tasks:[{t:'Lieferverzug: Nachfrist → Rücktritt oder Schadensersatz',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'},{t:'Sachmängel vs. Rechtsmängel',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'},{t:'Gewährleistung (§438 BGB, 24Mo.) vs. Garantie (freiwillig)',m:'💡 Unterschied',lf:'lf1'}],tip:'Gewährleistung = gesetzlich. Garantie = freiwillige Herstellerleistung.'},
-    {focus:'TCO & Angebotsvergleich',tasks:[{t:'TCO: Anschaffung + laufende Kosten + Entsorgung',m:'📄 Modul_B/Aufgaben_Angebotsvergleich.pdf',lf:'lf2'},{t:'Qualitativ vs. quantitativ Angebotsvergleich',m:'📄 Modul_B/Handout_Angebotsvergleich.pdf',lf:'lf2'}],tip:''},
-    {focus:'Wochentest W2',tasks:[{t:'📝 WOCHENTEST W2 absolvieren',m:'🎯 App → Wochentests → Woche 2',lf:'lf1'}],tip:''},
+  {id:'lf2_plan',phase:0,title:'LF 2 – Arbeitsplätze nach Kundenwunsch ausstatten',tagColors:['tag-blue'],days:[
+    {focus:'CPU, RAM & Mainboard',tasks:[
+      {t:'CPU: Kerne, Takt, Cache L1/L2/L3, TDP, x86/ARM',lf:'lf2'},{t:'RAM: DDR4/5, ECC, Dual-Channel',lf:'lf2'},{t:'Mainboard: Chipsatz, PCIe, M.2, UEFI/BIOS',lf:'lf2'}],tip:'L1 sitzt direkt im CPU-Kern – schnellster, kleinster Cache.'},
+    {focus:'Massenspeicher & Dateisysteme',tasks:[
+      {t:'HDD vs. SSD (SLC/MLC/TLC/QLC)',lf:'lf2'},{t:'NVMe (7000 MB/s) vs. SATA (550 MB/s)',lf:'lf2'},{t:'NTFS, FAT32, exFAT, ext4 vergleichen',lf:'lf2'}],tip:'FAT32: max. 4 GB Dateigröße!'},
+    {focus:'RAID, USV & Backup',tasks:[
+      {t:'RAID 0/1/5/6/10: Kapazität & Ausfalltoleranz',lf:'lf2'},{t:'USV: W=VA×cosφ; Überbrückungszeit berechnen',lf:'lf2'},{t:'Backup-Typen + 3-2-1-Regel',lf:'lf2'}],tip:'RAID 5=(n-1)×GB, RAID 6=(n-2)×GB.'},
+    {focus:'Einheiten & Berechnungen',tasks:[
+      {t:'KiB/MiB/GiB (×1024) vs. KB/MB/GB (×1000)',lf:'lf2'},{t:'Übertragungszeit = Datenmenge(Bit)/Rate(Bit/s)',lf:'lf2'},{t:'Stromkosten: E=P×t; Amortisation berechnen',lf:'lf2'}],tip:'1 Byte = 8 Bit – immer zuerst angleichen!'},
+    {focus:'Peripherie, Lizenzen & Green IT',tasks:[
+      {t:'GPL vs. MIT vs. proprietär vs. OEM',lf:'lf2'},{t:'Peripheriegeräte & Schnittstellen',lf:'lf2'},{t:'Green IT: ACPI, 80-Plus, Virtualisierung',lf:'lf2'}],tip:'OEM = hardwaregebunden, nicht übertragbar.'},
   ]},
-  {id:'w3',phase:0,title:'Arbeitsschutz, Ergonomie & Umweltschutz',tagColors:['tag-purple'],days:[
-    {focus:'Arbeitsschutz',tasks:[{t:'UVV, Berufsgenossenschaften, Sicherheitsbeauftragte',m:'📄 Modul_A/Handout_Ergonomie.pdf',lf:'lf1'},{t:'Feuerlöscherklassen A/B/C/D/F auswendig',m:'💡 Merke',lf:'lf1'},{t:'Flucht- und Rettungswege, Erste Hilfe',m:'📄 Modul_A/Handout_Ergonomie.pdf',lf:'lf1'}],tip:'A=fest(Holz), B=flüssig(Benzin), C=gasförmig, D=Metalle, F=Fette'},
-    {focus:'Ergonomie am Bildschirmarbeitsplatz',tasks:[{t:'Bildschirmarbeitsplatzverordnung: ~500 Lux Beleuchtung',m:'📄 Modul_A/Handout_Ergonomie.pdf',lf:'lf1'},{t:'Sehabstand (50-70cm), Tischhöhe, Stuhleinstellung',m:'📄 Modul_A/Handout_Ergonomie.pdf',lf:'lf1'},{t:'Blendung, Reflexionen, EMV vermeiden',m:'📄 Modul_A/Handout_Ergonomie.pdf',lf:'lf1'}],tip:''},
-    {focus:'Umweltschutz & DIN 66399',tasks:[{t:'ElektroG: fachgerechte Entsorgung, Rücknahmepflicht',m:'📄 Modul_A/Handout_Ergonomie.pdf',lf:'lf1'},{t:'Green IT: Virtualisierung, Energieeffizienz, ACPI S0–S5',m:'💡 ACPI-Zustände',lf:'lf1'},{t:'DIN 66399: Sicherheitsstufen Datenträgervernichtung',m:'📄 Modul_D/Datenschutz_Handout.pdf',lf:'lf4'}],tip:'ACPI S3=Sleep(RAM), S4=Hibernate(HDD), S5=Ausgeschaltet'},
-    {focus:'WiSo Komplett-Wiederholung',tasks:[{t:'Alle WiSo-Formeln auf 1 Seite komprimieren',m:'✏️ Formelkarte',lf:'lf1'},{t:'WiSo-Aufgabenpaket komplett lösen',m:'📄 Modul_A/Aufgaben_WiSo.pdf',lf:'lf1'}],tip:''},
-    {focus:'Wochentest W3',tasks:[{t:'📝 WOCHENTEST W3 absolvieren',m:'🎯 App → Wochentests → Woche 3',lf:'lf1'}],tip:''},
+  {id:'lf3_plan',phase:0,title:'LF 3 – Clients in Netzwerke einbinden',tagColors:['tag-accent'],days:[
+    {focus:'OSI-Modell & TCP/IP',tasks:[
+      {t:'OSI 7 Schichten: Name, Protokoll, Gerät je Schicht',lf:'lf3'},{t:'TCP/IP 4-Schichten vs. OSI 7-Schichten',lf:'lf3'},{t:'TCP (Handshake) vs. UDP',lf:'lf3'}],tip:'Switch=Layer2, Router=Layer3 – häufigste Prüfungsfrage!'},
+    {focus:'IPv4 & Subnetting',tasks:[
+      {t:'Private Bereiche: 10/8, 172.16/12, 192.168/16',lf:'lf3'},{t:'CIDR: Hosts=2^(32-n)-2 berechnen',lf:'lf3'},{t:'10 Subnetting-Aufgaben /24–/30',lf:'lf3'}],tip:'/26→62, /27→30, /28→14 – auswendig!'},
+    {focus:'DHCP, DNS & IPv6',tasks:[
+      {t:'DHCP DORA-Prozess erklären',lf:'lf3'},{t:'DNS: Hierarchie, Records A/AAAA/MX/CNAME',lf:'lf3'},{t:'IPv6: Kürzungsregeln, Adresstypen',lf:'lf3'}],tip:'DORA: Discover→Offer→Request→Acknowledge.'},
+    {focus:'WLAN, Kabel & Diagnose',tasks:[
+      {t:'802.11 b/g/n/ac/ax: Frequenz & Datenrate',lf:'lf3'},{t:'Cat5e–Cat8, LWL Singlemode/Multimode',lf:'lf3'},{t:'ping, tracert, ipconfig, nslookup, arp -a',lf:'lf3'}],tip:'WiFi6=802.11ax, WiFi5=802.11ac (nur 5GHz!).'},
+    {focus:'Protokollanalyse & Ports',tasks:[
+      {t:'Ports: HTTP:80, HTTPS:443, SSH:22, FTP:21, DNS:53',lf:'lf3'},{t:'Wireshark: Pakete filtern und lesen',lf:'lf3'},{t:'VLANs: 802.1Q, Access-/Trunk-Port',lf:'lf3'}],tip:''},
   ]},
-  {id:'w4',phase:0,title:'WiSo-Festigung + Testphase 1',tagColors:['tag-purple','tag-red'],isTest:true,days:[
-    {focus:'Intensive WiSo-Wiederholung',tasks:[{t:'Rechtsformen-Quiz aus dem Gedächtnis',m:'✏️ Selbsttest',lf:'lf1'},{t:'5 Kalkulationen komplett',m:'📄 Modul_A/Aufgaben_Kalkulation.pdf',lf:'lf2'},{t:'NWA: 2 weitere Aufgaben',m:'📄 Modul_A/Aufgaben_NWA.pdf',lf:'lf2'}],tip:''},
-    {focus:'Vertiefung: Tarifrecht & Sozialversicherung',tasks:[{t:'Streik vs. Aussperrung: Regeln',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'},{t:'Beitragssätze Sozialversicherung (ca.) kennen',m:'📄 Modul_A/Skript_gesamt.pdf',lf:'lf1'}],tip:''},
-    {focus:'🧪 TESTPHASE 1 – Alte IHK-Klausur',tasks:[{t:'TESTPHASE 1: IHK WiSo-Teil – 45 Min.',m:'📄 Modul_A/IHK_Klausur_Fruehjahr_2024.pdf',lf:'lf1'},{t:'Lösung erst nach 10 Min. Pause anschauen',m:'📄 Modul_A/Lösungen_IHK_2024.pdf',lf:'lf1'},{t:'Alle Fehler im Fehlerprotokoll notieren',m:'✏️ Fehlerprotokoll',lf:'lf1'}],isTestDay:true,tip:'Uhr stellen. Handy weg. Kein Nachschlagen.'},
-    {focus:'Testphase-Nachbereitung',tasks:[{t:'Falsche Aufgaben mit Lernmaterial nacharbeiten',m:'📄 Je nach Thema',lf:'lf1'},{t:'Wiederholungsliste aktualisieren',m:'📌 App → Wiederholen',lf:'lf1'}],tip:''},
-    {focus:'Wochentest W4',tasks:[{t:'📝 WOCHENTEST W4 absolvieren',m:'🎯 App → Wochentests → Woche 4',lf:'lf1'},{t:'Vorschau Phase 2: Skript LF2 überfliegen',m:'📄 Modul_B/Skript_Lernfeld_2.pdf',lf:'lf2'}],tip:''},
+  {id:'lf4_plan',phase:0,title:'LF 4 – Schutz von IT-Systemen und Daten',tagColors:['tag-red'],days:[
+    {focus:'CIA & Angriffsvektoren',tasks:[
+      {t:'CIA-Triade: Confidentiality, Integrity, Availability',lf:'lf4'},{t:'Malware-Typen: Virus/Wurm/Trojaner/Ransomware',lf:'lf4'},{t:'Phishing, Social Engineering, DDoS, SQL-Injection',lf:'lf4'}],tip:''},
+    {focus:'Kryptografie & TLS',tasks:[
+      {t:'AES (symmetrisch) vs. RSA (asymmetrisch)',lf:'lf4'},{t:'TLS-Handshake: asymmetrisch NUR für Schlüsselaustausch',lf:'lf4'},{t:'Hash: SHA-256 sicher, MD5/SHA-1 unsicher',lf:'lf4'}],tip:'TLS = Hybrid = Stärken beider Verfahren.'},
+    {focus:'Firewall, DMZ & VPN',tasks:[
+      {t:'Firewall-Typen: Paketfilter, Stateful, ALG',lf:'lf4'},{t:'DMZ-Konzept mit 2 Firewalls zeichnen',lf:'lf4'},{t:'VPN: Site-to-Site vs. Remote Access',lf:'lf4'}],tip:''},
+    {focus:'DSGVO & Datenschutz',tasks:[
+      {t:'DSGVO Art.5 – 7 Grundsätze auswendig',lf:'lf4'},{t:'Art.15–21 Betroffenenrechte zuordnen',lf:'lf4'},{t:'72h-Meldepflicht, DSB ab 20 Personen',lf:'lf4'}],tip:'Art.17 = Recht auf Löschung/Vergessenwerden.'},
+    {focus:'Schutzbedarfsanalyse',tasks:[
+      {t:'BSI IT-Grundschutz: Kategorien normal/hoch/sehr hoch',lf:'lf4'},{t:'Risiko = Eintrittswahrsch. × Schadensausmaß',lf:'lf4'},{t:'Risikobehandlung: vermeiden/reduzieren/verlagern/akzeptieren',lf:'lf4'}],tip:''},
   ]},
-  {id:'w5',phase:1,title:'PC-Komponenten & Von-Neumann-Architektur',tagColors:['tag-blue'],days:[
-    {focus:'Von-Neumann & CPU',tasks:[{t:'Von-Neumann-Konzept: 5 Komponenten zeichnen',m:'📄 Modul_B/Präsentation_Lernfeld_2.pptx',lf:'lf2'},{t:'CPU: ALU, Steuerwerk, Register, Cache L1/L2/L3',m:'📄 Modul_B/Handout_CPU.pdf',lf:'lf2'},{t:'Takt, Kerne, Hyper-Threading, TDP',m:'📄 Modul_B/Handout_CPU.pdf',lf:'lf2'}],tip:'Von-Neumann: Daten und Programme im SELBEN Speicher = Flaschenhals!'},
-    {focus:'RAM, Mainboard & Speicher-Hierarchie',tasks:[{t:'Cache-Hierarchie L1/L2/L3: Größe vs. Geschwindigkeit',m:'📄 Modul_B/Handout_Speicher.pdf',lf:'lf2'},{t:'RAM: DDR4 vs. DDR5, ECC, Dual-Channel',m:'📄 Modul_B/Skript_RAM.pdf',lf:'lf2'},{t:'Mainboard: Sockel, Chipsatz, PCIe-Slots, M.2, UEFI',m:'📄 Modul_B/Handout_Mainboard.pdf',lf:'lf2'}],tip:'IHK: Binärpräfixe! 1 GiB = 1024 MiB ≠ 1000 MB!'},
-    {focus:'Festplatten & SSDs',tasks:[{t:'HDD vs. SSD: Technik, Vor-/Nachteile',m:'📄 Modul_B/Handout_Speicher.pdf',lf:'lf2'},{t:'NVMe (bis 7000 MB/s) vs. SATA (550 MB/s)',m:'📄 Modul_B/Skript_Speicher.pdf',lf:'lf2'},{t:'SLC/MLC/TLC/QLC: Haltbarkeit vs. Kapazität',m:'📄 Modul_B/Handout_Speicher.pdf',lf:'lf2'}],tip:''},
-    {focus:'Speichereinheiten & Berechnungen',tasks:[{t:'KiB/MiB/GiB (×1024) vs. KB/MB/GB (×1000)',m:'📄 Modul_B/Aufgaben_Datenmengen.pdf',lf:'lf2'},{t:'10 Umrechnungsaufgaben Datenmenge',m:'📄 Modul_B/Aufgaben_Datenmengen.pdf',lf:'lf2'}],tip:''},
-    {focus:'Wochentest W5',tasks:[{t:'📝 WOCHENTEST W5 absolvieren',m:'🎯 App → Wochentests → Woche 5',lf:'lf2'}],tip:''},
+  {id:'lf5_plan',phase:0,title:'LF 5 – Software zur Verfügung stellen und betreuen',tagColors:['tag-coral'],days:[
+    {focus:'Lizenzen & Softwarekategorien',tasks:[
+      {t:'GPL vs. MIT vs. proprietär vs. SaaS',lf:'lf5'},{t:'OEM-Lizenz: hardwaregebunden',lf:'lf5'},{t:'Systemsoftware vs. Anwendungssoftware',lf:'lf5'}],tip:''},
+    {focus:'Datenbanken & SQL',tasks:[
+      {t:'ERM: Entitäten, Attribute, Kardinalitäten',lf:'lf5'},{t:'Normalisierung 1NF/2NF/3NF',lf:'lf5'},{t:'SQL: SELECT, WHERE, JOIN, GROUP BY',lf:'lf5'}],tip:'3NF: PLZ→Ort = transitive Abhängigkeit → eigene Tabelle!'},
+    {focus:'Installation & Updates',tasks:[
+      {t:'Softwareverteilung: MSI, SCCM, apt/yum',lf:'lf5'},{t:'Patch-Management & Windows Update',lf:'lf5'},{t:'Rollback-Strategien planen',lf:'lf5'}],tip:''},
+    {focus:'Backup-Strategien',tasks:[
+      {t:'Voll/Differenziell/Inkrementell – Unterschiede',lf:'lf5'},{t:'3-2-1-Regel: 3 Kopien, 2 Medien, 1 extern',lf:'lf5'},{t:'GVS-Prinzip (Großvater/Vater/Sohn)',lf:'lf5'}],tip:'Differenziell wächst täglich seit Vollsicherung.'},
+    {focus:'Algorithmen & Programmierlogik',tasks:[
+      {t:'PAP DIN 66001: 4 Symbole',lf:'lf5'},{t:'Struktogramm DIN 66261: keine Pfeile',lf:'lf5'},{t:'Pseudocode & Schreibtischtest',lf:'lf5'}],tip:''},
   ]},
-  {id:'w6',phase:1,title:'USV, RAID, Backup & Lizenzen',tagColors:['tag-blue'],days:[
-    {focus:'USV',tasks:[{t:'USV-Typen: Online (immer aktiv), Line-Interactive, Offline (~10ms)',m:'📄 Modul_B/Handout_USV.pdf',lf:'lf2'},{t:'W = VA × cos φ; Überbrückungszeit = Wh / W',m:'📄 Modul_B/USV_Berechnen.pdf',lf:'lf2'},{t:'Alle USV-Rechenaufgaben lösen',m:'📄 Modul_B/USV_Berechnen.pdf',lf:'lf2'}],tip:'Zuerst alle Wattleistungen addieren, dann mit USV vergleichen.'},
-    {focus:'RAID',tasks:[{t:'RAID 0/1/5/6/10: Kapazitätsformel + Ausfalltoleranz',m:'📄 Modul_B/Handout_RAID.pdf',lf:'lf2'},{t:'RAID 5: (n-1)×GB; RAID 6: (n-2)×GB; RAID 10: n/2×GB',m:'📄 Modul_B/RAID_Formelblatt.pdf',lf:'lf2'},{t:'5 Kapazitätsberechnungen durchrechnen',m:'✏️ Aufgaben',lf:'lf2'}],tip:'RAID 0 = kein Schutz! RAID 1 = 50% Kapazitätsverlust.'},
-    {focus:'Backup',tasks:[{t:'Voll (Archivbit↓), differenziell (seit Voll), inkrementell (seit letzt., Archivbit↓)',m:'📄 Modul_B/Handout_Backup.pdf',lf:'lf2'},{t:'3-2-1-Regel: 3 Kopien, 2 Medien, 1 extern',m:'💡 Kernregel',lf:'lf2'},{t:'GVS-Generationenprinzip: Sohn=tägl., Vater=wöch., Großv.=monatl.',m:'📄 Modul_B/Handout_Backup.pdf',lf:'lf2'}],tip:'Differenziell wächst täglich. Inkrementell bleibt klein.'},
-    {focus:'Softwarelizenzen',tasks:[{t:'GPL (Copyleft) vs. MIT (permissiv) vs. proprietär',m:'📄 Modul_B/Handout_Lizenzen.pdf',lf:'lf2'},{t:'OEM: an Hardware gebunden, nicht übertragbar',m:'📄 Modul_B/Lizenzen_Skript.pdf',lf:'lf2'},{t:'Volumenlizenzen: MAK, KMS, SaaS',m:'📄 Modul_B/Lizenzen_Skript.pdf',lf:'lf2'}],tip:''},
-    {focus:'Wochentest W6',tasks:[{t:'📝 WOCHENTEST W6 absolvieren',m:'🎯 App → Wochentests → Woche 6',lf:'lf2'}],tip:''},
+  // ── 2. AUSBILDUNGSJAHR ──────────────────────────────────────────────────────
+  {id:'lf6_plan',phase:1,title:'LF 6 – Netzwerke und Dienste bereitstellen',tagColors:['tag-blue'],days:[
+    {focus:'Routing & Switching vertieft',tasks:[
+      {t:'Statisches Routing: Routingtabellen manuell konfigurieren',lf:'lf6'},{t:'Dynamisches Routing: OSPF Grundprinzip',lf:'lf6'},{t:'VLANs konfigurieren, Inter-VLAN-Routing',lf:'lf6'}],tip:''},
+    {focus:'DNS & DHCP-Server einrichten',tasks:[
+      {t:'DNS-Serverrollen: Primär, Sekundär, Forwarder',lf:'lf6'},{t:'DNS Zonendatei: SOA, A, PTR, MX Records',lf:'lf6'},{t:'DHCP-Scope, Reservierungen, Optionen 3/6/15',lf:'lf6'}],tip:''},
+    {focus:'Anwendungsschicht-Protokolle',tasks:[
+      {t:'HTTP vs. HTTPS: TLS-Handshake Ablauf',lf:'lf6'},{t:'FTP aktiv vs. passiv Modus',lf:'lf6'},{t:'SMTP/IMAP/POP3 Mailflow verstehen',lf:'lf6'}],tip:''},
+    {focus:'VPN & WAN',tasks:[
+      {t:'IPSec: AH vs. ESP, IKEv1/v2',lf:'lf6'},{t:'OpenVPN: Zertifikate, Tunnelarten',lf:'lf6'},{t:'Site-to-Site vs. Remote Access VPN',lf:'lf6'}],tip:''},
+    {focus:'Praxis: Netzwerke aufbauen',tasks:[
+      {t:'Komplettes Netzwerk planen: IP-Schema, VLANs, Routing',lf:'lf6'},{t:'Firewall-Regeln aufstellen',lf:'lf6'},{t:'Dienste testen und Fehler eingrenzen',lf:'lf6'}],tip:''},
   ]},
-  {id:'w7',phase:1,title:'Zahlensysteme & Digitaltechnik',tagColors:['tag-blue'],days:[
-    {focus:'Zahlensysteme',tasks:[{t:'Dezimal → Binär: Divisionsverfahren, 10 Aufgaben',m:'📄 Modul_B/Zahlensysteme_Präsentation.pptx',lf:'lf5'},{t:'Binär → Dezimal: Positionswerte 128/64/32/16/8/4/2/1',m:'✏️ Tabelle',lf:'lf5'},{t:'Hex ↔ Dezimal: 4-Bit-Gruppen-Trick',m:'📄 Modul_F/Zahlensysteme_Aufgaben.pdf',lf:'lf5'}],tip:'Hex ↔ Binär: 0xAF = 1010 1111 (je Hex-Stelle = 4 Bit)'},
-    {focus:'Zweierkomplement & Arithmetik',tasks:[{t:'Zweierkomplement: Invertieren + 1 = negative Zahl',m:'📄 Modul_F/Zahlensysteme_Ppt.pptx',lf:'lf5'},{t:'Binäre Addition mit Carry-Bit',m:'📄 Modul_F/Zahlensysteme_Aufgaben.pdf',lf:'lf5'},{t:'10 Umrechnungsaufgaben gemischt',m:'📄 Modul_F/Zahlensysteme_Übungen.pdf',lf:'lf5'}],tip:''},
-    {focus:'Logikgatter',tasks:[{t:'AND, OR, NOT, NAND, NOR, XOR: Symbole + Wahrheitstabellen',m:'📄 Modul_B/Digitaltechnik_Handout.pdf',lf:'lf2'},{t:'De Morgan: NOT(A AND B) = NOT A OR NOT B',m:'📄 Modul_B/Digitaltechnik_Handout.pdf',lf:'lf2'},{t:'10 Schaltungsaufgaben',m:'📄 Modul_B/Aufgaben_Digitaltechnik.pdf',lf:'lf2'}],tip:'NAND + NOR sind universelle Gatter (können alles).'},
-    {focus:'Pixel, Bilddateigrößen',tasks:[{t:'Bilddatei: Pixel = B×H; Bytes = Pixel × (Farbtiefe/8)',m:'📄 Modul_C/Pixel_und_Datenübertragung.pdf',lf:'lf2'},{t:'Farbtiefe: 1-Bit, 8-Bit, 24-Bit TrueColor, 32-Bit+Alpha',m:'📄 Modul_C/Pixel_und_Datenübertragung.pdf',lf:'lf2'}],tip:'1920×1080×3 Byte ≈ 6 MiB (24 Bit TrueColor)'},
-    {focus:'Wochentest W7',tasks:[{t:'📝 WOCHENTEST W7 absolvieren',m:'🎯 App → Wochentests → Woche 7',lf:'lf5'}],tip:''},
+  {id:'lf7_plan',phase:1,title:'LF 7 – IT-Lösungen entwickeln und bereitstellen',tagColors:['tag-purple'],days:[
+    {focus:'Programmiergrundlagen',tasks:[
+      {t:'Variablen, Datentypen, Operatoren',lf:'lf7'},{t:'Kontrollstrukturen: if/else, for, while',lf:'lf7'},{t:'Funktionen, Arrays, OOP-Grundbegriffe',lf:'lf7'}],tip:''},
+    {focus:'Agile Methoden & Scrum',tasks:[
+      {t:'Scrum: PO, SM, Dev-Team, Sprint, Backlog',lf:'lf7'},{t:'Wasserfall vs. V-Modell vs. Scrum',lf:'lf7'},{t:'Lastenheft (AG) vs. Pflichtenheft (AN)',lf:'lf7'}],tip:''},
+    {focus:'Git & Versionsverwaltung',tasks:[
+      {t:'git init, add, commit, push, pull',lf:'lf7'},{t:'Branching, Merging, Konflikte lösen',lf:'lf7'},{t:'GitHub/GitLab Workflow: Pull Requests',lf:'lf7'}],tip:''},
+    {focus:'Tests & Debugging',tasks:[
+      {t:'Unit-Tests, Integrationstests schreiben',lf:'lf7'},{t:'Äquivalenzklassen & Grenzwertanalyse',lf:'lf7'},{t:'Debugging: Haltepunkte, Watch-Variablen',lf:'lf7'}],tip:''},
+    {focus:'UML & Dokumentation',tasks:[
+      {t:'Use-Case, Aktivitäts-, Klassendiagramm',lf:'lf7'},{t:'Sequenzdiagramm & BPMN erstellen',lf:'lf7'},{t:'Technische Dokumentation strukturieren',lf:'lf7'}],tip:''},
   ]},
-  {id:'w8',phase:1,title:'Stromkosten, Angebotsvergleich + Testphase 2',tagColors:['tag-blue','tag-red'],isTest:true,days:[
-    {focus:'Stromkosten & Amortisationsrechnung',tasks:[{t:'E (kWh) = P (kW) × t (h); Kosten = E × Preis/kWh',m:'📄 Modul_B/Aufgaben_Strom.pdf',lf:'lf2'},{t:'Amortisationsberechnung: Einsparung pro Jahr',m:'📄 Modul_B/Aufgaben_Strom.pdf',lf:'lf2'},{t:'TCO über 5 Jahre: Server-Szenario',m:'📄 Modul_B/Aufgaben_Strom.pdf',lf:'lf2'}],tip:''},
-    {focus:'Angebotsvergleich quantitativ & qualitativ',tasks:[{t:'Qualitativ: Service, Garantie, Liefertreue, Support',m:'📄 Modul_B/Handout_Angebotsvergleich.pdf',lf:'lf2'},{t:'Bezugspreiskalkulation: 3 Szenarien',m:'📄 Modul_B/Aufgaben_Angebotsvergleich.pdf',lf:'lf2'}],tip:''},
-    {focus:'🧪 TESTPHASE 2',tasks:[{t:'TESTPHASE 2: Vollständige alte IHK-AP1 – 90 Min.',m:'📄 IHK_Pruefungen/AP1_Herbst_2023.pdf',lf:'lf2'},{t:'Zeitmanagement: max. 2,25 Min./Frage',m:'💡 Zeitplan',lf:'lf2'}],isTestDay:true,tip:'Vergleiche Score mit Testphase 1.'},
-    {focus:'Fehleranalyse',tasks:[{t:'Fehler kategorisieren und nacharbeiten',m:'📄 Modulordner nach Thema',lf:'lf2'},{t:'Wiederholungsliste aktualisieren',m:'📌 App → Wiederholen',lf:'lf2'}],tip:''},
-    {focus:'Wochentest W8',tasks:[{t:'📝 WOCHENTEST W8 absolvieren',m:'🎯 App → Wochentests → Woche 8',lf:'lf2'}],tip:''},
+  {id:'lf8_plan',phase:1,title:'LF 8 – IT-Systeme und Dienste administrieren',tagColors:['tag-green'],days:[
+    {focus:'Windows Server & Linux',tasks:[
+      {t:'Windows Server Rollen: AD DS, DNS, DHCP, IIS',lf:'lf8'},{t:'Linux: apt/yum, systemctl, Dienste verwalten',lf:'lf8'},{t:'Partitionen, Dateisysteme, LVM',lf:'lf8'}],tip:''},
+    {focus:'Active Directory & GPOs',tasks:[
+      {t:'AD DS: Domäne, Forests, OUs anlegen',lf:'lf8'},{t:'Benutzer/Gruppen: lokal vs. domänenweit',lf:'lf8'},{t:'Gruppenrichtlinien (GPOs) erstellen & verknüpfen',lf:'lf8'}],tip:''},
+    {focus:'Berechtigungskonzepte',tasks:[
+      {t:'NTFS-Berechtigungen: Vererbung, effektive Rechte',lf:'lf8'},{t:'Linux: chmod (rwx), chown, ACLs',lf:'lf8'},{t:'RBAC-Konzept: Rollen statt individuelle Rechte',lf:'lf8'}],tip:'Least Privilege: nur nötige Rechte vergeben!'},
+    {focus:'Monitoring & Logging',tasks:[
+      {t:'Windows Event Viewer: Kategorien kennen',lf:'lf8'},{t:'Linux: syslog, journalctl, /var/log',lf:'lf8'},{t:'SNMP: Grundprinzip, OIDs, Traps',lf:'lf8'}],tip:''},
+    {focus:'Praxis: Server administrieren',tasks:[
+      {t:'Server-Hardening Checkliste',lf:'lf8'},{t:'Backup-Konzept für Server erstellen',lf:'lf8'},{t:'Performance-Engpässe analysieren',lf:'lf8'}],tip:''},
   ]},
-  {id:'w9',phase:2,title:'OSI-Modell, TCP/IP & Protokolle',tagColors:['tag-accent'],days:[
-    {focus:'OSI-Modell: alle 7 Schichten',tasks:[{t:'OSI: Nummer, Name, Funktion, Protokolle, Geräte',m:'📄 Modul_B/Handout_OSI.pdf',lf:'lf3'},{t:'Eselsbrücke: „Physiker Denken Nicht, Sonder Prägen Alles"',m:'💡 Merke',lf:'lf3'},{t:'Hub(1), Switch(2), Router(3) – Layer korrekt zuordnen',m:'📄 Modul_B/Handout_OSI.pdf',lf:'lf3'}],tip:'Switch = Layer 2! Router = Layer 3! Häufigste Prüfungsfrage.'},
-    {focus:'TCP/IP & Protokolle',tasks:[{t:'TCP/IP 4-Schichten vs. OSI 7-Schichten',m:'📄 Modul_C/Lernzettel_Netzwerk.pdf',lf:'lf3'},{t:'Ports auswendig: 80(HTTP), 443(HTTPS), 21(FTP), 22(SSH), 25(SMTP), 110(POP3), 143(IMAP), 53(DNS), 67/68(DHCP)',m:'📄 Modul_C/Protokolle_Handout.pdf',lf:'lf3'}],tip:''},
-    {focus:'TCP vs. UDP, DHCP & DNS',tasks:[{t:'TCP: 3-Way-Handshake SYN → SYN-ACK → ACK',m:'📄 Modul_C/Netzwerk_Skript.pdf',lf:'lf3'},{t:'UDP: verbindungslos, für DNS/DHCP/Streaming',m:'📄 Modul_C/Netzwerk_Skript.pdf',lf:'lf3'},{t:'DHCP DORA: Discover→Offer→Request→Acknowledge',m:'📄 Modul_C/DHCP_Aufgaben.pdf',lf:'lf3'},{t:'DNS: rekursiv vs. iterativ, A/AAAA/CNAME/MX Records',m:'📄 Modul_C/DNS_Aufgaben.pdf',lf:'lf3'}],tip:'DORA merken! Kommt fast immer in der Prüfung.'},
-    {focus:'Netzwerk-CMD-Befehle',tasks:[{t:'ping, ipconfig, tracert, nslookup, arp -a, netstat',m:'📄 Modul_C/CMD_Befehle.pdf',lf:'lf3'},{t:'Jeden Befehl und seine Ausgabe kennen',m:'📄 Modul_C/CMD_Befehle.pdf',lf:'lf3'}],tip:''},
-    {focus:'Wochentest W9',tasks:[{t:'📝 WOCHENTEST W9 absolvieren',m:'🎯 App → Wochentests → Woche 9',lf:'lf3'}],tip:''},
+  {id:'lf9_plan',phase:1,title:'LF 9 – Daten und Prozesse analysieren',tagColors:['tag-coral'],days:[
+    {focus:'Geschäftsprozesse & EPK',tasks:[
+      {t:'EPK: Ereignisse, Funktionen, Konnektoren',lf:'lf9'},{t:'Ist-/Soll-Prozessanalyse durchführen',lf:'lf9'},{t:'BPMN 2.0 Gateways: XOR/AND/OR',lf:'lf9'}],tip:''},
+    {focus:'Daten importieren & transformieren',tasks:[
+      {t:'ETL: Extract, Transform, Load',lf:'lf9'},{t:'CSV, JSON, XML: Formate kennen & parsen',lf:'lf9'},{t:'SQL Aggregatfunktionen: SUM, AVG, COUNT, GROUP BY',lf:'lf9'}],tip:''},
+    {focus:'Big Data & Statistik',tasks:[
+      {t:'5 Vs von Big Data: Volume, Velocity, Variety, Veracity, Value',lf:'lf9'},{t:'Hadoop & Spark: Grundprinzip',lf:'lf9'},{t:'Mittelwert, Median, Standardabweichung berechnen',lf:'lf9'}],tip:''},
+    {focus:'Dashboards & KPIs',tasks:[
+      {t:'KPIs definieren: Verfügbarkeit, MTTR, MTBF',lf:'lf9'},{t:'Power BI: Grundfunktionen, Datenquellen',lf:'lf9'},{t:'Geeignete Diagrammtypen auswählen',lf:'lf9'}],tip:''},
+    {focus:'Abschluss 2. Lehrjahr',tasks:[
+      {t:'LF 6–9 Wissenslücken schließen',lf:'lf6'},{t:'Prüfungsvorbereitung AP1 (falls noch ausstehend)',lf:'lf1'},{t:'Projektarbeit-Thema für 3. Lehrjahr planen',lf:'lf9'}],tip:''},
   ]},
-  {id:'w10',phase:2,title:'IP-Adressen & Subnetting',tagColors:['tag-accent'],days:[
-    {focus:'IPv4-Grundlagen & private Bereiche',tasks:[{t:'IPv4: 4 Oktette, 32 Bit Aufbau',m:'📄 Modul_C/Subnetting_Anleitung.pdf',lf:'lf3'},{t:'Private: 10.0.0.0/8 · 172.16.0.0/12 · 192.168.0.0/16',m:'📄 Modul_C/Subnetting_Anleitung.pdf',lf:'lf3'},{t:'Sonder: 127.0.0.1 (Loopback) · 169.254.x.x (APIPA)',m:'💡 Sonderadressen',lf:'lf3'}],tip:''},
-    {focus:'Subnetting: CIDR & Host-Berechnung',tasks:[{t:'Hosts = 2^(32-CIDR) - 2',m:'✏️ Formelkarte',lf:'lf3'},{t:'Netzadresse, Broadcast, erste/letzte nutzbare IP',m:'📄 Modul_C/subnettingAufgaben.pdf',lf:'lf3'},{t:'5 Aufgaben: /24, /25, /26, /27, /28',m:'📄 Modul_C/subnettingAufgaben.pdf',lf:'lf3'}],tip:'/26→62, /27→30, /28→14 Hosts – auswendig!'},
-    {focus:'Subnetting Sprint',tasks:[{t:'10 Subnetting-Aufgaben unter Zeitdruck (max. 3 Min./Stück)',m:'📄 Modul_C/subnettingAufgaben.pdf',lf:'lf3'},{t:'/30=2, /29=6, /28=14, /27=30, /26=62, /25=126, /24=254',m:'💡 Auswendig',lf:'lf3'}],tip:''},
-    {focus:'IPv6 Grundlagen',tasks:[{t:'IPv6: 128 Bit, 8×16-Bit-Blöcke, Kürzungsregeln',m:'📄 Modul_C/IPv6_Handout.pdf',lf:'lf3'},{t:'Adresstypen: Loopback(::1), Link-Local(fe80::/10), Global Unicast(2000::/3)',m:'📄 Modul_C/IPv6_Handout.pdf',lf:'lf3'},{t:'SLAAC, EUI-64 Verfahren',m:'📄 Modul_C/IPv6_Handout.pdf',lf:'lf3'}],tip:'IPv6 kein Broadcast! Ersetzt durch Multicast.'},
-    {focus:'Wochentest W10',tasks:[{t:'📝 WOCHENTEST W10 absolvieren',m:'🎯 App → Wochentests → Woche 10',lf:'lf3'}],tip:''},
+  // ── 3. AUSBILDUNGSJAHR ──────────────────────────────────────────────────────
+  {id:'lf10b_plan',phase:2,title:'LF 10b – Serverdienste bereitstellen & Automatisierung',tagColors:['tag-accent'],days:[
+    {focus:'Webserver & Applikationsserver',tasks:[
+      {t:'Apache/Nginx: VirtualHosts, SSL einrichten',lf:'lf10b'},{t:'Reverse Proxy konfigurieren',lf:'lf10b'},{t:'Let\'s Encrypt Zertifikate automatisieren',lf:'lf10b'}],tip:''},
+    {focus:'Mailserver & Datenbankserver',tasks:[
+      {t:'Postfix/Dovecot: Grundkonfiguration',lf:'lf10b'},{t:'SPF, DKIM, DMARC einrichten',lf:'lf10b'},{t:'MySQL: Nutzer, Berechtigungen, mysqldump',lf:'lf10b'}],tip:''},
+    {focus:'PowerShell & Bash Scripting',tasks:[
+      {t:'PowerShell: Cmdlets, Pipeline, AD-Automatisierung',lf:'lf10b'},{t:'Bash: Variablen, Schleifen, Funktionen, Cronjobs',lf:'lf10b'},{t:'Python: Skripte für Systemadministration',lf:'lf10b'}],tip:''},
+    {focus:'Ansible & Konfigurationsmanagement',tasks:[
+      {t:'Ansible: Inventory, Playbooks, Module',lf:'lf10b'},{t:'Idempotenz-Prinzip verstehen',lf:'lf10b'},{t:'Terraform Einführung: Infrastructure as Code',lf:'lf10b'}],tip:''},
+    {focus:'Load Balancing & Cluster',tasks:[
+      {t:'HAProxy: Round-Robin, Least-Connection',lf:'lf10b'},{t:'Active/Active vs. Active/Passive Cluster',lf:'lf10b'},{t:'Ausfallsicherheit testen & dokumentieren',lf:'lf10b'}],tip:''},
   ]},
-  {id:'w11',phase:2,title:'WLAN, Verkabelung & Datenübertragung',tagColors:['tag-accent'],days:[
-    {focus:'WLAN-Standards & Sicherheit',tasks:[{t:'802.11 b/g/n/ac/ax: Frequenz und max. Datenrate',m:'📄 Modul_C/WLAN_Handout.pdf',lf:'lf3'},{t:'2,4 GHz (Reichweite) vs. 5 GHz (Durchsatz)',m:'📄 Modul_C/WLAN_Handout.pdf',lf:'lf3'},{t:'WPA2-AES vs. WPA3-SAE (besser gegen Brute-Force)',m:'📄 Modul_C/WLAN_Sicherheit.pdf',lf:'lf4'}],tip:'WiFi 6 = 802.11ax. WiFi 5 = 802.11ac (nur 5 GHz!)'},
-    {focus:'Verkabelung',tasks:[{t:'Cat5e/6/6a/7/8 – Bandbreite und Distanz',m:'📄 Modul_C/Verkabelung_Handout.pdf',lf:'lf3'},{t:'LWL: Singlemode(Laser, km) vs. Multimode(LED, kurz)',m:'📄 Modul_C/Verkabelung_Handout.pdf',lf:'lf3'},{t:'PoE: 802.3af(15W), 802.3at(30W), 802.3bt(90W)',m:'📄 Modul_C/Verkabelung_Handout.pdf',lf:'lf3'}],tip:''},
-    {focus:'Datenübertragungsberechnungen',tasks:[{t:'Zeit = Datenmenge(Bit) / Datenrate(Bit/s)',m:'📄 Modul_C/Aufgaben_Datenübertragung.pdf',lf:'lf2'},{t:'FALLE: 1 Byte = 8 Bit – erst angleichen!',m:'💡 Einheitenfalle',lf:'lf2'},{t:'10 Übertragungsaufgaben mit gemischten Einheiten',m:'📄 Modul_C/Aufgaben_Datenübertragung.pdf',lf:'lf2'}],tip:''},
-    {focus:'VLAN & Netzwerkgeräte',tasks:[{t:'VLAN IEEE 802.1Q: Access-Port (untagged) vs. Trunk-Port (tagged)',m:'📄 Modul_C/VLAN_Handout.pdf',lf:'lf3'},{t:'Hub(Layer1) vs. Switch(Layer2, MAC-Table) vs. Router(Layer3)',m:'📄 Modul_C/Netzwerk_Geräte.pdf',lf:'lf3'}],tip:''},
-    {focus:'Wochentest W11',tasks:[{t:'📝 WOCHENTEST W11 absolvieren',m:'🎯 App → Wochentests → Woche 11',lf:'lf3'}],tip:''},
+  {id:'lf11b_plan',phase:2,title:'LF 11b – Betrieb und Sicherheit vernetzter Systeme',tagColors:['tag-red'],days:[
+    {focus:'Sicherheitsarchitekturen',tasks:[
+      {t:'NGFW: Deep Packet Inspection, App-Awareness',lf:'lf11b'},{t:'IDS/IPS: signatur- vs. anomalie-basiert',lf:'lf11b'},{t:'Zero Trust Architektur erläutern',lf:'lf11b'}],tip:''},
+    {focus:'Virtualisierung',tasks:[
+      {t:'Hypervisor Typ 1 vs. Typ 2',lf:'lf11b'},{t:'VMware ESXi/Hyper-V: Snapshots, Templates',lf:'lf11b'},{t:'vMotion & Ressourcenzuteilung',lf:'lf11b'}],tip:''},
+    {focus:'Docker & Kubernetes',tasks:[
+      {t:'Docker: Image, Container, Dockerfile',lf:'lf11b'},{t:'docker-compose: Multi-Container-Apps',lf:'lf11b'},{t:'Kubernetes: Pods, Services, Deployments',lf:'lf11b'}],tip:''},
+    {focus:'Cloud-Infrastrukturen',tasks:[
+      {t:'IaaS/PaaS/SaaS: Unterschiede & Beispiele',lf:'lf11b'},{t:'AWS EC2, S3, VPC Grundlagen',lf:'lf11b'},{t:'Azure VMs, Blob Storage, Active Directory',lf:'lf11b'}],tip:'CapEx (einmalig) vs. OpEx (laufend) = Cloud-Argument.'},
+    {focus:'BSI IT-Grundschutz & ISO 27001',tasks:[
+      {t:'BSI-Methodik: Strukturanalyse → Schutzbedarfsfeststellung',lf:'lf11b'},{t:'Sicherheitskonzept nach IT-Grundschutz erstellen',lf:'lf11b'},{t:'ISO 27001: Grundprinzipien',lf:'lf11b'}],tip:''},
   ]},
-  {id:'w12',phase:2,title:'IT-Sicherheit & Verschlüsselung',tagColors:['tag-accent'],days:[
-    {focus:'CIA & Angriffsvektoren',tasks:[{t:'CIA-Triade: Confidentiality, Integrity, Availability',m:'📄 Modul_D/FW_DMZ_Proxy.pdf',lf:'lf4'},{t:'Angriffe: Phishing, Brute-Force, DDoS, SQL-Injection, MitM',m:'📄 Modul_D/Datenschutz_Handout.pdf',lf:'lf4'},{t:'Malware: Virus/Wurm/Trojaner/Ransomware – Unterschiede',m:'📄 Modul_D/Datenschutz_Handout.pdf',lf:'lf4'}],tip:''},
-    {focus:'Verschlüsselung & TLS',tasks:[{t:'Symmetrisch (AES: 1 Schlüssel, schnell) vs. Asymmetrisch (RSA: langsam)',m:'📄 Modul_C/Verschlüsselung_Handout.pdf',lf:'lf4'},{t:'TLS Hybrid: Asymmetrisch für Schlüsselaustausch!',m:'📄 Modul_C/TLS_Handshake.pdf',lf:'lf4'},{t:'Hash: SHA-256 (sicher), MD5/SHA-1 (unsicher!). Digitale Signatur.',m:'📄 Modul_C/Verschlüsselung_Handout.pdf',lf:'lf4'}],tip:'TLS: asymmetrisch NUR für Sitzungsschlüssel-Austausch.'},
-    {focus:'Firewall, DMZ & VPN',tasks:[{t:'Firewall-Typen: Paketfilter, Stateful Inspection, ALG',m:'📄 Modul_D/FW_DMZ_Proxy.pdf',lf:'lf4'},{t:'DMZ: Segment für öffentliche Dienste, 2 Firewalls',m:'📄 Modul_D/FW_DMZ_Proxy.pdf',lf:'lf4'},{t:'VPN: Site-to-Site vs. Remote Access; Proxy Forward vs. Reverse',m:'📄 Modul_C/VPN_Handout.pdf',lf:'lf4'}],tip:''},
-    {focus:'MFA & Zugriffskontrolle',tasks:[{t:'MFA: Wissen (Passwort), Besitz (Token), Sein (Biometrie)',m:'📄 Modul_D/Datenschutz_Handout.pdf',lf:'lf4'},{t:'Least-Privilege-Prinzip: minimale Rechte',m:'📄 Modul_D/Datenschutz_Handout.pdf',lf:'lf4'}],tip:''},
-    {focus:'Wochentest W12',tasks:[{t:'📝 WOCHENTEST W12 absolvieren',m:'🎯 App → Wochentests → Woche 12',lf:'lf4'}],tip:''},
-  ]},
-  {id:'w13',phase:2,title:'DSGVO, Datenschutz + Testphase 3',tagColors:['tag-accent','tag-red'],isTest:true,days:[
-    {focus:'DSGVO Grundsätze & Rechte',tasks:[{t:'7 Grundsätze Art. 5: Rechtmäßigkeit, Transparenz, Zweckbindung, Datenminimierung, Richtigkeit, Speicherbegrenzung, Integrität',m:'📄 Modul_D/DSGVO_Präsentation.pptx',lf:'lf4'},{t:'Art.15–21: Auskunft, Berichtigung, Löschung(Art.17), Portabilität, Widerspruch',m:'📄 Modul_D/DSGVO_Handout.pdf',lf:'lf4'},{t:'AVV Art.28, DSB ab 20 Personen, 72h Meldepflicht',m:'📄 Modul_D/DSGVO_Handout.pdf',lf:'lf4'}],tip:'72h Meldepflicht bei Datenpanne! Immer in der Prüfung.'},
-    {focus:'Schutzbedarfsanalyse & BSI',tasks:[{t:'Schutzbedarfskategorien: normal/hoch/sehr hoch',m:'📄 Modul_D/Schutzbedarfsanalyse_Handout.pdf',lf:'lf4'},{t:'Risiko = Eintrittswahrscheinlichkeit × Schadensausmaß',m:'📄 Modul_D/Schutzbedarfsanalyse_Handout.pdf',lf:'lf4'},{t:'Risikobehandlung: vermeiden/reduzieren/verlagern/akzeptieren',m:'📄 Modul_D/Schutzbedarfsanalyse_Handout.pdf',lf:'lf4'}],tip:''},
-    {focus:'🧪 TESTPHASE 3',tasks:[{t:'TESTPHASE 3: Vollständige AP1 – 90 Min.',m:'📄 IHK_Pruefungen/AP1_Fruehjahr_2024.pdf',lf:'lf3'},{t:'Zeitmanagement: max. 2,25 Min./Frage',m:'💡 Zeitplan',lf:'lf3'}],isTestDay:true,tip:'Erwarteter Score: 55–70%.'},
-    {focus:'Testphase-3-Analyse',tasks:[{t:'Fehler kategorisieren (WiSo/Hardware/Netz)',m:'✏️ Fehlermatrix',lf:'lf3'},{t:'Wiederholungsliste aktualisieren',m:'📌 App → Wiederholen',lf:'lf3'}],tip:''},
-    {focus:'Wochentest W13',tasks:[{t:'📝 WOCHENTEST W13 absolvieren',m:'🎯 App → Wochentests → Woche 13',lf:'lf4'}],tip:''},
-  ]},
-  {id:'w14',phase:3,title:'Projektmanagement',tagColors:['tag-coral'],days:[
-    {focus:'Projektdefinition & Magisches Dreieck',tasks:[{t:'Projektmerkmale nach DIN 69901',m:'📄 Modul_E/Projektmanagement_Präsentation.pptx',lf:'lf5'},{t:'Magisches Dreieck: Zeit–Kosten–Qualität/Umfang',m:'📄 Modul_E/Handout_PM.pdf',lf:'lf5'},{t:'SMART-Ziele: 5 Aufgaben',m:'📄 Modul_E/Aufgaben_PM.pdf',lf:'lf5'}],tip:''},
-    {focus:'Netzplantechnik',tasks:[{t:'Vorwärts: FEZ=FAZ+Dauer; FAZ=MAX(FEZ Vorgänger)',m:'📄 Modul_E/Handout_PM.pdf',lf:'lf5'},{t:'Rückwärts: SAZ=SEZ-Dauer; SEZ=MIN(SAZ Nachfolger)',m:'✏️ Formelkarte',lf:'lf5'},{t:'GP=SAZ-FAZ=SEZ-FEZ; FP=FAZ(Nachf)-FEZ(akt). Kritisch: GP=0',m:'📄 Modul_E/Netzplan_Uebungsaufgaben.docx',lf:'lf5'},{t:'3 vollständige Netzplan-Aufgaben lösen',m:'📄 Modul_E/Netzplan_Uebungsaufgaben.docx',lf:'lf5'}],tip:'Reihenfolge einhalten: Vorwärts → Rückwärts → GP berechnen.'},
-    {focus:'Gantt & Meilensteine',tasks:[{t:'Gantt-Diagramm: Balken, Abhängigkeiten, Meilensteine (Dauer=0)',m:'📄 Modul_E/Handout_Gantt.pdf',lf:'lf5'},{t:'Netzplan vs. Gantt: Unterschiede kennen',m:'📄 Modul_E/Handout_PM.pdf',lf:'lf5'}],tip:''},
-    {focus:'Scrum & Vorgehensmodelle',tasks:[{t:'Scrum: PO, SM, Dev-Team, Sprint, Backlog, Daily, Review, Retro',m:'📄 Modul_E/Scrum_Handout.pdf',lf:'lf5'},{t:'Wasserfall vs. V-Modell vs. Scrum',m:'📄 Modul_E/Vorgehensmodelle_Präsentation.pptx',lf:'lf5'},{t:'Lastenheft (AG: WAS) vs. Pflichtenheft (AN: WIE)',m:'📄 Modul_E/Handout_PM.pdf',lf:'lf5'}],tip:'AP1 fragt Scrum häufig auf Englisch!'},
-    {focus:'Wochentest W14',tasks:[{t:'📝 WOCHENTEST W14 absolvieren',m:'🎯 App → Wochentests → Woche 14',lf:'lf5'}],tip:''},
-  ]},
-  {id:'w15',phase:3,title:'Datenbanken, ERM & Normalisierung',tagColors:['tag-coral'],days:[
-    {focus:'ERM',tasks:[{t:'Symbole: Entität(Rechteck), Attribut(Ellipse), Beziehung(Raute)',m:'📄 Modul_F/Datenbank_Präsentation.pptx',lf:'lf5'},{t:'Kardinalitäten: 1:1, 1:n, m:n (→Zwischentabelle!)',m:'📄 Modul_F/Datenbank_Präsentation.pptx',lf:'lf5'},{t:'IHK-Aufgaben ERM lesen und erstellen',m:'📄 Modul_F/IHK_Aufgabe_A_Autowerkstatt.pdf',lf:'lf5'}],tip:'m:n immer mit Zwischentabelle auflösen!'},
-    {focus:'Normalisierung',tasks:[{t:'1NF: alle Attribute atomar, keine Wiederholungsgruppen',m:'📄 Modul_F/Normalisierung_Aufgaben.pdf',lf:'lf5'},{t:'2NF: 1NF + keine partiellen Abhängigkeiten vom PK',m:'📄 Modul_F/Normalisierung_Aufgaben.pdf',lf:'lf5'},{t:'3NF: 2NF + keine transitiven Abhängigkeiten (PLZ→Ort=eigene Tabelle!)',m:'📄 Modul_F/Normalisierung_Aufgaben.pdf',lf:'lf5'}],tip:'3NF: Jedes Nicht-Schlüssel-Attribut hängt nur vom PK ab.'},
-    {focus:'Datenbankmodelle & SQL-Grundlagen',tasks:[{t:'Relational: PK, FK, referentielle Integrität',m:'📄 Modul_F/Datenbank_Präsentation.pptx',lf:'lf5'},{t:'SQL: SELECT, FROM, WHERE (in AP1 gestrichen, aber ERM bleibt!)',m:'📄 Modul_F/SQL_Grundlagen.pdf',lf:'lf5'}],tip:'SQL in AP1 aktuell nicht prüfungsrelevant – ERM aber schon!'},
-    {focus:'Algorithmen & Testen',tasks:[{t:'Sequenz, Selektion, Iteration – Pseudocode schreiben',m:'📄 Modul_F/Algorithmen_Aufgabenheft.pdf',lf:'lf5'},{t:'White-Box vs. Black-Box Tests, Äquivalenzklassen',m:'📄 Modul_F/Testen_Handout.pdf',lf:'lf5'}],tip:''},
-    {focus:'Wochentest W15',tasks:[{t:'📝 WOCHENTEST W15 absolvieren',m:'🎯 App → Wochentests → Woche 15',lf:'lf5'}],tip:''},
-  ]},
-  {id:'w16',phase:3,title:'KI, BPMN & Programmierlogik',tagColors:['tag-coral'],days:[
-    {focus:'KI-Grundlagen & EU AI Act',tasks:[{t:'Schwache KI (spezifisch, real) vs. starke KI (AGI, fiktiv)',m:'💡 Lernzettel',lf:'lf5'},{t:'ML: Supervised/Unsupervised/Reinforcement Learning',m:'💡 Lernzettel',lf:'lf5'},{t:'EU AI Act: verboten(Social Scoring), hoch, begrenzt, minimal',m:'💡 EU AI Act',lf:'lf5'},{t:'KI-Bias: Ursachen und Auswirkungen',m:'💡 Fallbeispiele',lf:'lf5'}],tip:''},
-    {focus:'BPMN 2.0',tasks:[{t:'Symbole: Start(dünner Kreis), Ende(dicker Kreis), Task(Rechteck)',m:'💡 BPMN-Übersicht',lf:'lf5'},{t:'Gateways: XOR(X)=entweder-oder, AND(+)=alle, OR(O)=mindestens 1',m:'💡 Gateways',lf:'lf5'},{t:'Pool(Teilnehmer), Lane(Abteilung), Sequenzfluss(solid), Nachrichtenfluss(gestrichelt)',m:'💡 Strukturen',lf:'lf5'}],tip:'XOR = Raute mit X. AND = Raute mit +. OR = Raute mit O.'},
-    {focus:'PAP & Struktogramm',tasks:[{t:'PAP DIN 66001: 4 Symbole (Oval/Rechteck/Raute/Parallelogramm)',m:'📄 Modul_F/Algorithmen_Aufgabenheft.pdf',lf:'lf5'},{t:'Struktogramm DIN 66261: KEINE Pfeile/GOTOs!',m:'📄 Modul_F/Algorithmen_Aufgabenheft.pdf',lf:'lf5'},{t:'5 Pseudocode-Schreibtischtests',m:'📄 Modul_F/Algorithmen_Aufgabenheft.pdf',lf:'lf5'}],tip:''},
-    {focus:'UML-Diagramme',tasks:[{t:'Use-Case: Akteure(außen) + Systemfunktionen(Ovale)',m:'📄 Modul_F/Algorithmen_Aufgabenheft.pdf',lf:'lf5'},{t:'Aktivitätsdiagramm: Fork/Join (Synchronisationsbalken)',m:'📄 Modul_F/Algorithmen_Aufgabenheft.pdf',lf:'lf5'},{t:'Klassendiagramm: + public, - private, # protected',m:'📄 Modul_F/Algorithmen_Loesungsheft.pdf',lf:'lf5'}],tip:''},
-    {focus:'Wochentest W16',tasks:[{t:'📝 WOCHENTEST W16 absolvieren',m:'🎯 App → Wochentests → Woche 16',lf:'lf5'}],tip:''},
-  ]},
-  {id:'w17',phase:3,title:'Englisch, Lückenschluss + Testphase 4',tagColors:['tag-coral','tag-red'],isTest:true,days:[
-    {focus:'IT-Englisch',tasks:[{t:'WLAN-Englisch: access point, encryption, throughput, channel',m:'💡 Vokabelliste',lf:'lf3'},{t:'Scrum-Englisch: sprint, backlog, stakeholder, velocity',m:'💡 Scrum-Vokabeln',lf:'lf5'},{t:'Strategie: erst Fragen lesen, dann Text',m:'💡 Lesestrategie',lf:'lf5'}],tip:'Fachbegriffe auf Deutsch erklären reicht.'},
-    {focus:'Lücken schließen',tasks:[{t:'Schwächste 3 Themen aus Testphase 3 wiederholen',m:'📄 Je nach Thema',lf:'lf3'},{t:'Formelkarte finalisieren: alle Formeln auf 1 Seite',m:'✏️ Formelkarte',lf:'lf5'},{t:'Wiederholungsliste: 50% abhaken',m:'📌 App → Wiederholen',lf:'lf5'}],tip:''},
-    {focus:'🧪 TESTPHASE 4',tasks:[{t:'TESTPHASE 4: Komplette IHK-AP1 – 90 Min.',m:'📄 IHK_Pruefungen/AP1_Herbst_2024.pdf',lf:'lf5'},{t:'Ziel: Mindestens 70%',m:'💡 Benchmark',lf:'lf5'}],isTestDay:true,tip:'Erwarteter Score: 70–80%.'},
-    {focus:'Analyse & Spickzettel',tasks:[{t:'Je Thema 1 Seite Spickzettel',m:'✏️ 8 Spickzettel',lf:'lf5'},{t:'Wiederholungsliste aktualisieren',m:'📌 App → Wiederholen',lf:'lf5'}],tip:''},
-    {focus:'Wochentest W17',tasks:[{t:'📝 WOCHENTEST W17 absolvieren',m:'🎯 App → Wochentests → Woche 17',lf:'lf5'}],tip:''},
-  ]},
-  {id:'w18',phase:4,title:'Intensivwiederholung & Testphasen 5+6',tagColors:['tag-green','tag-red'],isTest:true,days:[
-    {focus:'🧪 TESTPHASE 5 – Generalprobe 1',tasks:[{t:'TESTPHASE 5: Komplette AP1 – 90 Min.',m:'📄 IHK_Pruefungen/AP1_Fruehjahr_2023.pdf',lf:'lf3'},{t:'Fokus: max. 2 Min. pro Frage',m:'💡 Zeit',lf:'lf3'}],isTestDay:true,tip:''},
-    {focus:'Intensiv-Nacharbeit',tasks:[{t:'Top-3-Schwachstellen je 60 Min.',m:'📄 Je nach Thema',lf:'lf3'},{t:'Rechnen-Sprint: NWA + Subnetting + Kalkulation + USV',m:'📄 Aufgabensammlungen',lf:'lf2'}],tip:''},
-    {focus:'Gezielte Wiederholung',tasks:[{t:'Subnetting: 5 Aufgaben blind',m:'📄 Modul_C/subnettingAufgaben.pdf',lf:'lf3'},{t:'3 vollständige Handelskalkulation',m:'📄 Modul_A/Aufgaben_Kalkulation.pdf',lf:'lf2'},{t:'2 NWA komplett',m:'📄 Modul_A/Aufgaben_NWA.pdf',lf:'lf2'}],tip:''},
-    {focus:'Alle Lernzettel Review',tasks:[{t:'8 Spickzettel komplett durchgehen',m:'✏️ Lernzettel',lf:'lf5'},{t:'Karteikarten laut abfragen',m:'✏️ Karteikarten',lf:'lf5'}],tip:''},
-    {focus:'🧪 TESTPHASE 6 – Letzte Generalprobe',tasks:[{t:'TESTPHASE 6: Letzte AP1 – 90 Min.',m:'📄 IHK_Pruefungen/AP1_Herbst_2022.pdf',lf:'lf3'},{t:'Score-Kurve zeichnen: messbare Verbesserung?',m:'✏️ Lernkurve',lf:'lf5'}],isTestDay:true,tip:'Testphase 6 sollte 80%+ bringen.'},
-  ]},
-  {id:'w19',phase:4,title:'Feinschliff & Prüfungswoche',tagColors:['tag-green'],days:[
-    {focus:'Gesamtdurchgang',tasks:[{t:'8 Spickzettel einmal lesen – KEIN neues Lernen!',m:'✏️ Spickzettel',lf:'lf5'},{t:'Formelkarte: alle Formeln einmal durchrechnen',m:'✏️ Formelkarte',lf:'lf5'}],tip:'Woche 19: Kein neues Material!'},
-    {focus:'Letzte Wiederholung',tasks:[{t:'5 schwächste Themen nochmals',m:'📄 Je nach Thema',lf:'lf5'},{t:'Subnetting-Final: 3 Aufgaben unter 2 Min.',m:'📄 Modul_C/subnettingAufgaben.pdf',lf:'lf3'}],tip:''},
-    {focus:'Leichter Tag',tasks:[{t:'Formelkarte lesen – nicht rechnen',m:'✏️ Formelkarte',lf:'lf5'},{t:'Prüfungsunterlagen: Ausweis, Zulassung, Stifte',m:'💡 Checkliste',lf:'lf5'},{t:'Früh ins Bett: mind. 8 Stunden Schlaf!',m:'💡 Schlaf ist Lernen',lf:'lf5'}],tip:'Die letzten 48h: Schlaf > Büffeln!'},
-    {focus:'Prüfungstag',tasks:[{t:'Gutes Frühstück, ausreichend Schlaf',m:'💡 Routine',lf:'lf5'},{t:'Strategie: erst alle überfliegen, schwierige markieren',m:'💡 Prüfungsstrategie',lf:'lf5'},{t:'Max. 2 Min./Aufgabe – dann weiter!',m:'💡 Zeitplan',lf:'lf5'}],tip:'Du hast 19 Wochen gearbeitet. Vertrau dir.'},
-    {focus:'🏆 AP1 – Freiheit!',tasks:[{t:'AP1 Prüfung – Alles was du weißt, auf das Papier!',m:'🎯 PRÜFUNG',lf:'lf5'},{t:'Nach der Prüfung: Pause verdient!',m:'💡 Ausblick AP2',lf:'lf5'}],tip:'Du hast es geschafft!'},
+  {id:'lf12b_plan',phase:2,title:'LF 12b – Kundenspezifische Systemintegration',tagColors:['tag-accent'],days:[
+    {focus:'Migrationsprojekte planen',tasks:[
+      {t:'Migrationsphasen: Ist-Analyse, Planung, Test, Go-Live',lf:'lf12b'},{t:'P2V-Migration: Vorgehensweise',lf:'lf12b'},{t:'Rollback-Plan erstellen',lf:'lf12b'}],tip:''},
+    {focus:'Wirtschaftlichkeit & TCO/ROI',tasks:[
+      {t:'TCO berechnen: Hardware + Software + Betrieb + Support',lf:'lf12b'},{t:'ROI = Gewinn/Investition × 100',lf:'lf12b'},{t:'Amortisationsrechnung & Break-Even',lf:'lf12b'}],tip:''},
+    {focus:'Projektmanagement vertieft',tasks:[
+      {t:'Netzplantechnik: FAZ/FEZ/SAZ/SEZ/GP',lf:'lf12b'},{t:'Kritischer Pfad berechnen',lf:'lf12b'},{t:'Ressourcenplanung & Risikoregister',lf:'lf12b'}],tip:'GP=0 = kritischer Pfad.'},
+    {focus:'Dokumentation & Übergabe',tasks:[
+      {t:'Netzwerkdokumentation: Topologie, IP-Pläne',lf:'lf12b'},{t:'Benutzerhandbuch & Anlagendokumentation',lf:'lf12b'},{t:'Abnahmeprotokoll & Schulung durchführen',lf:'lf12b'}],tip:''},
+    {focus:'SLAs & Vertragsrecht',tasks:[
+      {t:'SLA: Verfügbarkeit, RTO, RPO, Reaktionszeit',lf:'lf12b'},{t:'Werkvertrag vs. Dienstvertrag vs. Kaufvertrag',lf:'lf12b'},{t:'AP2-Vorbereitung: Alle LFs wiederholen',lf:'lf12b'}],tip:'RTO = Recovery Time Objective, RPO = Recovery Point Objective.'},
   ]},
 ];
 
@@ -1816,7 +1882,7 @@ function renderPlan(){
       html+=`<div class="day-row"><div class="day-label"><div class="day-name">${dayNames[di]||'Tag '+(di+1)}</div></div><div class="day-content"><div class="day-focus">${day.focus}</div><div class="day-tasks">`;
       day.tasks.forEach((task,ti)=>{
         const ck=ud.checkedTasks&&ud.checkedTasks[`${w.id}_${di}_${ti}`];
-        html+=`<div class="day-task"><div class="task-check${ck?' done':''}" onclick="toggleCheck('${w.id}',${di},${ti},this)"></div><div class="task-info"><div class="task-text${ck?' done':''}">${task.t}</div><div class="task-material">${task.m}</div>
+        html+=`<div class="day-task"><div class="task-check${ck?' done':''}" onclick="toggleCheck('${w.id}',${di},${ti},this)"></div><div class="task-info"><div class="task-text${ck?' done':''}">${task.t}</div>
         <div class="task-links">${getLFLinks(task.lf,task.t)}</div></div></div>`;
       });
       html+='</div>';
@@ -1872,7 +1938,7 @@ function renderCompass(){
     const topicsHtml=sec.topics.map(topic=>{
       if(compassFilter==='undone'&&(ud.compassChecked||{})[topic.id])return '';
       const chk=(ud.compassChecked||{})[topic.id];
-      const localLinks=(topic.local||[]).map(f=>`<a class="lk-link" href="#" onclick="return false" title="${f}">📄 ${f.split('/').pop()}</a>`).join('');
+      const localLinks='';
       const gLink=`<a class="lk-link google" href="https://www.google.com/search?q=${encodeURIComponent(topic.g)}" target="_blank">🔍 Googlen</a>`;
       return `<div class="lk-topic"><div class="lk-topic-header"><div class="lk-chk${chk?' done':''}" onclick="toggleCompassChk('${topic.id}',this)"></div><div class="lk-topic-title">${topic.t}</div><span class="tag tag-gray" style="font-size:9px">${sec.lf}</span></div><div class="lk-topic-desc">${topic.desc}</div><div class="lk-links">${localLinks}${gLink}</div></div>`;
     }).join('');
