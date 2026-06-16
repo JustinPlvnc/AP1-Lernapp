@@ -366,6 +366,36 @@ h3{font-size:14px;font-weight:500}
 .wiki-code{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:6px;overflow-x:auto;white-space:pre}
 .wiki-tip{background:var(--accentbg);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 var(--r) var(--r) 0;margin-top:10px;font-size:12px;color:var(--text2)}
 .wiki-warn{background:var(--amberbg);border-left:3px solid var(--amber);padding:8px 12px;border-radius:0 var(--r) var(--r) 0;margin-top:10px;font-size:12px;color:var(--text2)}
+.wiki-intro{background:var(--bluebg);border-left:3px solid var(--blue);padding:11px 14px;border-radius:0 var(--r) var(--r) 0;margin-bottom:16px;font-size:13px;color:var(--text2);line-height:1.7}
+.wiki-intro strong{color:var(--text);display:block;margin-bottom:4px;font-size:13px}
+.wiki-concept{background:var(--purplebg);border:1px solid #ce93d830;border-radius:var(--r);padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:var(--text2);line-height:1.7}
+.wiki-concept .wc-head{display:flex;align-items:center;gap:7px;color:var(--purple);font-weight:600;font-size:12px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;font-family:var(--mono)}
+.wiki-concept dt{color:var(--text);font-weight:600;margin-top:8px}
+.wiki-concept dt:first-child{margin-top:0}
+.wiki-concept dd{margin:0 0 2px 0;color:var(--text2)}
+.wiki-why{background:var(--bg3);border:1px dashed var(--border2);border-radius:var(--r);padding:9px 13px;margin-top:8px;font-size:12px;color:var(--text2);line-height:1.65}
+.wiki-why strong{color:var(--green)}
+.wiki-glossary{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.wiki-glossary .wg-head{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.wiki-glossary .wg-item{margin-bottom:6px;font-size:12px;line-height:1.6}
+.wiki-glossary .wg-term{color:var(--accent);font-family:var(--mono);font-weight:600}
+.wiki-checklist{margin-top:12px;background:var(--greenbg);border-left:3px solid var(--green);border-radius:0 var(--r) var(--r) 0;padding:10px 14px}
+.wiki-checklist .wck-head{font-size:11px;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;font-weight:600}
+.wiki-checklist .wck-item{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--text2);margin-bottom:4px;line-height:1.55}
+.wiki-checklist .wck-item:before{content:"✓";color:var(--green);font-weight:700;flex-shrink:0}
+.wiki-mod-desc{font-size:12px;color:var(--text3);line-height:1.6;padding:0 18px 14px 18px;border-bottom:1px solid var(--border);margin-bottom:0}
+/* HowToBasic Egg */
+.htb-egg{display:flex;align-items:center;gap:8px;padding:11px 18px;margin-top:2px;cursor:pointer;user-select:none;font-size:12px;color:var(--text3);font-family:var(--mono);border-top:1px dashed var(--border);transition:color .15s,background .15s}
+.htb-egg:hover{color:var(--coral);background:var(--coralbg)}
+.htb-egg .htb-icon{font-size:14px}
+#egg-layer{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.egg-proj{position:absolute;font-size:34px;will-change:transform,opacity;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4))}
+.egg-splat{position:fixed;z-index:9998;pointer-events:none;font-size:44px;transform:translate(-50%,-50%) scale(0);animation:splatPop .5s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes splatPop{0%{transform:translate(-50%,-50%) scale(0) rotate(0)}60%{transform:translate(-50%,-50%) scale(1.25) rotate(8deg)}100%{transform:translate(-50%,-50%) scale(1) rotate(0)}}
+.egg-flash{position:fixed;inset:0;background:radial-gradient(circle,rgba(255,220,120,.18),transparent 70%);z-index:9997;pointer-events:none;opacity:0;animation:eggFlash .4s ease}
+@keyframes eggFlash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+.egg-toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--coral);color:var(--coral);font-family:var(--mono);font-size:12px;padding:10px 18px;border-radius:30px;z-index:10000;opacity:0;box-shadow:0 8px 30px rgba(0,0,0,.4);transition:opacity .3s,transform .3s}
+.egg-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* LEADERBOARD */
 .lb-table{width:100%;border-collapse:collapse}
@@ -964,7 +994,7 @@ h3{font-size:14px;font-weight:500}
 
 <!-- IT-WIKI -->
 <div class="page" id="page-wiki">
-  <div style="margin-bottom:22px"><h1>📚 IT-Wiki</h1><div class="sub">HowTo-Anleitungen für typische IT-Aufgaben – von Hardware bis DevOps</div></div>
+  <div style="margin-bottom:22px"><h1>📚 IT-Wiki</h1><div class="sub">Verständliche HowTo-Anleitungen für typische IT-Aufgaben – von Hardware bis DevOps. Jede Anleitung erklärt erst <em>was</em> und <em>warum</em>, bevor es ans <em>wie</em> geht – ideal auch für absolute Einsteiger.</div></div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px" id="wiki-filter">
     <button class="btn btn-ghost btn-sm" onclick="wikiFilter('all')">Alle</button>
     <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m1')">🖥️ Hardware</button>
@@ -981,6 +1011,7 @@ h3{font-size:14px;font-weight:500}
   </div>
   <div id="wiki-content"></div>
 </div>
+<div id="egg-layer"></div>
 
 </div><!-- end main-app -->
 
@@ -5887,229 +5918,516 @@ async function robotRun() {
 
 // ══════════════════ IT-WIKI ══════════════════
 const WIKI_MODULES = [
-  {id:'m1',icon:'🖥️',color:'#4fc3f7',title:'Modul 1: Hardware, Arbeitsplatz & Erste Schritte',entries:[
-    {title:'HowTo: PC/Server fachgerecht zusammenbauen',steps:[
-      {h:'ESD-Schutz herstellen',t:'Antistatik-Armband anlegen und mit dem PC-Gehäuse verbinden. Arbeitsfläche erden. Bauteile nur an den Kanten anfassen, nie an Kontakten oder Chips.',code:''},
-      {h:'CPU einsetzen',t:'Sockel-Verriegelung öffnen, CPU anhand der Markierung (Dreieck) ausrichten und ohne Druck einlegen. Verriegelung schließen. Wärmeleitpaste auftragen (erbsengroß, Mitte), Kühler montieren.',code:''},
-      {h:'RAM bestücken (Dual-Channel)',t:'Im Handbuch die korrekten Slots für Dual-Channel prüfen (meist A2+B2 oder 2+4). RAM-Riegel einrasten lassen bis die Clips einschnappen.',code:''},
-      {h:'System testen',t:'Vor dem Einbau im Gehäuse: "Breadboard-Test" – Netzteil, CPU, 1 RAM-Riegel, Grafik anschließen und kurz starten. BIOS-POST beobachten.',code:''},
-    ],tip:'Tipp: CPU-Sockel niemals mit Kraft bearbeiten – kein Druck beim Einlegen!'},
-    {title:'HowTo: BIOS/UEFI optimal konfigurieren',steps:[
-      {h:'BIOS öffnen',t:'Beim Start Entf, F2 oder F10 drücken (herstellerabhängig). UEFI-Oberfläche mit Maus bedienbar.',code:''},
-      {h:'Secure Boot aktivieren',t:'Im Bereich Security oder Boot → Secure Boot auf Enabled setzen. Für Linux ggf. deaktivieren oder MOK-Key eintragen.',code:''},
-      {h:'Boot-Reihenfolge festlegen',t:'Boot → Boot Priority: USB vor SSD für Installationen, danach zurückstellen.',code:''},
-      {h:'Virtualisierungs-Features aktivieren',t:'Advanced → CPU Configuration → Intel VT-x (Intel) oder AMD-V (AMD) auf Enabled. Erforderlich für VMs!',code:''},
-    ],tip:'Tipp: Nach Änderungen immer F10 (Save & Exit) drücken.'},
-    {title:'HowTo: RAID am Controller einrichten',steps:[
-      {h:'RAID-Level wählen',t:'RAID 1 = Spiegelung (2 Platten, 1 Ausfall toleriert). RAID 5 = Parität verteilt (min. 3 Platten). RAID 10 = Mirror+Stripe (min. 4 Platten, beste Performance+Sicherheit).',code:''},
-      {h:'RAID-Controller-BIOS öffnen',t:'Beim Start Ctrl+R (Dell PERC), Ctrl+H (LSI/Avago) oder Ctrl+I (Intel RST) drücken.',code:''},
-      {h:'Array erstellen',t:'"Create Array" → Festplatten auswählen → RAID-Level setzen → Initialize. Bei Hot-Spare: nach Array-Erstellung eine freie Platte als "Global Hot Spare" zuweisen.',code:''},
-      {h:'RAID-Status prüfen',t:'Nach OS-Installation: im RAID-Management-Tool (z.B. MegaRAID Storage Manager oder mdadm) Status prüfen.',code:'cat /proc/mdstat   # Linux Software-RAID'},
-    ],warn:'Warnung: RAID ≠ Backup! RAID schützt vor Platten-Ausfall, nicht vor Fehlern oder versehentlichem Löschen.'},
-    {title:'HowTo: Arbeitsplatz-Setup für Admins',steps:[
-      {h:'SSH-Client installieren',t:'Windows: Termius (GUI, kostenlos) oder PuTTY. Linux/Mac: OpenSSH bereits vorhanden.',code:'ssh benutzer@server-ip\nssh -p 2222 benutzer@server-ip   # anderer Port'},
-      {h:'Texteditor einrichten',t:'VS Code installieren (code.visualstudio.com). Empfohlene Extensions: Remote-SSH, GitLens, YAML. Alternativ: Notepad++ für Windows.',code:''},
-      {h:'WinSCP / FileZilla einrichten',t:'WinSCP: Session → SFTP → Hostname+Port+User+Passwort eintragen. Schlüssel-Auth: Session → Advanced → SSH → Authentication → Schlüsseldatei.',code:''},
-    ],tip:'Tipp: SSH-Keys statt Passwörter nutzen! Sicherer und bequemer.'},
-    {title:'HowTo: Patchpanel auflegen (LSA-Plus)',steps:[
-      {h:'Belegungsschema wählen',t:'TIA-568B (Standard in DE): Weiß-Orange, Orange, Weiß-Grün, Blau, Weiß-Blau, Grün, Weiß-Braun, Braun. Die Farbbeschriftung am Panel nutzen.',code:''},
-      {h:'Kabel abisolieren',t:'Außenmantel ca. 3 cm abisolieren, Adernpaare entwirren und in die Kämme des Panels einlegen.',code:''},
-      {h:'LSA-Plus-Werkzeug ansetzen',t:'Werkzeug rechtwinklig ansetzen (Schneidseite nach außen!), Ader vollständig eindrücken bis es klickt. Überstehende Ader wird automatisch abgetrennt.',code:''},
-      {h:'Mit Kabeltester prüfen',t:'Beide Seiten des Kabels an den Tester anschließen, alle 8 Adern müssen durchgehen.',code:''},
-    ],tip:'Tipp: Immer die Schneidseite des LSA-Werkzeugs nach außen halten!'},
-    {title:'HowTo: Netzwerkkabel crimpen (RJ45)',steps:[
-      {h:'Kabel abisolieren',t:'Ca. 2,5 cm Außenmantel entfernen (Abmantelwerkzeug), Adernpaare entwirren.',code:''},
-      {h:'Adern nach TIA-568B sortieren',t:'Reihenfolge: W-Or, Or, W-Grn, Bl, W-Bl, Grn, W-Br, Br. Auf gleiche Länge kürzen (ca. 14 mm frei).',code:''},
-      {h:'In RJ45-Stecker einführen',t:'Adern in den Stecker führen (Clip unten), prüfen ob alle 8 bis ganz vorne durchgehen.',code:''},
-      {h:'Crimpen und testen',t:'Stecker in die Crimpzange, kräftig drücken. Mit Kabeltester beide Enden prüfen.',code:''},
-    ],tip:'Tipp: Kreuzkabel heute nicht mehr nötig – moderne Switches haben Auto-MDI-X.'},
+  {id:'m1',icon:'🖥️',color:'#4fc3f7',title:'Modul 1: Hardware, Arbeitsplatz & Erste Schritte',desc:'Hier geht es um die physische Grundlage von allem: den Computer selbst. Du lernst, wie ein PC oder Server aufgebaut wird, wie das BIOS/UEFI als "Vermittler" zwischen Hardware und Betriebssystem funktioniert, wie man Festplatten zu einem ausfallsicheren Verbund (RAID) zusammenschaltet und wie Netzwerkkabel entstehen. Kein Vorwissen nötig – wir fangen ganz unten an.',entries:[
+    {title:'HowTo: PC/Server fachgerecht zusammenbauen',
+      intro:'Ein PC besteht aus einzelnen Bauteilen, die zusammengesteckt werden – ähnlich wie LEGO, nur empfindlicher. Das wichtigste Bauteil ist die Hauptplatine (Mainboard), auf der alles andere Platz findet: der Prozessor (CPU = das "Gehirn"), der Arbeitsspeicher (RAM = der "Schreibtisch", auf dem gerade benutzte Daten liegen) und die Festplatte (der "Aktenschrank" für dauerhafte Speicherung). Beim Zusammenbau ist die größte Gefahr nicht das Verkabeln, sondern eine unsichtbare: statische Elektrizität.',
+      concept:[
+        {t:'CPU (Prozessor)',d:'Rechnet und steuert alles. Sitzt in einem Sockel auf dem Mainboard und wird gekühlt, weil sie heiß wird.'},
+        {t:'RAM (Arbeitsspeicher)',d:'Flüchtiger Schnellspeicher. Inhalt ist nach dem Ausschalten weg. Je mehr, desto mehr Programme laufen flüssig.'},
+        {t:'Mainboard',d:'Die "Grundplatte", die alle Komponenten verbindet und mit Strom versorgt.'},
+        {t:'ESD',d:'Electro-Static Discharge = elektrostatische Entladung. Der kleine "Blitz", den man im Winter an der Türklinke spürt – für Chips tödlich.'},
+      ],
+      steps:[
+      {h:'ESD-Schutz herstellen',t:'Antistatik-Armband anlegen und mit dem PC-Gehäuse verbinden. Arbeitsfläche erden. Bauteile nur an den Kanten anfassen, nie an Kontakten oder Chips.',code:'',why:'Schon eine Entladung, die du gar nicht spürst (ab ca. 100 Volt), kann empfindliche Chips dauerhaft beschädigen. Der Fehler zeigt sich oft erst Wochen später – darum ist Vorbeugung Pflicht.'},
+      {h:'CPU einsetzen',t:'Sockel-Verriegelung öffnen, CPU anhand der Markierung (kleines Dreieck an einer Ecke) ausrichten und ohne Druck einlegen. Verriegelung schließen. Wärmeleitpaste auftragen (erbsengroß, in die Mitte), dann den Kühler montieren.',code:'',why:'Die Wärmeleitpaste füllt mikroskopische Luftlücken zwischen CPU und Kühler. Luft isoliert – ohne Paste überhitzt die CPU und schaltet sich zum Selbstschutz ab.'},
+      {h:'RAM bestücken (Dual-Channel)',t:'Im Handbuch die korrekten Slots für Dual-Channel prüfen (meist A2+B2 oder Slot 2+4). RAM-Riegel gerade einsetzen und einrasten lassen, bis die seitlichen Clips hörbar einschnappen.',code:'',why:'Dual-Channel bedeutet, dass die CPU über zwei Datenleitungen gleichzeitig mit dem RAM spricht – fast wie eine zweispurige statt einspurige Straße. Das bringt spürbar mehr Tempo, funktioniert aber nur in den richtigen Slots.'},
+      {h:'System testen (Breadboard-Test)',t:'Vor dem Einbau im Gehäuse außerhalb testen: Netzteil, CPU, ein RAM-Riegel und Grafik anschließen und kurz starten. Den BIOS-POST (Selbsttest beim Einschalten) beobachten.',code:'',why:'Wenn etwas defekt ist, findest du den Fehler außerhalb des Gehäuses viel schneller, statt am Ende alles wieder auseinanderbauen zu müssen.'},
+    ],
+      checklist:['Antistatik-Armband getragen','CPU-Dreieck zur Sockelmarkierung ausgerichtet','Wärmeleitpaste aufgetragen','RAM in den richtigen Dual-Channel-Slots eingerastet','POST-Test erfolgreich (Bild erscheint)'],
+      tip:'Tipp: CPU-Sockel niemals mit Kraft bearbeiten – kein Druck beim Einlegen! Eine verbogene Pin-Reihe ist oft ein Totalschaden.',
+      glossary:[{t:'POST',d:'Power-On Self-Test – der Hardware-Selbsttest direkt nach dem Einschalten.'},{t:'Sockel',d:'Die Steckfassung für die CPU auf dem Mainboard.'},{t:'Breadboard-Test',d:'Probebetrieb der Kernkomponenten außerhalb des Gehäuses.'}]},
+    {title:'HowTo: BIOS/UEFI optimal konfigurieren',
+      intro:'Bevor ein Betriebssystem wie Windows oder Linux startet, läuft eine kleine, fest verbaute Software: das BIOS bzw. sein moderner Nachfolger UEFI. Stell es dir wie den "Hausmeister" des Computers vor – es prüft beim Einschalten, ob alle Bauteile da sind, und entscheidet, von welchem Datenträger das Betriebssystem geladen wird. Diese Einstellungen erreichst du über eine eigene Oberfläche, noch bevor das eigentliche System hochfährt.',
+      concept:[
+        {t:'BIOS / UEFI',d:'Die Firmware, die direkt nach dem Einschalten läuft und die Hardware startklar macht. UEFI ist die moderne Variante mit Mausbedienung.'},
+        {t:'Boot-Reihenfolge',d:'Die Liste, in der das System nach einem startfähigen Datenträger sucht (z. B. erst USB, dann SSD).'},
+        {t:'Virtualisierung (VT-x / AMD-V)',d:'Eine CPU-Funktion, die das Ausführen virtueller Computer (VMs) ermöglicht.'},
+      ],
+      steps:[
+      {h:'BIOS/UEFI öffnen',t:'Direkt beim Start die richtige Taste drücken: meist Entf, F2 oder F10 (herstellerabhängig, steht kurz am Bildschirmrand). Die UEFI-Oberfläche ist meist mit der Maus bedienbar.',code:'',why:'Das Zeitfenster ist kurz – am sichersten drückst du die Taste mehrfach direkt nach dem Einschalten.'},
+      {h:'Secure Boot verstehen & setzen',t:'Im Bereich Security oder Boot → Secure Boot auf Enabled setzen. Für manche Linux-Distributionen ggf. deaktivieren oder einen MOK-Key eintragen.',code:'',why:'Secure Boot lässt nur digital signierte (vertrauenswürdige) Startsoftware zu und verhindert so, dass sich Schadsoftware ganz früh ins System einnistet.'},
+      {h:'Boot-Reihenfolge festlegen',t:'Boot → Boot Priority: für eine Installation USB an die erste Stelle, danach wieder zurückstellen, damit künftig von der SSD gebootet wird.',code:'',why:'Sonst würde der PC bei jedem Neustart wieder vom USB-Stick starten wollen statt vom fertig installierten System.'},
+      {h:'Virtualisierungs-Features aktivieren',t:'Advanced → CPU Configuration → Intel VT-x (Intel) bzw. AMD-V (AMD) auf Enabled. Erforderlich für virtuelle Maschinen!',code:'',why:'Ohne diese Funktion verweigern Programme wie VirtualBox oder Hyper-V den Dienst – sie brauchen die Hardware-Unterstützung der CPU.'},
+    ],
+      tip:'Tipp: Nach Änderungen immer mit F10 (Save & Exit) speichern, sonst verfallen die Einstellungen.',
+      glossary:[{t:'Firmware',d:'Fest mit der Hardware verbundene Software.'},{t:'Secure Boot',d:'Sicherheitsfunktion, die nur signierte Startsoftware erlaubt.'},{t:'MOK',d:'Machine Owner Key – eigener Schlüssel, um trotz Secure Boot eigene Software zuzulassen.'}]},
+    {title:'HowTo: RAID am Controller einrichten',
+      intro:'Eine einzelne Festplatte kann jederzeit kaputtgehen – und damit sind alle Daten weg. RAID ("Redundant Array of Independent Disks") ist ein Trick: Mehrere Festplatten werden zu einem Verbund zusammengeschaltet, sodass beim Ausfall einer Platte keine Daten verloren gehen oder die Geschwindigkeit steigt. Wichtig vorweg: RAID ist eine Ausfallsicherheit, aber KEIN Backup.',
+      concept:[
+        {t:'RAID 1 (Spiegelung)',d:'Zwei Platten enthalten exakt dieselben Daten. Fällt eine aus, läuft alles weiter. Verfügbarer Speicher = nur eine Platte.'},
+        {t:'RAID 5 (Parität)',d:'Mind. 3 Platten. Daten + Prüfsummen verteilt, eine Platte darf ausfallen. Gutes Verhältnis aus Speicher und Sicherheit.'},
+        {t:'RAID 10 (Mirror + Stripe)',d:'Mind. 4 Platten. Kombiniert Spiegelung und Tempo – sicher und schnell, aber teuer.'},
+        {t:'Hot Spare',d:'Eine bereitstehende Reserveplatte, die bei Ausfall automatisch einspringt.'},
+      ],
+      steps:[
+      {h:'RAID-Level wählen',t:'RAID 1 = Spiegelung (2 Platten, 1 Ausfall toleriert). RAID 5 = Parität verteilt (min. 3 Platten). RAID 10 = Mirror+Stripe (min. 4 Platten, beste Performance + Sicherheit).',code:'',why:'Die Wahl hängt vom Ziel ab: maximale Sicherheit, maximaler Speicherplatz oder maximale Geschwindigkeit – man kann selten alles gleichzeitig haben.'},
+      {h:'RAID-Controller-BIOS öffnen',t:'Beim Start die Controller-Tastenkombination drücken: Ctrl+R (Dell PERC), Ctrl+H (LSI/Avago) oder Ctrl+I (Intel RST).',code:'',why:'Der RAID-Controller ist eine eigene kleine Hardware mit eigenem Menü, getrennt vom normalen BIOS.'},
+      {h:'Array erstellen',t:'"Create Array" → Festplatten auswählen → RAID-Level setzen → Initialize. Für Hot-Spare anschließend eine freie Platte als "Global Hot Spare" zuweisen.',code:''},
+      {h:'RAID-Status prüfen',t:'Nach der OS-Installation den Status im RAID-Management-Tool kontrollieren (z. B. MegaRAID Storage Manager oder unter Linux mdadm).',code:'cat /proc/mdstat   # Linux Software-RAID Status anzeigen'},
+    ],
+      warn:'Warnung: RAID ≠ Backup! RAID schützt vor dem Ausfall einer Platte, NICHT vor versehentlichem Löschen, Ransomware oder Brand. Ein echtes Backup liegt zusätzlich an einem anderen Ort.',
+      glossary:[{t:'Array',d:'Der fertige Plattenverbund.'},{t:'Parität',d:'Prüfsumme, mit der sich verlorene Daten rekonstruieren lassen.'},{t:'Initialize',d:'Erstmaliges Vorbereiten des Arrays.'}]},
+    {title:'HowTo: Arbeitsplatz-Setup für Admins',
+      intro:'Als Administrator verwaltest du selten den Server direkt davor sitzend, sondern ferngesteuert über das Netzwerk. Dafür brauchst du die richtigen Werkzeuge: ein Programm zum Fernzugriff auf die Kommandozeile (SSH), einen guten Texteditor für Konfigurationsdateien und ein Tool zum Dateiübertragen. Dieses Grund-Setup begleitet dich durch die ganze Ausbildung.',
+      concept:[
+        {t:'SSH',d:'Secure Shell – verschlüsselte Fernsteuerung der Kommandozeile eines anderen Rechners.'},
+        {t:'SFTP',d:'Sicheres Dateiübertragungs-Protokoll, läuft über dieselbe verschlüsselte Verbindung wie SSH.'},
+        {t:'SSH-Key',d:'Ein digitales Schlüsselpaar als Login-Methode – sicherer als ein Passwort.'},
+      ],
+      steps:[
+      {h:'SSH-Client installieren',t:'Windows: Termius (grafisch, kostenlos) oder PuTTY. Linux/Mac: OpenSSH ist bereits vorhanden.',code:'ssh benutzer@server-ip\nssh -p 2222 benutzer@server-ip   # falls ein anderer Port genutzt wird',why:'Über SSH bedienst du einen Server, als säßest du direkt davor – egal ob er im Nebenraum oder im Rechenzentrum am anderen Ende der Stadt steht.'},
+      {h:'Texteditor einrichten',t:'VS Code installieren (code.visualstudio.com). Empfohlene Erweiterungen: Remote-SSH, GitLens, YAML. Alternative für Windows: Notepad++.',code:''},
+      {h:'WinSCP / FileZilla einrichten',t:'WinSCP: Session → SFTP → Hostname, Port, Benutzer und Passwort eintragen. Für Schlüssel-Auth: Session → Advanced → SSH → Authentication → Schlüsseldatei wählen.',code:''},
+    ],
+      tip:'Tipp: SSH-Keys statt Passwörter nutzen! Sie sind sicherer (nicht erratbar) und bequemer (kein Tippen).'},
+    {title:'HowTo: Patchpanel auflegen (LSA-Plus)',
+      intro:'In Büros laufen Netzwerkkabel aus den Wänden in einem Serverraum zusammen. Damit man dort nicht direkt an die dünnen Adern muss, enden die Kabel an einem Patchpanel – einer Art "Verteilerleiste". Die einzelnen Drähte werden dort mit einem speziellen Werkzeug (LSA-Plus) sauber aufgelegt. Dabei zählt die richtige Farbreihenfolge.',
+      concept:[
+        {t:'Patchpanel',d:'Rangierfeld im Serverschrank, an dem die festverlegten Wandkabel enden.'},
+        {t:'TIA-568B',d:'Der in Deutschland übliche Standard für die Adern-Farbreihenfolge.'},
+        {t:'LSA-Plus',d:'Auflege-Technik/Werkzeug, das die Ader anklemmt und gleichzeitig abschneidet.'},
+      ],
+      steps:[
+      {h:'Belegungsschema wählen',t:'TIA-568B (Standard in DE): Weiß-Orange, Orange, Weiß-Grün, Blau, Weiß-Blau, Grün, Weiß-Braun, Braun. Am besten die Farbbeschriftung am Panel selbst nutzen.',code:'',why:'Beide Kabelenden müssen demselben Schema folgen – sonst sind die Adernpaare vertauscht und die Verbindung funktioniert nicht oder ist störanfällig.'},
+      {h:'Kabel abisolieren',t:'Äußeren Mantel ca. 3 cm entfernen, die verdrillten Adernpaare entwirren und in die Kämme des Panels einlegen.',code:''},
+      {h:'LSA-Plus-Werkzeug ansetzen',t:'Werkzeug rechtwinklig ansetzen (Schneidseite nach außen!), die Ader vollständig eindrücken, bis es klickt. Die überstehende Ader wird dabei automatisch abgetrennt.',code:'',why:'Die Schneidseite nach außen sorgt dafür, dass das Reststück abgeschnitten wird und nicht die Ader, die du behalten willst.'},
+      {h:'Mit Kabeltester prüfen',t:'Beide Seiten des Kabels an den Tester anschließen – alle 8 Adern müssen in der richtigen Reihenfolge durchgehen.',code:''},
+    ],tip:'Tipp: Immer die Schneidseite des LSA-Werkzeugs nach außen halten, sonst kappst du die falsche Ader.',
+      glossary:[{t:'Ader',d:'Einzelner isolierter Draht im Netzwerkkabel (8 Stück, paarweise verdrillt).'},{t:'Kabeltester',d:'Gerät, das prüft, ob jede Ader korrekt durchverbunden ist.'}]},
+    {title:'HowTo: Netzwerkkabel crimpen (RJ45)',
+      intro:'Während ein Patchpanel feste Wandkabel aufnimmt, brauchst du für flexible Verbindungskabel einen Stecker am Ende: den RJ45-Stecker (der typische "Klick"-Stecker am Netzwerkkabel). Ihn ans Kabel zu pressen nennt man "crimpen". Auch hier zählt die richtige Farbreihenfolge.',
+      concept:[
+        {t:'RJ45',d:'Der gängige 8-polige Stecker für Netzwerkkabel (Ethernet).'},
+        {t:'Crimpen',d:'Das mechanische Verpressen des Steckers mit dem Kabel über eine Crimpzange.'},
+        {t:'Auto-MDI-X',d:'Funktion moderner Switches, die Sende- und Empfangsleitung automatisch erkennt – darum sind Kreuzkabel überflüssig.'},
+      ],
+      steps:[
+      {h:'Kabel abisolieren',t:'Ca. 2,5 cm Außenmantel mit dem Abmantelwerkzeug entfernen, dann die Adernpaare entwirren.',code:''},
+      {h:'Adern nach TIA-568B sortieren',t:'Reihenfolge: W-Or, Or, W-Grn, Bl, W-Bl, Grn, W-Br, Br. Anschließend gerade und auf gleiche Länge kürzen (ca. 14 mm frei).',code:'',why:'Gleich lange, in der richtigen Reihenfolge liegende Adern rutschen sauber bis ganz nach vorne in den Stecker und treffen dort die Kontakte.'},
+      {h:'In RJ45-Stecker einführen',t:'Adern in den Stecker schieben (Clip nach unten), prüfen ob alle 8 vorne bis zum Anschlag durchgehen.',code:''},
+      {h:'Crimpen und testen',t:'Stecker in die Crimpzange stecken, kräftig zudrücken. Danach mit dem Kabeltester beide Enden prüfen.',code:''},
+    ],tip:'Tipp: Kreuzkabel sind heute nicht mehr nötig – moderne Switches haben Auto-MDI-X.'},
   ]},
-  {id:'m2',icon:'🖥️',color:'#69f0ae',title:'Modul 2: Virtualisierung, Container & Cloud',entries:[
-    {title:'HowTo: VM in VirtualBox aufsetzen',steps:[
-      {h:'VirtualBox installieren',t:'Download von virtualbox.org. Extension Pack für USB 3.0 und RDP zusätzlich installieren.',code:''},
-      {h:'Neue VM erstellen',t:'Neu → Name und BS-Typ wählen → RAM zuweisen (mind. 2 GB für Windows) → Neue virtuelle Festplatte erstellen (VDI, dynamisch).',code:''},
-      {h:'ISO einbinden und installieren',t:'Einstellungen → Massenspeicher → Controller:IDE → ISO-Datei auswählen → VM starten → OS installieren.',code:''},
-      {h:'Netzwerkmodus verstehen',t:'NAT: VM hat Internet, aber nicht vom Host erreichbar. Bridge: VM bekommt eigene IP im Heimnetz. Host-Only: Nur VM↔Host-Kommunikation, kein Internet.',code:''},
-    ],tip:'Tipp: Snapshot VOR jeder riskanten Aktion erstellen!',warn:'Snapshots ≠ Backup: Snapshots liegen auf derselben Disk. Bei Plattenausfall verlierst du alles.'},
-    {title:'HowTo: Proxmox VE installieren',steps:[
-      {h:'ISO herunterladen und booten',t:'Download: proxmox.com/downloads → Bootfähigen USB erstellen (Rufus/balenaEtcher). Von USB booten.',code:''},
-      {h:'Installation durchführen',t:'Zielfestplatte wählen → Zeitzone+Tastatur → Passwort+E-Mail für root → Netzwerk konfigurieren (IP/GW/DNS).',code:''},
-      {h:'Weboberfläche öffnen',t:'Browser: https://PROXMOX-IP:8006 → Root-Login → SSL-Warnung ignorieren (selbstsigniert).',code:''},
-      {h:'VM erstellen',t:'Datacenter → Node → "Create VM" → ISO auswählen → CPU/RAM/Disk konfigurieren → Starten.',code:''},
-    ],tip:'Tipp: Für Test-Cluster: 3 Proxmox-Nodes, Corosync für Quorum benötigt ungerade Anzahl.'},
-    {title:'HowTo: Docker unter Linux installieren',steps:[
-      {h:'Docker Engine installieren',t:'Offizielle Installationsskript-Methode (Ubuntu/Debian):',code:'curl -fsSL https://get.docker.com | sh\nsudo usermod -aG docker $USER   # Kein sudo nötig nach Re-Login'},
-      {h:'Docker Compose installieren',t:'Bei neuem Docker bereits als Plugin enthalten:',code:'docker compose version\n# Alternativ standalone:\nsudo apt install docker-compose-plugin'},
-      {h:'Ersten Container starten',t:'',code:'docker run -d --name nginx -p 80:80 nginx\ndocker ps           # laufende Container\ndocker logs nginx   # Logs ansehen'},
-      {h:'Container stoppen und löschen',t:'',code:'docker stop nginx\ndocker rm nginx\ndocker image ls     # Images auflisten'},
-    ],tip:'Tipp: Immer offizielle Images von hub.docker.com nutzen, Tags prüfen (z.B. :latest vs. :24.04).'},
-    {title:'HowTo: Dockerfile schreiben',steps:[
+  {id:'m2',icon:'🖥️',color:'#69f0ae',title:'Modul 2: Virtualisierung, Container & Cloud',desc:'Statt für jede Aufgabe einen eigenen physischen Computer zu kaufen, lässt man heute viele "virtuelle Computer" auf einer einzigen leistungsstarken Maschine laufen. Dieses Modul erklärt virtuelle Maschinen (VMs), die schlankere Alternative Container (Docker) und wie man Daten dauerhaft sichert.',entries:[
+    {title:'HowTo: VM in VirtualBox aufsetzen',
+      intro:'Eine virtuelle Maschine (VM) ist ein kompletter Computer, der nur als Software existiert – ein "Computer im Computer". Auf deinem echten Rechner (dem Host) läuft ein Programm wie VirtualBox, das einem Gast-Betriebssystem vorgaukelt, es hätte echte Hardware. So kannst du z. B. Linux ausprobieren, ohne dein Windows anzufassen.',
+      concept:[
+        {t:'Host',d:'Der echte, physische Computer, auf dem die Virtualisierungs-Software läuft.'},
+        {t:'Gast (Guest)',d:'Das Betriebssystem, das innerhalb der VM läuft.'},
+        {t:'Snapshot',d:'Momentaufnahme der VM, zu der man jederzeit zurückspringen kann.'},
+        {t:'NAT / Bridge / Host-Only',d:'Die drei Netzwerk-Betriebsarten einer VM (siehe Schritt 4).'},
+      ],
+      steps:[
+      {h:'VirtualBox installieren',t:'Download von virtualbox.org. Das Extension Pack zusätzlich installieren (für USB 3.0 und RDP).',code:''},
+      {h:'Neue VM erstellen',t:'Neu → Name und BS-Typ wählen → RAM zuweisen (mind. 2 GB für Windows) → neue virtuelle Festplatte erstellen (Format VDI, dynamisch wachsend).',code:'',why:'"Dynamisch" heißt: Die virtuelle Platte belegt anfangs nur wenig Speicher und wächst erst mit den tatsächlich gespeicherten Daten.'},
+      {h:'ISO einbinden und installieren',t:'Einstellungen → Massenspeicher → Controller:IDE → die ISO-Datei auswählen → VM starten → das Betriebssystem ganz normal installieren.',code:'',why:'Eine ISO-Datei ist das digitale Abbild einer Installations-DVD – die VM behandelt sie wie eine eingelegte Scheibe.'},
+      {h:'Netzwerkmodus verstehen',t:'NAT: VM hat Internet, ist aber vom Host nicht direkt erreichbar. Bridge: VM bekommt eine eigene IP im Heimnetz wie ein echtes Gerät. Host-Only: nur VM↔Host, kein Internet.',code:'',why:'Der richtige Modus hängt vom Zweck ab: NAT zum Surfen, Bridge wenn andere Geräte die VM erreichen sollen, Host-Only für isolierte Tests.'},
+    ],tip:'Tipp: Snapshot VOR jeder riskanten Aktion erstellen – so kannst du Fehler in Sekunden rückgängig machen!',warn:'Snapshots ≠ Backup: Snapshots liegen auf derselben Festplatte wie die VM. Bei einem Plattenausfall verlierst du beides.'},
+    {title:'HowTo: Proxmox VE installieren',
+      intro:'Proxmox VE ist ein kostenloses Betriebssystem, dessen einziger Zweck es ist, viele VMs und Container zu verwalten – ein sogenannter Hypervisor. Man installiert es direkt auf einem Server (ohne Windows darunter) und steuert dann alles bequem über den Browser.',
+      concept:[
+        {t:'Hypervisor',d:'Software-Schicht, die mehrere VMs auf einer Hardware verwaltet.'},
+        {t:'Node',d:'Ein einzelner Proxmox-Server.'},
+        {t:'Cluster',d:'Mehrere zusammengeschaltete Nodes, die gemeinsam verwaltet werden.'},
+      ],
+      steps:[
+      {h:'ISO herunterladen und booten',t:'Download: proxmox.com/downloads → bootfähigen USB-Stick erstellen (mit Rufus oder balenaEtcher) → davon booten.',code:''},
+      {h:'Installation durchführen',t:'Zielfestplatte wählen → Zeitzone und Tastatur → Passwort und E-Mail für den root-Benutzer → Netzwerk konfigurieren (IP, Gateway, DNS).',code:''},
+      {h:'Weboberfläche öffnen',t:'Im Browser: https://PROXMOX-IP:8006 → als root anmelden → SSL-Warnung bestätigen (das Zertifikat ist selbstsigniert, das ist hier normal).',code:'',why:'Proxmox erzeugt sein Verschlüsselungs-Zertifikat selbst, statt es von einer offiziellen Stelle zu kaufen – daher die Browser-Warnung, die hier unkritisch ist.'},
+      {h:'VM erstellen',t:'Datacenter → Node → "Create VM" → ISO auswählen → CPU, RAM und Disk konfigurieren → starten.',code:''},
+    ],tip:'Tipp: Für einen Test-Cluster braucht man 3 Nodes – Corosync verlangt für die Beschlussfähigkeit (Quorum) eine ungerade Anzahl.'},
+    {title:'HowTo: Docker unter Linux installieren',
+      intro:'Ein Container ist wie eine besonders schlanke VM: Statt ein komplettes Betriebssystem mitzuschleppen, teilt er sich den Kern des Wirtssystems und verpackt nur die Anwendung samt ihren Abhängigkeiten. Docker ist das bekannteste Werkzeug dafür. Vorteil: Container starten in Sekunden und brauchen wenig Ressourcen.',
+      concept:[
+        {t:'Image',d:'Die unveränderliche "Bauanleitung/Vorlage" für einen Container.'},
+        {t:'Container',d:'Eine laufende Instanz eines Images.'},
+        {t:'Registry / Docker Hub',d:'Online-Lager, aus dem man fertige Images herunterlädt.'},
+      ],
+      steps:[
+      {h:'Docker Engine installieren',t:'Offizielle Skript-Methode (Ubuntu/Debian):',code:'curl -fsSL https://get.docker.com | sh\nsudo usermod -aG docker $USER   # danach kein sudo mehr nötig (Re-Login)',why:'Der Eintrag in die docker-Gruppe erlaubt deinem Benutzer, Docker ohne Administratorrechte zu bedienen.'},
+      {h:'Docker Compose installieren',t:'Bei aktuellem Docker bereits als Plugin enthalten:',code:'docker compose version\n# Alternativ standalone:\nsudo apt install docker-compose-plugin'},
+      {h:'Ersten Container starten',t:'',code:'docker run -d --name nginx -p 80:80 nginx\ndocker ps           # laufende Container anzeigen\ndocker logs nginx   # Logs ansehen',why:'-d startet im Hintergrund, -p 80:80 verbindet Port 80 des Hosts mit Port 80 im Container, sodass die Webseite erreichbar ist.'},
+      {h:'Container stoppen und löschen',t:'',code:'docker stop nginx\ndocker rm nginx\ndocker image ls     # vorhandene Images auflisten'},
+    ],tip:'Tipp: Immer offizielle Images von hub.docker.com nutzen und die Tags prüfen (z. B. :latest vs. :24.04).'},
+    {title:'HowTo: Dockerfile schreiben',
+      intro:'Ein Dockerfile ist eine Textdatei mit der Bauanleitung für ein eigenes Image. Zeile für Zeile beschreibst du: Worauf baue ich auf, was installiere ich, welche Dateien kopiere ich hinein und welcher Befehl soll beim Start laufen. Aus diesem Rezept "backt" Docker dann ein wiederverwendbares Image.',
+      concept:[
+        {t:'FROM',d:'Das Basis-Image, auf dem du aufbaust.'},
+        {t:'RUN',d:'Befehl, der beim Bauen ausgeführt wird (z. B. Pakete installieren).'},
+        {t:'CMD',d:'Der Befehl, der beim Start des Containers läuft.'},
+        {t:'Layer',d:'Jede Anweisung erzeugt eine Schicht – weniger Schichten = kleineres Image.'},
+      ],
+      steps:[
       {h:'Basis-Dockerfile erstellen',t:'',code:'FROM ubuntu:22.04\nRUN apt-get update && apt-get install -y nginx\nCOPY index.html /var/www/html/\nEXPOSE 80\nCMD ["nginx", "-g", "daemon off;"]'},
-      {h:'Image bauen',t:'',code:'docker build -t mein-nginx:1.0 .\ndocker run -d -p 8080:80 mein-nginx:1.0'},
-    ],tip:'Tipp: RUN-Befehle verketten (&&) um Image-Layers zu minimieren.'},
-    {title:'HowTo: Persistente Daten in Docker (Volumes)',steps:[
-      {h:'Named Volume (empfohlen)',t:'Docker verwaltet den Speicherort:',code:'docker volume create meine-daten\ndocker run -v meine-daten:/var/lib/mysql mysql'},
-      {h:'Bind Mount (Entwicklung)',t:'Host-Verzeichnis wird eingebunden:',code:'docker run -v /home/user/daten:/app/daten nginx'},
-    ],warn:'Vorsicht: Ohne Volume gehen alle Container-Daten beim "docker rm" verloren!'},
+      {h:'Image bauen',t:'',code:'docker build -t mein-nginx:1.0 .\ndocker run -d -p 8080:80 mein-nginx:1.0',why:'-t vergibt einen Namen und eine Versionsnummer (Tag), der Punkt am Ende sagt "nimm das Dockerfile im aktuellen Ordner".'},
+    ],tip:'Tipp: RUN-Befehle mit && verketten, um die Anzahl der Image-Layer (und damit die Größe) zu minimieren.'},
+    {title:'HowTo: Persistente Daten in Docker (Volumes)',
+      intro:'Container sind absichtlich "vergesslich": Löschst du einen Container, sind seine Daten weg. Für Datenbanken oder Dateien, die bleiben sollen, gibt es Volumes – einen Speicher außerhalb des Containers, der dessen Lebensdauer überdauert.',
+      concept:[
+        {t:'Named Volume',d:'Von Docker verwalteter, dauerhafter Speicherbereich (empfohlen).'},
+        {t:'Bind Mount',d:'Ein konkreter Ordner vom Host wird in den Container gespiegelt.'},
+        {t:'Persistenz',d:'Daten bleiben erhalten, auch wenn der Container gelöscht wird.'},
+      ],
+      steps:[
+      {h:'Named Volume (empfohlen)',t:'Docker verwaltet den Speicherort selbst:',code:'docker volume create meine-daten\ndocker run -v meine-daten:/var/lib/mysql mysql',why:'Named Volumes sind portabel und sicher von Docker organisiert – du musst dich nicht um den genauen Speicherpfad kümmern.'},
+      {h:'Bind Mount (Entwicklung)',t:'Ein konkretes Host-Verzeichnis wird eingebunden:',code:'docker run -v /home/user/daten:/app/daten nginx',why:'Praktisch beim Entwickeln: Änderungen an Dateien auf dem Host erscheinen sofort im Container.'},
+    ],warn:'Vorsicht: Ohne Volume gehen ALLE Container-Daten beim "docker rm" unwiederbringlich verloren!'},
   ]},
-  {id:'m3',icon:'🌐',color:'#c8ff00',title:'Modul 3: Netzwerk-Infrastruktur & Routing',entries:[
-    {title:'HowTo: VLANs (802.1Q) konfigurieren',steps:[
-      {h:'VLAN-Konzept verstehen',t:'Untagged Port = Access-Port (Endgerät weiß nichts vom VLAN). Tagged Port = Trunk-Port (mehrere VLANs transportiert, z.B. zwischen Switches).',code:''},
-      {h:'VLAN auf Cisco-Switch (Beispiel)',t:'',code:'Switch# configure terminal\nSwitch(config)# vlan 10\nSwitch(config-vlan)# name BUERO\nSwitch(config-vlan)# exit\nSwitch(config)# interface Fa0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 10'},
-      {h:'Trunk-Port konfigurieren',t:'',code:'Switch(config)# interface Gi0/1\nSwitch(config-if)# switchport mode trunk\nSwitch(config-if)# switchport trunk allowed vlan 10,20,30'},
-    ],tip:'Tipp: VLAN 1 als Management-VLAN möglichst nicht für Nutzerdaten verwenden.'},
-    {title:'HowTo: Statische Routen eintragen',steps:[
-      {h:'Windows',t:'',code:'route add 192.168.10.0 mask 255.255.255.0 192.168.1.1\nroute add 192.168.10.0 mask 255.255.255.0 192.168.1.1 -p  # persistent'},
-      {h:'Linux',t:'',code:'ip route add 192.168.10.0/24 via 192.168.1.1\n# Persistent (Netplan, Ubuntu):\n# /etc/netplan/01-netcfg.yaml unter routes:'},
+  {id:'m3',icon:'🌐',color:'#c8ff00',title:'Modul 3: Netzwerk-Infrastruktur & Routing',desc:'Damit Computer miteinander reden können, braucht es Netzwerktechnik. Hier lernst du, wie man Netze logisch trennt (VLANs), wie Datenpakete den Weg über mehrere Netze finden (Routing), wie man den Datenverkehr analysiert (Wireshark) und wie eine Firewall als Tor zur Außenwelt funktioniert.',entries:[
+    {title:'HowTo: VLANs (802.1Q) konfigurieren',
+      intro:'Ein VLAN ("Virtuelles LAN") teilt einen physischen Switch in mehrere getrennte Netze auf – als hättest du mehrere voneinander isolierte Switches, obwohl es nur einer ist. So liegen z. B. Buchhaltung und Gäste-WLAN im selben Gebäude, können sich aber nicht gegenseitig sehen. Das bringt Sicherheit und Ordnung.',
+      concept:[
+        {t:'VLAN',d:'Logisch abgetrenntes Teilnetz innerhalb einer physischen Infrastruktur.'},
+        {t:'Access-Port (untagged)',d:'Port für ein Endgerät, das vom VLAN nichts mitbekommt.'},
+        {t:'Trunk-Port (tagged)',d:'Port, der mehrere VLANs gleichzeitig transportiert (z. B. zwischen zwei Switches).'},
+        {t:'Tag',d:'Eine kleine Markierung im Datenpaket, die angibt, zu welchem VLAN es gehört.'},
+      ],
+      steps:[
+      {h:'VLAN-Konzept verstehen',t:'Untagged Port = Access-Port (Endgerät weiß nichts vom VLAN). Tagged Port = Trunk-Port (transportiert mehrere VLANs, z. B. zwischen Switches).',code:''},
+      {h:'VLAN auf Cisco-Switch anlegen',t:'',code:'Switch# configure terminal\nSwitch(config)# vlan 10\nSwitch(config-vlan)# name BUERO\nSwitch(config-vlan)# exit\nSwitch(config)# interface Fa0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 10'},
+      {h:'Trunk-Port konfigurieren',t:'',code:'Switch(config)# interface Gi0/1\nSwitch(config-if)# switchport mode trunk\nSwitch(config-if)# switchport trunk allowed vlan 10,20,30',why:'Ein Trunk bündelt mehrere VLANs über ein einziges Kabel zum nächsten Switch – sonst bräuchte man pro VLAN eine eigene Leitung.'},
+    ],tip:'Tipp: VLAN 1 ist das Standard-VLAN und sollte aus Sicherheitsgründen möglichst nicht für Nutzerdaten verwendet werden.'},
+    {title:'HowTo: Statische Routen eintragen',
+      intro:'Ein Router ist der "Wegweiser" zwischen verschiedenen Netzen. Normalerweise kennt er nur seine direkten Nachbarn. Eine statische Route ist ein manuell eingetragener Wegweiser: "Pakete für Netz X bitte über Router Y schicken." Man nutzt sie für feste, überschaubare Verbindungen.',
+      concept:[
+        {t:'Route',d:'Wegbeschreibung, über welchen nächsten Knoten ein Zielnetz erreichbar ist.'},
+        {t:'Gateway',d:'Der "Ausgang" aus dem eigenen Netz zum nächsten Netz.'},
+        {t:'Statisch vs. dynamisch',d:'Statisch = von Hand eingetragen; dynamisch = Router lernen Wege automatisch (z. B. via OSPF).'},
+      ],
+      steps:[
+      {h:'Windows',t:'',code:'route add 192.168.10.0 mask 255.255.255.0 192.168.1.1\nroute add 192.168.10.0 mask 255.255.255.0 192.168.1.1 -p  # -p = bleibt nach Neustart erhalten'},
+      {h:'Linux',t:'',code:'ip route add 192.168.10.0/24 via 192.168.1.1\n# Dauerhaft (Netplan, Ubuntu): in /etc/netplan/01-netcfg.yaml unter routes:'},
       {h:'Cisco Router',t:'',code:'Router(config)# ip route 192.168.10.0 255.255.255.0 192.168.1.1'},
-    ],tip:'Tipp: route print (Windows) / ip route show (Linux) zur Überprüfung.'},
-    {title:'HowTo: Wireshark für Fehlersuche nutzen',steps:[
-      {h:'Capture starten',t:'Interface auswählen (z.B. eth0) → blauen Start-Button klicken. Filter vorab setzen für weniger Traffic.',code:''},
+    ],tip:'Tipp: Mit route print (Windows) bzw. ip route show (Linux) kontrollierst du die gesetzten Routen.'},
+    {title:'HowTo: Wireshark für Fehlersuche nutzen',
+      intro:'Wireshark ist ein "Mikroskop" für den Netzwerkverkehr: Es zeichnet jedes einzelne Datenpaket auf, das über eine Netzwerkkarte läuft, und zeigt detailliert, wer mit wem worüber spricht. Bei Verbindungsproblemen sieht man damit genau, an welcher Stelle es hakt.',
+      concept:[
+        {t:'Capture',d:'Die laufende Aufzeichnung des Datenverkehrs.'},
+        {t:'Capture-Filter',d:'Bestimmt schon beim Mitschneiden, was aufgezeichnet wird.'},
+        {t:'Display-Filter',d:'Filtert nachträglich die bereits aufgezeichneten Pakete.'},
+        {t:'TCP-Handshake',d:'Der dreistufige Verbindungsaufbau SYN → SYN-ACK → ACK.'},
+      ],
+      steps:[
+      {h:'Capture starten',t:'Das Interface auswählen (z. B. eth0) → blauen Start-Button klicken. Vorab einen Filter setzen reduziert die Datenflut.',code:''},
       {h:'Nützliche Capture-Filter',t:'',code:'host 192.168.1.100          # Nur diesen Host\nport 443                    # Nur HTTPS\ntcp                         # Nur TCP'},
       {h:'Display-Filter (nach Capture)',t:'',code:'ip.addr == 192.168.1.100\ntcp.port == 80\nhttp\ndns\nicmp'},
-      {h:'TCP-Handshake prüfen',t:'Filter: tcp → SYN, SYN-ACK, ACK suchen. Kein SYN-ACK = Ziel antwortet nicht (Firewall?). RST = Verbindung abgelehnt.',code:''},
-    ],tip:'Tipp: "Follow TCP Stream" (Rechtsklick auf Paket) zeigt gesamte Konversation im Klartext.'},
-    {title:'HowTo: OPNsense als Default Gateway einrichten',steps:[
-      {h:'OPNsense installieren',t:'ISO von opnsense.org → auf Hardware oder VM installieren. WAN und LAN Interfaces zuweisen.',code:''},
-      {h:'Grundkonfiguration',t:'Browser: https://192.168.1.1 → Admin/opnsense → Wizard durchlaufen → WAN (DHCP oder statisch), LAN (192.168.1.1/24).',code:''},
-      {h:'Clients konfigurieren',t:'DHCP-Server in OPNsense unter Services → DHCPv4 → LAN aktivieren. Clients erhalten automatisch IP+Gateway.',code:''},
-    ],tip:'Tipp: Firewall-Rules: LAN → any (erlauben), WAN → restriktiv.'},
+      {h:'TCP-Handshake prüfen',t:'Filter tcp setzen und nach SYN, SYN-ACK, ACK suchen. Kein SYN-ACK = das Ziel antwortet nicht (oft Firewall). RST = Verbindung wurde aktiv abgelehnt.',code:'',why:'Am Verlauf des Handshakes erkennt man sofort, ob das Problem beim Verbindungsaufbau liegt – das spart stundenlanges Raten.'},
+    ],tip:'Tipp: "Follow TCP Stream" (Rechtsklick auf ein Paket) zeigt die gesamte Konversation zusammenhängend im Klartext.'},
+    {title:'HowTo: OPNsense als Default Gateway einrichten',
+      intro:'OPNsense ist eine kostenlose Firewall- und Router-Software. Sie steht meist am Übergang zwischen dem internen Netz und dem Internet und kontrolliert, welcher Datenverkehr durchdarf. Als "Default Gateway" ist sie der Standard-Ausgang aller Geräte ins Internet.',
+      concept:[
+        {t:'Firewall',d:'Filter, der Datenverkehr nach Regeln erlaubt oder blockiert.'},
+        {t:'WAN / LAN',d:'WAN = Verbindung zum Internet; LAN = das interne Netz.'},
+        {t:'DHCP-Server',d:'Verteilt automatisch IP-Adressen an die Geräte im Netz.'},
+      ],
+      steps:[
+      {h:'OPNsense installieren',t:'ISO von opnsense.org → auf Hardware oder in eine VM installieren. WAN- und LAN-Interface zuweisen.',code:''},
+      {h:'Grundkonfiguration',t:'Browser: https://192.168.1.1 → Login Admin/opnsense → Wizard durchlaufen → WAN (DHCP oder statisch), LAN (192.168.1.1/24).',code:''},
+      {h:'Clients konfigurieren',t:'DHCP-Server unter Services → DHCPv4 → LAN aktivieren. Die Clients erhalten dann automatisch IP und Gateway.',code:'',why:'Ohne DHCP müsste man jedem Gerät die Netzwerkadresse von Hand eintragen – fehleranfällig und mühsam.'},
+    ],tip:'Tipp: Faustregel für Firewall-Regeln: LAN → any erlauben, WAN → restriktiv (nur das Nötigste hereinlassen).'},
   ]},
-  {id:'m4',icon:'🐧',color:'#ff8a65',title:'Modul 4: Linux-Administration (CLI-Fokus)',entries:[
-    {title:'HowTo: Rechteverwaltung unter Linux',steps:[
-      {h:'Berechtigungen lesen',t:'rwxr-xr-- = Owner:rwx, Group:r-x, Others:r--',code:'ls -la /etc/passwd\nchmod 755 datei.sh    # rwxr-xr-x\nchmod +x datei.sh     # Ausführbar machen\nchown user:gruppe datei'},
-      {h:'Sticky Bit setzen',t:'Verhindert, dass Benutzer Dateien anderer im selben Verzeichnis löschen (z.B. /tmp):',code:'chmod +t /verzeichnis\nls -la  # zeigt t am Ende der Permissions'},
-      {h:'ACLs für feinere Rechte',t:'',code:'setfacl -m u:thomas:rwx datei.txt   # Benutzer thomas bekommt rwx\ngetfacl datei.txt                    # ACLs anzeigen'},
-    ],tip:'Tipp: chmod 640 für Konfigurationsdateien (Owner lesen+schreiben, Gruppe lesen).'},
-    {title:'HowTo: Dienste verwalten mit systemd',steps:[
-      {h:'Häufige systemctl-Befehle',t:'',code:'systemctl start nginx        # starten\nsystemctl stop nginx         # stoppen\nsystemctl restart nginx      # neu starten\nsystemctl status nginx       # Status & Logs\nsystemctl enable nginx       # Autostart aktivieren\nsystemctl disable nginx      # Autostart deaktivieren'},
-      {h:'Logs mit journalctl',t:'',code:'journalctl -u nginx              # alle Logs des Dienstes\njournalctl -u nginx -f           # live verfolgen\njournalctl -u nginx --since today'},
-    ],tip:'Tipp: systemctl enable --now nginx startet den Dienst und aktiviert Autostart in einem Befehl.'},
-    {title:'HowTo: LVM – Festplatten-Management',steps:[
-      {h:'LVM-Übersicht',t:'Physical Volume (PV) → Volume Group (VG) → Logical Volume (LV). LVs können im laufenden Betrieb erweitert werden.',code:''},
-      {h:'Neue Disk einbinden',t:'',code:'pvcreate /dev/sdb               # Physical Volume erstellen\nvgextend vg0 /dev/sdb           # zur Volume Group hinzufügen\nlvextend -L +50G /dev/vg0/data  # LV erweitern\nresize2fs /dev/vg0/data         # Dateisystem anpassen (ext4)'},
+  {id:'m4',icon:'🐧',color:'#ff8a65',title:'Modul 4: Linux-Administration (CLI-Fokus)',desc:'Linux betreibt die meisten Server der Welt und wird oft über die Kommandozeile (CLI) gesteuert – das wirkt anfangs kryptisch, ist aber extrem mächtig. Du lernst Dateirechte, das Starten von Diensten, flexibles Festplatten-Management (LVM) und automatische zeitgesteuerte Aufgaben.',entries:[
+    {title:'HowTo: Rechteverwaltung unter Linux',
+      intro:'Unter Linux hat jede Datei einen Besitzer, eine Gruppe und Rechte, die festlegen, wer sie lesen (r), schreiben (w) oder ausführen (x) darf. Diese Rechte schützen das System: Ein normaler Benutzer kann so keine System­dateien zerstören. Die Rechte schreibt man entweder als Buchstaben oder als Zahlen.',
+      concept:[
+        {t:'r / w / x',d:'read (lesen), write (schreiben), execute (ausführen).'},
+        {t:'Owner / Group / Others',d:'Die drei Gruppen, für die Rechte getrennt gelten.'},
+        {t:'Zahlen-Schreibweise',d:'r=4, w=2, x=1 – addiert ergibt das z. B. 7 (rwx) oder 5 (r-x).'},
+        {t:'ACL',d:'Erweiterte Rechte für einzelne, zusätzliche Benutzer.'},
+      ],
+      steps:[
+      {h:'Berechtigungen lesen',t:'rwxr-xr-- bedeutet: Owner=rwx, Group=r-x, Others=r--.',code:'ls -la /etc/passwd\nchmod 755 datei.sh    # rwxr-xr-x\nchmod +x datei.sh     # ausführbar machen\nchown user:gruppe datei',why:'Die Zahl 755 ist nur die addierte Kurzform: 7=rwx für den Owner, 5=r-x für Gruppe und Andere.'},
+      {h:'Sticky Bit setzen',t:'Verhindert, dass Benutzer fremde Dateien im selben Verzeichnis löschen (z. B. in /tmp):',code:'chmod +t /verzeichnis\nls -la  # zeigt ein t am Ende der Rechte',why:'Ohne Sticky Bit könnte in einem gemeinsam genutzten Ordner jeder die Dateien aller anderen löschen.'},
+      {h:'ACLs für feinere Rechte',t:'',code:'setfacl -m u:thomas:rwx datei.txt   # Benutzer thomas bekommt zusätzlich rwx\ngetfacl datei.txt                    # gesetzte ACLs anzeigen'},
+    ],tip:'Tipp: chmod 640 ist üblich für Konfigurationsdateien (Owner lesen+schreiben, Gruppe nur lesen, Andere nichts).'},
+    {title:'HowTo: Dienste verwalten mit systemd',
+      intro:'Ein "Dienst" (Service/Daemon) ist ein Programm, das im Hintergrund dauerhaft läuft – z. B. ein Webserver. systemd ist der zentrale Verwalter dieser Dienste unter modernem Linux. Mit dem Befehl systemctl startest, stoppst und überwachst du sie, mit journalctl liest du ihre Protokolle.',
+      concept:[
+        {t:'Dienst / Daemon',d:'Im Hintergrund laufendes Programm ohne Fenster.'},
+        {t:'systemctl',d:'Steuerbefehl für Dienste (start/stop/status/enable).'},
+        {t:'Autostart (enable)',d:'Legt fest, dass ein Dienst automatisch beim Booten startet.'},
+        {t:'journalctl',d:'Werkzeug zum Lesen der System- und Dienst-Logs.'},
+      ],
+      steps:[
+      {h:'Häufige systemctl-Befehle',t:'',code:'systemctl start nginx        # starten\nsystemctl stop nginx         # stoppen\nsystemctl restart nginx      # neu starten\nsystemctl status nginx       # Status & letzte Logs\nsystemctl enable nginx       # Autostart aktivieren\nsystemctl disable nginx      # Autostart deaktivieren',why:'enable bewirkt, dass der Dienst nach jedem Server-Neustart von allein wieder hochfährt – sonst müsste man ihn manuell starten.'},
+      {h:'Logs mit journalctl',t:'',code:'journalctl -u nginx              # alle Logs des Dienstes\njournalctl -u nginx -f           # live mitverfolgen\njournalctl -u nginx --since today'},
+    ],tip:'Tipp: systemctl enable --now nginx startet den Dienst sofort UND aktiviert den Autostart in einem einzigen Befehl.'},
+    {title:'HowTo: LVM – Festplatten-Management',
+      intro:'Normalerweise ist eine Festplatten-Partition in ihrer Größe fest. LVM ("Logical Volume Manager") legt eine flexible Schicht darüber: Du fasst mehrere Platten zu einem Pool zusammen und schneidest daraus logische Laufwerke, die du im laufenden Betrieb vergrößern kannst – ohne Datenverlust.',
+      concept:[
+        {t:'PV (Physical Volume)',d:'Eine physische Platte/Partition, die LVM nutzt.'},
+        {t:'VG (Volume Group)',d:'Ein Pool aus mehreren PVs – der gemeinsame Speichertopf.'},
+        {t:'LV (Logical Volume)',d:'Ein flexibles "virtuelles Laufwerk" aus dem Pool.'},
+      ],
+      steps:[
+      {h:'LVM-Übersicht',t:'Die Kette lautet: Physical Volume (PV) → Volume Group (VG) → Logical Volume (LV). LVs lassen sich im laufenden Betrieb erweitern.',code:''},
+      {h:'Neue Disk einbinden',t:'',code:'pvcreate /dev/sdb               # Platte als PV vorbereiten\nvgextend vg0 /dev/sdb           # zur Volume Group hinzufügen\nlvextend -L +50G /dev/vg0/data  # Logical Volume um 50 GB vergrößern\nresize2fs /dev/vg0/data         # Dateisystem anpassen (ext4)',why:'Erst vergrößerst du den Container (LV), dann muss das Dateisystem darin "nachwachsen", damit es den neuen Platz auch nutzt.'},
       {h:'Status prüfen',t:'',code:'pvs   # Physical Volumes\nvgs   # Volume Groups\nlvs   # Logical Volumes'},
-    ],tip:'Tipp: resize2fs nur für ext4. Für XFS: xfs_growfs /mountpoint'},
-    {title:'HowTo: Cronjobs einrichten',steps:[
-      {h:'Crontab bearbeiten',t:'',code:'crontab -e          # Crontab des aktuellen Benutzers editieren\ncrontab -l          # Crontab anzeigen\ncrontab -u user -e  # Als root: Crontab für anderen Benutzer'},
-      {h:'Syntax',t:'Minute Stunde Tag Monat Wochentag Befehl',code:'0 2 * * *   /usr/bin/backup.sh      # täglich 02:00\n*/5 * * * * /usr/bin/check.sh       # alle 5 Minuten\n0 0 1 * *   /usr/bin/monthly.sh    # 1. jedes Monats'},
-    ],tip:'Tipp: crontab.guru ist eine praktische Website zum Testen von Cron-Ausdrücken.'},
+    ],tip:'Tipp: resize2fs gilt nur für ext4. Bei XFS heißt der Befehl xfs_growfs /mountpoint.'},
+    {title:'HowTo: Cronjobs einrichten',
+      intro:'Ein Cronjob ist eine zeitgesteuerte Aufgabe: Linux führt einen Befehl automatisch zu festgelegten Zeiten aus – etwa jede Nacht ein Backup. Die Steuerung erfolgt über eine Tabelle (Crontab) mit einer anfangs ungewohnten, aber logischen Syntax aus fünf Zeitfeldern.',
+      concept:[
+        {t:'Crontab',d:'Die Tabelle mit den geplanten Aufgaben eines Benutzers.'},
+        {t:'Cron-Syntax',d:'Fünf Felder: Minute, Stunde, Tag, Monat, Wochentag.'},
+        {t:'Sternchen (*)',d:'Steht für "jeder Wert" an dieser Stelle.'},
+      ],
+      steps:[
+      {h:'Crontab bearbeiten',t:'',code:'crontab -e          # Crontab des aktuellen Benutzers bearbeiten\ncrontab -l          # Crontab anzeigen\ncrontab -u user -e  # als root: Crontab eines anderen Benutzers'},
+      {h:'Syntax',t:'Reihenfolge: Minute Stunde Tag Monat Wochentag Befehl',code:'0 2 * * *   /usr/bin/backup.sh      # täglich um 02:00 Uhr\n*/5 * * * * /usr/bin/check.sh       # alle 5 Minuten\n0 0 1 * *   /usr/bin/monthly.sh     # am 1. jedes Monats',why:'Jedes Feld ein Zeit-Baustein: "0 2 * * *" liest sich als "Minute 0, Stunde 2, an jedem Tag, in jedem Monat, an jedem Wochentag".'},
+    ],tip:'Tipp: crontab.guru ist eine praktische Website, um Cron-Ausdrücke zu testen und in Klartext zu übersetzen.'},
   ]},
-  {id:'m5',icon:'🪟',color:'#ce93d8',title:'Modul 5: Windows Server & Active Directory',entries:[
-    {title:'HowTo: Neue Windows-Domäne aufsetzen',steps:[
+  {id:'m5',icon:'🪟',color:'#ce93d8',title:'Modul 5: Windows Server & Active Directory',desc:'In Firmen läuft die Benutzer- und Rechteverwaltung meist über Windows Server mit Active Directory (AD) – einer zentralen Datenbank für alle Benutzer, Computer und Berechtigungen. Du lernst, eine Domäne aufzubauen, Benutzer sauber zu organisieren und Berechtigungen richtig zu vergeben.',entries:[
+    {title:'HowTo: Neue Windows-Domäne aufsetzen',
+      intro:'Eine Domäne ist ein zentral verwalteter Verbund aus Computern und Benutzern. Statt sich an jedem PC einzeln anzumelden, gibt es eine zentrale Anmeldung. Das Herzstück ist der Domain Controller (DC) – der Server, der das Active Directory (die zentrale Datenbank) bereitstellt.',
+      concept:[
+        {t:'Domäne',d:'Zentral verwalteter Verbund von Benutzern und Computern.'},
+        {t:'Domain Controller (DC)',d:'Server, der das Active Directory hostet und Anmeldungen prüft.'},
+        {t:'Active Directory (AD)',d:'Zentrale Datenbank für Benutzer, Gruppen, Computer und Rechte.'},
+      ],
+      steps:[
       {h:'AD DS-Rolle installieren',t:'',code:'Install-WindowsFeature AD-Domain-Services -IncludeManagementTools'},
-      {h:'Domain Controller hochstufen',t:'',code:'Install-ADDSForest `\n  -DomainName "firma.local" `\n  -DomainNetbiosName "FIRMA" `\n  -InstallDns `\n  -Force'},
+      {h:'Domain Controller hochstufen',t:'',code:'Install-ADDSForest `\n  -DomainName "firma.local" `\n  -DomainNetbiosName "FIRMA" `\n  -InstallDns `\n  -Force',why:'Ein neuer "Forest" ist die oberste Ebene einer AD-Struktur – beim ersten DC einer Organisation legt man genau diesen an.'},
       {h:'Nach Neustart prüfen',t:'',code:'Get-ADDomain\nGet-ADDomainController'},
-    ],tip:'Tipp: DNS wird automatisch mitinstalliert. Statische IP VOR der DC-Promotion setzen!'},
-    {title:'HowTo: Benutzer nach AGDLP anlegen',steps:[
-      {h:'AGDLP-Prinzip',t:'Account → Global Group → Domain Local Group → Permission. Benutzer in globale Gruppen, globale Gruppen in Domain Local Gruppen, Domain Local Gruppen bekommen Berechtigungen.',code:''},
-      {h:'Umsetzung in PowerShell',t:'',code:'New-ADUser -Name "Max Mustermann" -SamAccountName "m.mustermann" -AccountPassword (ConvertTo-SecureString "Pa$$w0rd" -AsPlainText -Force) -Enabled $true\nNew-ADGroup "GG_IT_Admins" -GroupScope Global\nAdd-ADGroupMember "GG_IT_Admins" "m.mustermann"\nNew-ADGroup "DL_IT_Server_Vollzugriff" -GroupScope DomainLocal\nAdd-ADGroupMember "DL_IT_Server_Vollzugriff" "GG_IT_Admins"'},
-    ],tip:'Tipp: Niemals Benutzer direkt auf Ressourcen berechtigen – immer über Gruppen!'},
-    {title:'HowTo: NTFS- vs. Freigabe-Berechtigungen',steps:[
-      {h:'Grundregel',t:'Netzwerkfreigabe immer auf "Jeder → Vollzugriff" stellen. Feingranulare Rechte IMMER über NTFS-Berechtigungen steuern.',code:''},
+    ],tip:'Tipp: DNS wird automatisch mitinstalliert. Wichtig: dem Server VOR der DC-Promotion eine feste (statische) IP geben!'},
+    {title:'HowTo: Benutzer nach AGDLP anlegen',
+      intro:'AGDLP ist eine bewährte Strategie, wie man Berechtigungen in Active Directory sauber strukturiert, damit es auch bei tausenden Benutzern übersichtlich bleibt. Die Idee: Benutzer kommen in Rollen-Gruppen, diese in Ressourcen-Gruppen, und erst die bekommen die eigentlichen Rechte. So vergibt man Rechte nie direkt am Benutzer.',
+      concept:[
+        {t:'A – Account',d:'Der einzelne Benutzer.'},
+        {t:'G – Global Group',d:'Bündelt Benutzer nach Rolle/Abteilung (z. B. "IT-Admins").'},
+        {t:'DL – Domain Local Group',d:'Bündelt Berechtigungen für eine Ressource.'},
+        {t:'P – Permission',d:'Das eigentliche Zugriffsrecht, das an der DL-Gruppe hängt.'},
+      ],
+      steps:[
+      {h:'AGDLP-Prinzip',t:'Account → Global Group → Domain Local Group → Permission. Benutzer kommen in globale Gruppen, globale in Domain-Local-Gruppen, und Domain-Local-Gruppen erhalten die Berechtigungen.',code:''},
+      {h:'Umsetzung in PowerShell',t:'',code:'New-ADUser -Name "Max Mustermann" -SamAccountName "m.mustermann" -AccountPassword (ConvertTo-SecureString "Pa$$w0rd" -AsPlainText -Force) -Enabled $true\nNew-ADGroup "GG_IT_Admins" -GroupScope Global\nAdd-ADGroupMember "GG_IT_Admins" "m.mustermann"\nNew-ADGroup "DL_IT_Server_Vollzugriff" -GroupScope DomainLocal\nAdd-ADGroupMember "DL_IT_Server_Vollzugriff" "GG_IT_Admins"',why:'Wechselt ein Mitarbeiter die Abteilung, verschiebt man ihn nur in eine andere globale Gruppe – alle Rechte passen sich automatisch an.'},
+    ],tip:'Tipp: Niemals Benutzer direkt auf Ressourcen berechtigen – immer den Umweg über Gruppen gehen!'},
+    {title:'HowTo: NTFS- vs. Freigabe-Berechtigungen',
+      intro:'Bei Netzwerkfreigaben gibt es ZWEI Berechtigungsebenen, die oft verwechselt werden: die Freigabe-Berechtigung (gilt nur beim Zugriff übers Netzwerk) und die NTFS-Berechtigung (gilt immer, auch lokal). Beim Zusammentreffen gewinnt stets die restriktivere – wer das versteht, vermeidet die häufigsten Rechte-Fehler.',
+      concept:[
+        {t:'Freigabe-Berechtigung',d:'Greift nur beim Zugriff über das Netzwerk.'},
+        {t:'NTFS-Berechtigung',d:'Greift immer – auch beim lokalen Zugriff – und ist feiner einstellbar.'},
+        {t:'Restriktivität gewinnt',d:'Bei Kombination zählt die jeweils strengere der beiden Stufen.'},
+      ],
+      steps:[
+      {h:'Grundregel',t:'Die Netzwerkfreigabe großzügig auf "Jeder → Vollzugriff" stellen. Die feingranulare Steuerung IMMER über NTFS-Berechtigungen vornehmen.',code:'',why:'So gibt es nur eine Stelle (NTFS), an der man Rechte pflegt – das vermeidet widersprüchliche Einstellungen auf zwei Ebenen.'},
       {h:'Freigabe erstellen (PowerShell)',t:'',code:'New-SmbShare -Name "Daten" -Path "D:\\Daten" -FullAccess "Jeder"'},
       {h:'NTFS-Berechtigungen setzen',t:'',code:'$acl = Get-Acl "D:\\Daten"\n$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("DL_IT_Server_Vollzugriff","FullControl","ContainerInherit,ObjectInherit","None","Allow")\n$acl.SetAccessRule($rule)\nSet-Acl "D:\\Daten" $acl'},
-    ],warn:'Beim Zugriff über Netzwerk gilt: restriktivere Berechtigung aus NTFS+Freigabe gewinnt.'},
-    {title:'HowTo: Laufwerksmapping per GPO verteilen',steps:[
-      {h:'GPO erstellen',t:'GPMC öffnen → Domäne → Neue GPO erstellen und verknüpfen → Bearbeiten.',code:''},
-      {h:'Laufwerk konfigurieren',t:'User Configuration → Preferences → Windows Settings → Drive Maps → New → Mapped Drive. Buchstabe, Pfad (\\\\server\\freigabe), Action: Create oder Update.',code:''},
-      {h:'Zielgruppenfilterung',t:'Item-Level Targeting: nur für bestimmte Sicherheitsgruppen oder OUs anwenden.',code:''},
-    ],tip:'Tipp: gpupdate /force auf dem Client erzwingt sofortige Richtlinienaktualisierung.'},
+    ],warn:'Beim Zugriff über das Netzwerk gilt: die restriktivere Berechtigung aus NTFS und Freigabe setzt sich durch.'},
+    {title:'HowTo: Laufwerksmapping per GPO verteilen',
+      intro:'Eine Gruppenrichtlinie (GPO) ist eine zentrale Vorgabe, die Windows automatisch auf viele Computer oder Benutzer anwendet. Statt an jedem PC ein Netzlaufwerk von Hand zu verbinden, definierst du es einmal per GPO – und alle passenden Benutzer bekommen es automatisch.',
+      concept:[
+        {t:'GPO',d:'Group Policy Object – zentrale Richtlinie für Computer/Benutzer.'},
+        {t:'Drive Map',d:'Automatisch verbundenes Netzlaufwerk (z. B. Laufwerk Z:).'},
+        {t:'Item-Level Targeting',d:'Filter, der eine Richtlinie nur für bestimmte Gruppen/OUs gelten lässt.'},
+      ],
+      steps:[
+      {h:'GPO erstellen',t:'GPMC (Gruppenrichtlinien-Verwaltung) öffnen → Domäne → neue GPO erstellen und verknüpfen → Bearbeiten.',code:''},
+      {h:'Laufwerk konfigurieren',t:'User Configuration → Preferences → Windows Settings → Drive Maps → New → Mapped Drive. Buchstaben, Pfad (\\\\server\\freigabe) und Action: Create oder Update wählen.',code:''},
+      {h:'Zielgruppenfilterung',t:'Per Item-Level Targeting nur für bestimmte Sicherheitsgruppen oder OUs anwenden.',code:'',why:'So bekommt z. B. nur die Buchhaltung das Buchhaltungs-Laufwerk – nicht jeder im Unternehmen.'},
+    ],tip:'Tipp: gpupdate /force auf dem Client erzwingt sofort die Aktualisierung der Richtlinien (statt auf den Zyklus zu warten).'},
   ]},
-  {id:'m6',icon:'⚙️',color:'#ffd54f',title:'Modul 6: Core Services & Internet-Dienste',entries:[
-    {title:'HowTo: Nginx als Reverse Proxy einrichten',steps:[
+  {id:'m6',icon:'⚙️',color:'#ffd54f',title:'Modul 6: Core Services & Internet-Dienste',desc:'Server stellen Dienste bereit, die wir täglich nutzen: Webseiten, verschlüsselte Verbindungen und Datenbanken. Hier lernst du, einen Webserver als Vermittler (Reverse Proxy) aufzusetzen, kostenlose HTTPS-Zertifikate zu holen und eine Datenbank sicher zu betreiben.',entries:[
+    {title:'HowTo: Nginx als Reverse Proxy einrichten',
+      intro:'Nginx ist ein sehr schneller Webserver. Als "Reverse Proxy" sitzt er als Vermittler vor anderen Anwendungen: Anfragen aus dem Internet treffen zuerst auf Nginx, der sie dann an den passenden internen Dienst weiterreicht. So kann ein einziger öffentlicher Eingang viele dahinterliegende Anwendungen bedienen.',
+      concept:[
+        {t:'Webserver',d:'Software, die Webseiten/Anfragen über HTTP ausliefert.'},
+        {t:'Reverse Proxy',d:'Vermittler, der eingehende Anfragen an interne Dienste verteilt.'},
+        {t:'server_name',d:'Die Domain, anhand derer Nginx entscheidet, wohin die Anfrage geht.'},
+      ],
+      steps:[
       {h:'Nginx installieren',t:'',code:'sudo apt install nginx\nsudo systemctl enable --now nginx'},
-      {h:'Reverse-Proxy-Config erstellen',t:'',code:'# /etc/nginx/sites-available/mein-dienst\nserver {\n    listen 80;\n    server_name meinedomain.de;\n    location / {\n        proxy_pass http://localhost:8080;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n    }\n}'},
-      {h:'Config aktivieren und testen',t:'',code:'sudo ln -s /etc/nginx/sites-available/mein-dienst /etc/nginx/sites-enabled/\nsudo nginx -t         # Syntax prüfen\nsudo systemctl reload nginx'},
-    ],tip:'Tipp: Mehrere Dienste über einen einzigen Port 443 erreichbar via server_name.'},
-    {title:'HowTo: Let\'s Encrypt via Certbot',steps:[
+      {h:'Reverse-Proxy-Config erstellen',t:'',code:'# /etc/nginx/sites-available/mein-dienst\nserver {\n    listen 80;\n    server_name meinedomain.de;\n    location / {\n        proxy_pass http://localhost:8080;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n    }\n}',why:'proxy_pass leitet die Anfrage an den internen Dienst auf Port 8080 weiter; die proxy_set_header-Zeilen geben die echten Besucherdaten mit.'},
+      {h:'Config aktivieren und testen',t:'',code:'sudo ln -s /etc/nginx/sites-available/mein-dienst /etc/nginx/sites-enabled/\nsudo nginx -t         # Syntax prüfen\nsudo systemctl reload nginx',why:'nginx -t prüft die Konfiguration VOR dem Neuladen – so reißt ein Tippfehler nicht den laufenden Server mit.'},
+    ],tip:'Tipp: Mehrere Dienste sind über einen einzigen Port (443) erreichbar – Nginx unterscheidet sie am server_name.'},
+    {title:'HowTo: Let\'s Encrypt via Certbot',
+      intro:'Damit Webseiten verschlüsselt (https://) und ohne Browser-Warnung laufen, brauchen sie ein TLS-Zertifikat. Let\'s Encrypt stellt solche Zertifikate kostenlos aus, und das Tool Certbot holt und erneuert sie automatisch. So bekommt jede Seite gratis das Schloss-Symbol im Browser.',
+      concept:[
+        {t:'TLS-Zertifikat',d:'Digitaler Nachweis, der die verschlüsselte HTTPS-Verbindung ermöglicht.'},
+        {t:'Let\'s Encrypt',d:'Gemeinnützige Stelle, die Zertifikate kostenlos ausstellt.'},
+        {t:'Auto-Renewal',d:'Automatische Erneuerung, bevor das Zertifikat (nach 90 Tagen) abläuft.'},
+      ],
+      steps:[
       {h:'Certbot installieren',t:'',code:'sudo apt install certbot python3-certbot-nginx'},
-      {h:'Zertifikat ausstellen',t:'',code:'sudo certbot --nginx -d meinedomain.de\n# DNS-01 Challenge für interne/Wildcard-Domains:\nsudo certbot certonly --manual --preferred-challenges dns -d "*.intern.firma.de"'},
+      {h:'Zertifikat ausstellen',t:'',code:'sudo certbot --nginx -d meinedomain.de\n# DNS-01-Challenge für interne oder Wildcard-Domains:\nsudo certbot certonly --manual --preferred-challenges dns -d "*.intern.firma.de"',why:'Certbot beweist Let\'s Encrypt automatisch, dass dir die Domain gehört, und trägt das Zertifikat gleich in Nginx ein.'},
       {h:'Auto-Renewal prüfen',t:'',code:'sudo certbot renew --dry-run\nsystemctl status certbot.timer'},
-    ],tip:'Tipp: Zertifikate laufen nach 90 Tagen ab – Auto-Renewal läuft als systemd-Timer.'},
-    {title:'HowTo: MySQL/MariaDB installieren & absichern',steps:[
+    ],tip:'Tipp: Let\'s-Encrypt-Zertifikate laufen nach 90 Tagen ab – die Erneuerung übernimmt automatisch ein systemd-Timer.'},
+    {title:'HowTo: MySQL/MariaDB installieren & absichern',
+      intro:'Eine Datenbank speichert strukturierte Daten (z. B. Kunden, Bestellungen) und liefert sie auf Anfrage zurück. MariaDB ist eine freie Variante von MySQL. Nach der Installation ist sie zunächst unsicher – darum gehört das Absichern zwingend dazu.',
+      concept:[
+        {t:'Datenbank (DB)',d:'Strukturierter Speicher für Daten, abfragbar mit der Sprache SQL.'},
+        {t:'root-Benutzer',d:'Der allmächtige Datenbank-Administrator – nicht für Anwendungen nutzen!'},
+        {t:'GRANT',d:'SQL-Befehl, der einem Benutzer bestimmte Rechte erteilt.'},
+      ],
+      steps:[
       {h:'Installieren',t:'',code:'sudo apt install mariadb-server\nsudo systemctl enable --now mariadb'},
-      {h:'Absichern',t:'',code:'sudo mysql_secure_installation\n# Root-Passwort setzen, anonyme Benutzer entfernen,\n# Root-Remote-Login deaktivieren, Test-DB löschen'},
+      {h:'Absichern',t:'',code:'sudo mysql_secure_installation\n# Root-Passwort setzen, anonyme Benutzer entfernen,\n# Root-Remote-Login deaktivieren, Test-DB löschen',why:'Frisch installiert erlaubt die DB anonyme Zugriffe und hat kein root-Passwort – dieses Skript schließt genau diese Lücken.'},
       {h:'Benutzer anlegen',t:'',code:"mysql -u root -p\nCREATE DATABASE myapp;\nCREATE USER 'appuser'@'localhost' IDENTIFIED BY 'StarkesPasswort!';\nGRANT ALL PRIVILEGES ON myapp.* TO 'appuser'@'localhost';\nFLUSH PRIVILEGES;"},
-    ],tip:'Tipp: Niemals root-Benutzer für Applikationen verwenden! Minimale Rechte vergeben.'},
+    ],tip:'Tipp: Niemals den root-Benutzer für Anwendungen verwenden! Jede App bekommt einen eigenen Benutzer mit minimalen Rechten.'},
   ]},
-  {id:'m7',icon:'🔐',color:'#ef5350',title:'Modul 7: Cyber-Security & Hardening',entries:[
-    {title:'HowTo: SSH-Server absichern',steps:[
-      {h:'SSH-Konfiguration bearbeiten',t:'',code:'sudo nano /etc/ssh/sshd_config\n\n# Folgende Zeilen anpassen:\nPort 2222                    # Anderen Port nutzen\nPermitRootLogin no           # Root-Login verbieten\nPasswordAuthentication no    # Nur Key-Auth\nPubkeyAuthentication yes'},
+  {id:'m7',icon:'🔐',color:'#ef5350',title:'Modul 7: Cyber-Security & Hardening',desc:'Jeder Server ist ein potenzielles Angriffsziel. "Hardening" (Härten) bedeutet, die Angriffsfläche systematisch zu verkleinern: unnötiges abschalten, Zugänge absichern, Standardeinstellungen verschärfen. Hier lernst du das an SSH (Linux) und Windows Server.',entries:[
+    {title:'HowTo: SSH-Server absichern',
+      intro:'SSH ist das wichtigste Fernzugriffstor zu Linux-Servern – und damit ein Top-Angriffsziel. Standardmäßig lauscht es auf Port 22 und erlaubt Passwort-Logins, die durch Ausprobieren (Brute Force) geknackt werden können. Härten heißt hier: Schlüssel statt Passwörter, kein direkter root-Login und automatische Sperren bei Angriffen.',
+      concept:[
+        {t:'Brute Force',d:'Angriff durch massenhaftes Durchprobieren von Passwörtern.'},
+        {t:'Key-Authentifizierung',d:'Login per kryptografischem Schlüsselpaar statt Passwort.'},
+        {t:'fail2ban',d:'Tool, das IPs nach mehreren Fehlversuchen automatisch sperrt.'},
+      ],
+      steps:[
+      {h:'SSH-Konfiguration bearbeiten',t:'',code:'sudo nano /etc/ssh/sshd_config\n\n# Folgende Zeilen anpassen:\nPort 2222                    # anderen Port nutzen\nPermitRootLogin no           # Root-Login verbieten\nPasswordAuthentication no    # nur Key-Auth erlauben\nPubkeyAuthentication yes',why:'root-Login verbieten und Passwörter abschalten entzieht Brute-Force-Angriffen die Grundlage – ohne den passenden Schlüssel kommt niemand rein.'},
       {h:'SSH-Key generieren (Client)',t:'',code:'ssh-keygen -t ed25519 -C "mein-server"\nssh-copy-id -i ~/.ssh/id_ed25519.pub benutzer@server'},
-      {h:'fail2ban installieren',t:'',code:'sudo apt install fail2ban\nsudo systemctl enable --now fail2ban\n# Sperrt IPs nach x Fehlversuchen automatisch'},
-      {h:'SSH-Dienst neu starten',t:'',code:'sudo systemctl restart sshd\n# Erst testen, dann alte Session schließen!'},
-    ],warn:'Wichtig: Erst neue SSH-Session testen, bevor du die aktuelle schließt – sonst kannst du dich aussperren!'},
-    {title:'HowTo: Windows Server Hardening',steps:[
-      {h:'SMBv1 deaktivieren',t:'',code:'Set-SmbServerConfiguration -EnableSMB1Protocol $false\nGet-SmbServerConfiguration | Select EnableSMB1Protocol'},
-      {h:'Unnötige Rollen/Features entfernen',t:'',code:'Get-WindowsFeature | Where-Object {$_.InstallState -eq "Installed"} | Format-Table\nRemove-WindowsFeature <FeatureName>'},
+      {h:'fail2ban installieren',t:'',code:'sudo apt install fail2ban\nsudo systemctl enable --now fail2ban\n# sperrt IPs nach x Fehlversuchen automatisch'},
+      {h:'SSH-Dienst neu starten',t:'',code:'sudo systemctl restart sshd\n# Erst eine neue Session testen, dann die alte schließen!'},
+    ],warn:'Wichtig: Erst eine NEUE SSH-Session erfolgreich testen, bevor du die aktuelle schließt – sonst sperrst du dich selbst aus!'},
+    {title:'HowTo: Windows Server Hardening',
+      intro:'Auch Windows Server bringt aus Kompatibilitätsgründen veraltete, unsichere Funktionen mit. Hardening bedeutet hier, solche Altlasten (wie das uralte SMBv1) abzuschalten, nicht benötigte Rollen zu entfernen und die Firewall konsequent zu aktivieren.',
+      concept:[
+        {t:'SMBv1',d:'Uraltes Dateifreigabe-Protokoll mit schweren Sicherheitslücken (z. B. WannaCry).'},
+        {t:'Rolle / Feature',d:'Funktionsbaustein des Servers – jede ungenutzte ist unnötiges Risiko.'},
+        {t:'CIS Benchmark',d:'Anerkannte Härtungs-Checkliste mit konkreten Vorgaben.'},
+      ],
+      steps:[
+      {h:'SMBv1 deaktivieren',t:'',code:'Set-SmbServerConfiguration -EnableSMB1Protocol $false\nGet-SmbServerConfiguration | Select EnableSMB1Protocol',why:'SMBv1 gilt als hochgefährlich – über genau diese Lücke verbreitete sich die WannaCry-Ransomware weltweit.'},
+      {h:'Unnötige Rollen/Features entfernen',t:'',code:'Get-WindowsFeature | Where-Object {$_.InstallState -eq "Installed"} | Format-Table\nRemove-WindowsFeature <FeatureName>',why:'Jede installierte Funktion ist eine mögliche Schwachstelle – was nicht da ist, kann auch nicht angegriffen werden.'},
       {h:'Windows Defender Firewall aktivieren',t:'',code:'Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True'},
-    ],tip:'Tipp: CIS Benchmarks (cisecurity.org) bieten detaillierte Härtungsanleitungen für Windows Server.'},
+    ],tip:'Tipp: Die CIS Benchmarks (cisecurity.org) liefern detaillierte, geprüfte Härtungsanleitungen für Windows Server.'},
   ]},
-  {id:'m8',icon:'📊',color:'#69f0ae',title:'Modul 8: Monitoring, Log-Management & Backup',entries:[
-    {title:'HowTo: Veeam Backup einrichten',steps:[
-      {h:'Backup-Job erstellen',t:'Veeam Backup & Replication öffnen → Backup → Virtual Machine → Job-Name → VMs hinzufügen → Repository auswählen (NAS/lokale Disk).',code:''},
-      {h:'Backup-Zeitplan',t:'Schedule: täglich, wöchentlich, oder nach Ereignis. Für kritische Systeme: täglich + wöchentliches Full-Backup.',code:''},
-      {h:'Backup testen (Instant Recovery)',t:'Veeam → Instant VM Recovery → VM direkt aus Backup starten. Test: Kann die VM booten? Sind Daten vollständig?',code:''},
-    ],warn:'3-2-1-1-0-Regel: 3 Kopien, 2 verschiedene Medien, 1 Off-Site, 1 Offline/Air-Gap, 0 ungetestete Backups!'},
-    {title:'HowTo: Checkmk Agenten installieren',steps:[
-      {h:'Agent herunterladen',t:'Im Checkmk-Webinterface: Setup → Agents → Download des passenden Agenten (Linux .deb/.rpm oder Windows .msi).',code:''},
+  {id:'m8',icon:'📊',color:'#69f0ae',title:'Modul 8: Monitoring, Log-Management & Backup',desc:'Damit Probleme auffallen, BEVOR Nutzer anrufen, überwacht man Systeme dauerhaft (Monitoring). Und damit Daten nach einem Ausfall wiederherstellbar sind, braucht es durchdachte Backups. Beides gehört zum Alltag jedes Admins.',entries:[
+    {title:'HowTo: Veeam Backup einrichten',
+      intro:'Veeam ist eine verbreitete Software, um virtuelle Maschinen zu sichern. Ein Backup ist eine Kopie der Daten an einem anderen Ort, aus der man im Notfall alles zurückholen kann. Wichtig ist nicht nur das Erstellen, sondern auch das regelmäßige Testen der Backups.',
+      concept:[
+        {t:'Backup-Job',d:'Geplanter Auftrag, der bestimmte VMs regelmäßig sichert.'},
+        {t:'Repository',d:'Der Speicherort, an dem die Backups landen (z. B. ein NAS).'},
+        {t:'Instant Recovery',d:'Eine VM direkt aus dem Backup starten, ohne sie erst voll zurückzuspielen.'},
+      ],
+      steps:[
+      {h:'Backup-Job erstellen',t:'Veeam Backup & Replication öffnen → Backup → Virtual Machine → Job-Name → VMs hinzufügen → Repository auswählen (NAS oder lokale Disk).',code:''},
+      {h:'Backup-Zeitplan',t:'Schedule: täglich, wöchentlich oder ereignisgesteuert. Für kritische Systeme: täglich inkrementell plus wöchentliches Voll-Backup.',code:''},
+      {h:'Backup testen (Instant Recovery)',t:'Veeam → Instant VM Recovery → VM direkt aus dem Backup starten. Prüfen: Bootet die VM? Sind die Daten vollständig?',code:'',why:'Ein nie getestetes Backup ist wertlos – erst der erfolgreiche Wiederherstellungstest beweist, dass es im Ernstfall funktioniert.'},
+    ],warn:'3-2-1-1-0-Regel: 3 Kopien, 2 verschiedene Medien, 1 Kopie ausser Haus (Off-Site), 1 offline/Air-Gap, 0 ungetestete Backups!'},
+    {title:'HowTo: Checkmk Agenten installieren',
+      intro:'Checkmk ist ein Monitoring-System: Es überwacht laufend Server und Dienste und schlägt Alarm, wenn etwas ausfällt oder z. B. eine Festplatte volläuft. Auf jedem überwachten Rechner installiert man dazu einen kleinen "Agenten", der die Messwerte an die zentrale Checkmk-Instanz liefert.',
+      concept:[
+        {t:'Monitoring',d:'Dauerhafte Überwachung von Systemen mit Alarmierung bei Problemen.'},
+        {t:'Agent',d:'Kleines Programm auf dem Zielsystem, das Messwerte sammelt und meldet.'},
+        {t:'Service Discovery',d:'Automatisches Erkennen, welche Dienste auf einem Host überwacht werden können.'},
+      ],
+      steps:[
+      {h:'Agent herunterladen',t:'Im Checkmk-Webinterface: Setup → Agents → passenden Agenten herunterladen (Linux .deb/.rpm oder Windows .msi).',code:''},
       {h:'Linux-Agent installieren',t:'',code:'sudo dpkg -i check-mk-agent_*.deb\nsudo systemctl enable --now check-mk-agent'},
-      {h:'Windows-Agent installieren',t:'MSI-Datei ausführen, Standardinstallation. Firewall-Regel für Port 6556 prüfen.',code:''},
-      {h:'Host in Checkmk aufnehmen',t:'Setup → Hosts → Add Host → IP eintragen → Services discovern → Aktivieren.',code:''},
-    ],tip:'Tipp: Agenten-Updates immer über die Bakery-Funktion von Checkmk zentral ausrollen.'},
+      {h:'Windows-Agent installieren',t:'Die MSI-Datei ausführen (Standardinstallation). Firewall-Regel für Port 6556 prüfen.',code:''},
+      {h:'Host in Checkmk aufnehmen',t:'Setup → Hosts → Add Host → IP eintragen → Services discovern → aktivieren.',code:'',why:'Die Service Discovery findet automatisch alle überwachbaren Werte (CPU, RAM, Platten, Dienste), sodass du sie nicht einzeln eintragen musst.'},
+    ],tip:'Tipp: Agenten-Updates am besten über die Bakery-Funktion von Checkmk zentral ausrollen, statt jeden Host einzeln anzufassen.'},
   ]},
-  {id:'m9',icon:'🤖',color:'#4fc3f7',title:'Modul 9: Automation, Scripting & DevOps',entries:[
-    {title:'HowTo: PowerShell für Daily Tasks',steps:[
-      {h:'Abgelaufene AD-Accounts finden',t:'',code:'Get-ADUser -Filter * -Properties PasswordLastSet,Enabled |\nWhere-Object {$_.PasswordLastSet -lt (Get-Date).AddDays(-90) -and $_.Enabled} |\nSelect-Object Name,SamAccountName,PasswordLastSet'},
+  {id:'m9',icon:'🤖',color:'#4fc3f7',title:'Modul 9: Automation, Scripting & DevOps',desc:'Wiederkehrende Aufgaben von Hand zu erledigen ist langsam und fehleranfällig. Mit Skripten (PowerShell), Automatisierungswerkzeugen (Ansible) und Versionsverwaltung (Git) erledigt man hunderte Schritte zuverlässig per Knopfdruck – das Fundament von DevOps.',entries:[
+    {title:'HowTo: PowerShell für Daily Tasks',
+      intro:'PowerShell ist die moderne Skript- und Kommandozeilensprache von Windows. Statt hundert Mausklicks tippst du einen Befehl, der z. B. alle inaktiven Benutzerkonten findet. Ein großer Vorteil: Man kann gefahrlos vorab simulieren, was ein Befehl tun würde.',
+      concept:[
+        {t:'Cmdlet',d:'Ein PowerShell-Befehl im Verb-Nomen-Format (z. B. Get-ADUser).'},
+        {t:'Pipeline (|)',d:'Leitet das Ergebnis eines Befehls an den nächsten weiter.'},
+        {t:'-WhatIf',d:'Testmodus: zeigt, was passieren WÜRDE, ohne es auszuführen.'},
+      ],
+      steps:[
+      {h:'Abgelaufene AD-Accounts finden',t:'',code:'Get-ADUser -Filter * -Properties PasswordLastSet,Enabled |\nWhere-Object {$_.PasswordLastSet -lt (Get-Date).AddDays(-90) -and $_.Enabled} |\nSelect-Object Name,SamAccountName,PasswordLastSet',why:'Die Pipeline (|) reicht die gefundenen Benutzer weiter: erst alle holen, dann nach Alter filtern, dann nur die relevanten Spalten anzeigen.'},
       {h:'Abgelaufene Accounts deaktivieren',t:'',code:'Get-ADUser -Filter {PasswordLastSet -lt "01.01.2024" -and Enabled -eq $true} |\nDisable-ADAccount\nWrite-Output "Erledigt"'},
-      {h:'PowerShell-Skript mit Fehlerbehandlung',t:'',code:'$ErrorActionPreference = "Stop"\ntry {\n    # Dein Code hier\n} catch {\n    Write-Error "Fehler: $_"\n}'},
-    ],tip:'Tipp: Immer zuerst mit -WhatIf testen! Disable-ADAccount -WhatIf zeigt was passieren würde.'},
-    {title:'HowTo: Ansible Playbook schreiben',steps:[
+      {h:'Skript mit Fehlerbehandlung',t:'',code:'$ErrorActionPreference = "Stop"\ntry {\n    # Dein Code hier\n} catch {\n    Write-Error "Fehler: $_"\n}'},
+    ],tip:'Tipp: Immer zuerst mit -WhatIf testen! "Disable-ADAccount -WhatIf" zeigt risikolos, was passieren würde.'},
+    {title:'HowTo: Ansible Playbook schreiben',
+      intro:'Ansible automatisiert die Verwaltung vieler Server gleichzeitig. In einer Liste (Inventory) stehen die Server, in einem "Playbook" beschreibst du in einfacher Textform den gewünschten Zustand – z. B. "alle Server sollen aktuell sein". Ansible sorgt dann dafür, ohne dass du dich einzeln einloggst.',
+      concept:[
+        {t:'Inventory',d:'Liste der zu verwaltenden Server, nach Gruppen geordnet.'},
+        {t:'Playbook',d:'YAML-Datei, die die gewünschten Aufgaben beschreibt.'},
+        {t:'Idempotenz',d:'Mehrfaches Ausführen ändert nichts Unerwünschtes – Endzustand zählt, nicht der Weg.'},
+      ],
+      steps:[
       {h:'Inventory erstellen',t:'',code:'# /etc/ansible/hosts\n[webserver]\n192.168.1.10\n192.168.1.11\n\n[dbserver]\n192.168.1.20'},
       {h:'Playbook schreiben',t:'',code:'# update_all.yml\n---\n- name: Alle Linux-Server updaten\n  hosts: all\n  become: true\n  tasks:\n    - name: apt update & upgrade\n      apt:\n        update_cache: yes\n        upgrade: dist'},
-      {h:'Playbook ausführen',t:'',code:'ansible-playbook update_all.yml\nansible-playbook update_all.yml --check   # Dry-Run'},
-    ],tip:'Tipp: Idempotenz – ein Ansible-Playbook kann beliebig oft laufen ohne unerwünschte Nebeneffekte.'},
-    {title:'HowTo: Git-Workflow im Team',steps:[
-      {h:'Repository klonen und Branch erstellen',t:'',code:'git clone https://github.com/firma/repo.git\ncd repo\ngit checkout -b feature/meine-funktion'},
+      {h:'Playbook ausführen',t:'',code:'ansible-playbook update_all.yml\nansible-playbook update_all.yml --check   # Dry-Run (testet ohne Änderungen)',why:'Dank Idempotenz kannst du dasselbe Playbook beliebig oft laufen lassen – schon aktuelle Server bleiben einfach unverändert.'},
+    ],tip:'Tipp: Idempotenz ist das Kernprinzip – ein Playbook kann beliebig oft laufen, ohne Schaden anzurichten.'},
+    {title:'HowTo: Git-Workflow im Team',
+      intro:'Git ist eine Versionsverwaltung: Es speichert jede Änderung an Dateien (meist Code oder Konfigurationen) nachvollziehbar ab, sodass mehrere Leute parallel arbeiten können, ohne sich zu überschreiben. Eigene Arbeit findet in einem "Branch" (Seitenast) statt und wird am Ende kontrolliert zusammengeführt.',
+      concept:[
+        {t:'Repository (Repo)',d:'Das versionsverwaltete Projektverzeichnis.'},
+        {t:'Branch',d:'Ein abgetrennter Arbeitsstrang für ein Feature.'},
+        {t:'Commit',d:'Eine gespeicherte, beschriftete Änderung.'},
+        {t:'Pull/Merge Request',d:'Antrag, die eigenen Änderungen ins Hauptprojekt zu übernehmen.'},
+      ],
+      steps:[
+      {h:'Repository klonen und Branch erstellen',t:'',code:'git clone https://github.com/firma/repo.git\ncd repo\ngit checkout -b feature/meine-funktion',why:'Im eigenen Branch arbeitest du ungestört – der stabile Hauptzweig (main) bleibt unberührt, bis deine Arbeit geprüft ist.'},
       {h:'Änderungen committen',t:'',code:'git add .\ngit commit -m "feat: neue Funktion hinzugefügt"\ngit push origin feature/meine-funktion'},
-      {h:'Merge Request / Pull Request',t:'Auf GitHub/GitLab: "New Pull Request" → Beschreibung → Review anfordern → Merge nach Genehmigung.',code:''},
-    ],tip:'Tipp: Commit-Messages im Conventional-Commits-Format: feat:, fix:, docs:, chore:'},
+      {h:'Merge Request / Pull Request',t:'Auf GitHub/GitLab: "New Pull Request" → Beschreibung verfassen → Review anfordern → nach Genehmigung mergen.',code:''},
+    ],tip:'Tipp: Commit-Messages im Conventional-Commits-Format halten: feat: (Feature), fix: (Bugfix), docs:, chore:'},
   ]},
-  {id:'m10',icon:'🔧',color:'#ff8a65',title:'Modul 10: Troubleshooting, Dokumentation & Daily Business',entries:[
-    {title:'HowTo: OSI-Modell beim Troubleshooting anwenden',steps:[
-      {h:'Layer 1 – Physisch',t:'Kabel gesteckt? Link-LED leuchtet? Kabel tauschen, Port wechseln.',code:'ethtool eth0   # Linux: Link-Status prüfen'},
-      {h:'Layer 2 – Datensicherung',t:'VLAN korrekt? MAC-Tabelle prüfen.',code:'show mac address-table   # Cisco Switch'},
+  {id:'m10',icon:'🔧',color:'#ff8a65',title:'Modul 10: Troubleshooting, Dokumentation & Daily Business',desc:'Fehler systematisch zu finden ist eine Kernkompetenz. Das OSI-Modell hilft, Probleme Schicht für Schicht einzugrenzen. Dazu gehören gute Tickets und saubere Dokumentation – denn ungeschriebenes Wissen geht verloren.',entries:[
+    {title:'HowTo: OSI-Modell beim Troubleshooting anwenden',
+      intro:'Das OSI-Modell beschreibt Netzwerkkommunikation in 7 aufeinander aufbauenden Schichten – vom physischen Kabel (unten) bis zur Anwendung (oben). Beim Fehlersuchen arbeitet man von unten nach oben: Erst prüfen, ob das Kabel steckt, bevor man die Software verdächtigt. So vermeidet man stundenlanges Suchen an der falschen Stelle.',
+      concept:[
+        {t:'Layer 1 – Physisch',d:'Kabel, Stecker, Funk – die echten Signale.'},
+        {t:'Layer 2 – Sicherung',d:'Switches, MAC-Adressen, VLANs.'},
+        {t:'Layer 3 – Netzwerk',d:'IP-Adressen, Router, Routing.'},
+        {t:'Layer 4–7',d:'Transport bis Anwendung (Ports, Dienste, HTTP).'},
+      ],
+      steps:[
+      {h:'Layer 1 – Physisch',t:'Kabel gesteckt? Leuchtet die Link-LED? Kabel tauschen, anderen Port testen.',code:'ethtool eth0   # Linux: Link-Status prüfen',why:'Erstaunlich viele "Netzwerkprobleme" sind ein lockeres Kabel – darum immer ganz unten anfangen.'},
+      {h:'Layer 2 – Datensicherung',t:'Stimmt das VLAN? MAC-Tabelle prüfen.',code:'show mac address-table   # Cisco Switch'},
       {h:'Layer 3 – Netzwerk',t:'IP-Adresse gesetzt? Default-Gateway erreichbar? Routing korrekt?',code:'ping 8.8.8.8\nip route show\ntraceroute 8.8.8.8'},
-      {h:'Layer 4–7 – Transport bis Anwendung',t:'Port offen? Dienst läuft? Firewall-Regel?',code:'ss -tlnp | grep 80    # Port offen?\ncurl -v http://server  # HTTP-Antwort prüfen'},
-    ],tip:'Tipp: Immer von Layer 1 nach oben arbeiten – 80% der Probleme liegen auf L1–L3.'},
-    {title:'HowTo: Professionelle Ticket-Erstellung',steps:[
+      {h:'Layer 4–7 – Transport bis Anwendung',t:'Ist der Port offen? Läuft der Dienst? Blockiert eine Firewall?',code:'ss -tlnp | grep 80    # Lauscht etwas auf Port 80?\ncurl -v http://server  # HTTP-Antwort prüfen'},
+    ],tip:'Tipp: Immer von Layer 1 nach oben arbeiten – rund 80 % aller Probleme liegen auf den Schichten 1 bis 3.'},
+    {title:'HowTo: Professionelle Ticket-Erstellung',
+      intro:'Ein Ticket ist die schriftliche Meldung eines Problems an die IT. Je vollständiger es ist, desto schneller wird geholfen – ohne lästiges Nachfragen. Ein gutes Ticket beantwortet immer: Was passiert, was sollte passieren, und was wurde schon versucht?',
+      steps:[
       {h:'Pflichtfelder im Ticket',t:'1. Beobachtetes Verhalten (Was passiert?)\n2. Erwartetes Verhalten (Was sollte passieren?)\n3. Schritte zur Reproduktion\n4. Was wurde schon probiert?\n5. Logs, Screenshots, Fehlermeldungen anhängen',code:''},
-      {h:'Gutes Beispiel',t:'Betreff: "VPN-Verbindung seit 09:00 Uhr nicht möglich"\n\nBeobachtet: VPN-Client zeigt Fehler "Authentication failed" (Screenshot)\nErwartet: Verbindung zum Firmennetz\nProbiert: Passwort zurückgesetzt, Client neu gestartet\nLogs: C:\\Users\\user\\AppData\\Local\\VPN\\vpn.log angehängt',code:''},
-    ],tip:'Tipp: Ein vollständiges Ticket spart Rückfragen und verkürzt die Lösungszeit um 50%.'},
-    {title:'HowTo: Sauberes Netzdiagramm erstellen',steps:[
-      {h:'Tool auswählen',t:'draw.io (kostenlos, Browser oder Desktop): app.diagrams.net. Alternativ: Visio, Lucidchart.',code:''},
-      {h:'Logische Ansicht',t:'Zeigt IP-Adressen, Subnetze, VLANs, Dienste. Keine physischen Ports.',code:''},
-      {h:'Physische Ansicht',t:'Zeigt Racks, Kabelwege, Switch-Ports, Patchpanel-Belegung.',code:''},
-      {h:'Mindestinhalt',t:'Alle Geräte mit IP, alle Subnetze mit CIDR, Default Gateway, Internetzugang, Firewalls/Proxies, Server-Rollen.',code:''},
-    ],tip:'Tipp: Für NetBox als IPAM-Tool: netbox.dev – kostenloses Open-Source-IPAM/DCIM.'},
+      {h:'Gutes Beispiel',t:'Betreff: "VPN-Verbindung seit 09:00 Uhr nicht möglich"\n\nBeobachtet: VPN-Client zeigt "Authentication failed" (Screenshot)\nErwartet: Verbindung zum Firmennetz\nProbiert: Passwort zurückgesetzt, Client neu gestartet\nLogs: C:\\Users\\user\\AppData\\Local\\VPN\\vpn.log angehängt',code:'',why:'Mit diesen Angaben kann die IT das Problem oft schon nachvollziehen, ohne dich erneut kontaktieren zu müssen.'},
+    ],tip:'Tipp: Ein vollständiges Ticket spart Rückfragen und verkürzt die Lösungszeit erfahrungsgemäß um rund 50 %.'},
+    {title:'HowTo: Sauberes Netzdiagramm erstellen',
+      intro:'Ein Netzdiagramm ist die Landkarte deines Netzwerks. Es zeigt, welche Geräte wie verbunden sind. Man unterscheidet die logische Sicht (welche IPs/Netze) von der physischen Sicht (welche Kabel/Ports). Gute Diagramme sind im Notfall Gold wert.',
+      concept:[
+        {t:'Logische Ansicht',d:'Zeigt IPs, Subnetze, VLANs, Dienste – die "unsichtbare" Struktur.'},
+        {t:'Physische Ansicht',d:'Zeigt Racks, Kabel, Ports – das echte Material.'},
+        {t:'CIDR',d:'Kurzschreibweise für Subnetzgröße, z. B. /24 = 256 Adressen.'},
+      ],
+      steps:[
+      {h:'Tool auswählen',t:'draw.io (kostenlos, im Browser): app.diagrams.net. Alternativen: Visio, Lucidchart.',code:''},
+      {h:'Logische Ansicht',t:'Zeigt IP-Adressen, Subnetze, VLANs und Dienste – keine physischen Ports.',code:''},
+      {h:'Physische Ansicht',t:'Zeigt Racks, Kabelwege, Switch-Ports und Patchpanel-Belegung.',code:''},
+      {h:'Mindestinhalt',t:'Alle Geräte mit IP, alle Subnetze mit CIDR, Default Gateway, Internetzugang, Firewalls/Proxies und Server-Rollen.',code:''},
+    ],tip:'Tipp: Für IP-Adressverwaltung (IPAM) lohnt NetBox: netbox.dev – kostenloses Open-Source-IPAM/DCIM.'},
   ]},
-  {id:'m11',icon:'🎓',color:'#c8ff00',title:'Modul 11: Der Weg zur Abschlussprüfung',entries:[
-    {title:'HowTo: Projektantrag formulieren',steps:[
-      {h:'Thema eingrenzen',t:'Konkretes, in 35–40 Stunden umsetzbares Projekt wählen. Beispiele: "Aufbau eines Monitoring-Systems mit Checkmk", "Migration eines File-Servers auf NAS".',code:''},
-      {h:'Zeitplanung (Muss-Angabe!)',t:'Tabelle mit Phase, Tätigkeit, geplante Stunden. Summe = genau 35 Std. (FiSi). Puffer für Dokumentation einplanen (ca. 8 Std.).',code:''},
-      {h:'Antrag einreichen',t:'Mindestens 6 Wochen vor Prüfungsbeginn beim Prüfungsausschuss. Nach Genehmigung erst starten!',code:''},
-    ],tip:'Tipp: IHK-Musteranträge auf der Website deiner IHK herunterladen!'},
-    {title:'HowTo: Projektdokumentation schreiben',steps:[
-      {h:'Formale Vorgaben der IHK',t:'Deckblatt mit Name, Betrieb, Thema, Datum. Max. 10–15 Seiten Hauptteil (je IHK unterschiedlich). Anhänge nicht begrenzt.',code:''},
-      {h:'Kaufmännische Projektsicht',t:'Amortisationsrechnung: Investitionskosten (Hardware, Lizenzen, Arbeitszeit) vs. Nutzen (Einsparungen, Effizienzgewinn). Tabelle im Anhang.',code:''},
+  {id:'m11',icon:'🎓',color:'#c8ff00',title:'Modul 11: Der Weg zur Abschlussprüfung',desc:'Am Ende der Ausbildung steht das IHK-Abschlussprojekt: ein echtes betriebliches Projekt, das du beantragst, durchführst, dokumentierst und präsentierst. Dieses Modul führt dich durch alle drei Phasen – Antrag, Dokumentation und Fachgespräch.',entries:[
+    {title:'HowTo: Projektantrag formulieren',
+      intro:'Bevor du dein Abschlussprojekt starten darfst, musst du es bei der IHK beantragen. Der Antrag beschreibt, WAS du machst und in WELCHER Zeit. Er muss vom Prüfungsausschuss genehmigt werden – darum sollte das Thema realistisch in den vorgegebenen Stunden machbar sein.',
+      concept:[
+        {t:'Projektantrag',d:'Vorab-Beschreibung des geplanten Projekts zur Genehmigung.'},
+        {t:'Zeitplanung',d:'Pflicht-Tabelle, deren Summe genau die vorgegebenen Stunden ergibt.'},
+        {t:'Prüfungsausschuss',d:'Das Gremium, das den Antrag genehmigt und später bewertet.'},
+      ],
+      steps:[
+      {h:'Thema eingrenzen',t:'Ein konkretes, in 35–40 Stunden umsetzbares Projekt wählen. Beispiele: "Aufbau eines Monitoring-Systems mit Checkmk", "Migration eines File-Servers auf NAS".',code:'',why:'Ein zu großes Thema schaffst du nicht in der Zeit; ein zu kleines bietet zu wenig Inhalt für eine gute Bewertung.'},
+      {h:'Zeitplanung (Muss-Angabe!)',t:'Tabelle mit Phase, Tätigkeit und geplanten Stunden. Die Summe muss genau 35 Std. (FiSi) ergeben. Puffer für die Dokumentation einplanen (ca. 8 Std.).',code:''},
+      {h:'Antrag einreichen',t:'Mindestens 6 Wochen vor Prüfungsbeginn beim Prüfungsausschuss. Erst nach der Genehmigung mit der Umsetzung beginnen!',code:''},
+    ],tip:'Tipp: Lade dir die IHK-Musteranträge von der Website deiner zuständigen IHK herunter und halte dich an die Vorlage.'},
+    {title:'HowTo: Projektdokumentation schreiben',
+      intro:'Die Dokumentation beschreibt dein Projekt nachvollziehbar: vom Ausgangszustand über deine Entscheidungen bis zum Ergebnis. Wichtig ist nicht nur die Technik, sondern auch die kaufmännische Sicht (Kosten/Nutzen) – und vor allem: jede Entscheidung begründen.',
+      concept:[
+        {t:'Ist-/Soll-Zustand',d:'Wie war es vorher (Ist), wie soll es danach sein (Soll)?'},
+        {t:'Amortisation',d:'Ab wann sich die Investition durch Einsparungen bezahlt macht.'},
+        {t:'Begründungspflicht',d:'Jede technische Wahl muss nachvollziehbar erklärt werden.'},
+      ],
+      steps:[
+      {h:'Formale Vorgaben der IHK',t:'Deckblatt mit Name, Betrieb, Thema, Datum. Max. 10–15 Seiten Hauptteil (je IHK unterschiedlich). Anhänge sind nicht begrenzt.',code:''},
+      {h:'Kaufmännische Projektsicht',t:'Amortisationsrechnung: Investitionskosten (Hardware, Lizenzen, Arbeitszeit) gegen Nutzen (Einsparungen, Effizienzgewinn). Als Tabelle in den Anhang.',code:'',why:'Die IHK will sehen, dass du nicht nur technisch denkst, sondern Lösungen auch wirtschaftlich bewerten kannst.'},
       {h:'Struktur',t:'1. Ausgangssituation / Ist-Zustand\n2. Soll-Konzept und Begründung der Entscheidung\n3. Durchführung (mit Fotos/Screenshots)\n4. Qualitätssicherung / Tests\n5. Fazit und Ausblick',code:''},
-    ],tip:'Tipp: Jede Entscheidung begründen! Warum Nginx statt Apache? Warum RAID 5 statt RAID 1?'},
-    {title:'HowTo: Fachgespräch & Präsentation',steps:[
-      {h:'Präsentation aufbauen',t:'Max. 15 Minuten. Folien: Ausgangslage, Ziel, Umsetzung, Ergebnis, Ausblick. Nicht mehr als 5 Bullet-Points pro Folie.',code:''},
-      {h:'Typische Prüferfragen',t:'• Warum haben Sie sich für XY entschieden?\n• Was würden Sie beim nächsten Mal anders machen?\n• Wie skaliert Ihre Lösung bei doppelter Last?\n• Welche Sicherheitsrisiken hat Ihre Lösung?',code:''},
-      {h:'Tipps gegen Nervosität',t:'• Laut üben (allein oder vor Freunden)\n• "Wenn ich nicht weiter weiß, frage ich kurz nach"\n• Prüfer wollen, dass du bestehst!\n• Pausen sind ok, Stille ist kein Fehler',code:''},
-    ],tip:'Tipp: Das Fachgespräch dauert 15 Min. – Prüfer stellen ca. 8–12 Fragen. Kurze, präzise Antworten bevorzugen.'},
+    ],tip:'Tipp: Jede Entscheidung begründen! Warum Nginx statt Apache? Warum RAID 5 statt RAID 1? Das ist bewertungsrelevant.'},
+    {title:'HowTo: Fachgespräch & Präsentation',
+      intro:'Zum Abschluss präsentierst du dein Projekt (max. 15 Min.) und beantwortest Fragen der Prüfer im Fachgespräch. Die Prüfer wollen verstehen, ob du deine eigene Lösung wirklich durchdrungen hast – und sie wollen, dass du bestehst. Ruhe und ehrliche, präzise Antworten zählen mehr als Auswendiglernen.',
+      concept:[
+        {t:'Präsentation',d:'Kurzer Vortrag (max. 15 Min.) über Ziel, Umsetzung und Ergebnis.'},
+        {t:'Fachgespräch',d:'Anschließende Fragerunde der Prüfer zum Projekt.'},
+      ],
+      steps:[
+      {h:'Präsentation aufbauen',t:'Max. 15 Minuten. Folienreihenfolge: Ausgangslage, Ziel, Umsetzung, Ergebnis, Ausblick. Nicht mehr als 5 Bullet-Points pro Folie.',code:''},
+      {h:'Typische Prüferfragen',t:'• Warum haben Sie sich für XY entschieden?\n• Was würden Sie beim nächsten Mal anders machen?\n• Wie skaliert Ihre Lösung bei doppelter Last?\n• Welche Sicherheitsrisiken hat Ihre Lösung?',code:'',why:'Diese Fragen prüfen, ob du Alternativen abgewogen hast und deine Lösung kritisch reflektieren kannst.'},
+      {h:'Tipps gegen Nervosität',t:'• Laut üben (allein oder vor Freunden)\n• "Wenn ich nicht weiterweiß, frage ich kurz nach"\n• Die Prüfer wollen, dass du bestehst!\n• Pausen sind ok, Stille ist kein Fehler',code:''},
+    ],tip:'Tipp: Das Fachgespräch dauert 15 Min. – Prüfer stellen ca. 8–12 Fragen. Kurze, präzise Antworten sind besser als langes Schweifen.'},
   ]},
 ];
 
@@ -6128,6 +6446,7 @@ function renderWiki() {
         <div class="wiki-mod-chev" id="wmc-${mod.id}">▼</div>
       </div>
       <div class="wiki-mod-body" id="wmb-${mod.id}">
+        ${mod.desc ? `<div class="wiki-mod-desc">${mod.desc}</div>` : ''}
         ${mod.entries.map((entry, ei) => {
           const eid = mod.id + '_' + ei;
           return `<div class="wiki-entry">
@@ -6136,6 +6455,8 @@ function renderWiki() {
               <div class="wiki-entry-chev" id="wec-${eid}">▼</div>
             </div>
             <div class="wiki-entry-body" id="web-${eid}">
+              ${entry.intro ? `<div class="wiki-intro"><strong>🧭 Worum geht es hier?</strong>${entry.intro.replace(/\n/g,'<br>')}</div>` : ''}
+              ${entry.concept ? `<div class="wiki-concept"><div class="wc-head">🧠 Grundbegriffe einfach erklärt</div><dl>${entry.concept.map(c=>`<dt>${c.t}</dt><dd>${c.d}</dd>`).join('')}</dl></div>` : ''}
               ${entry.steps.map((step, si) => `
                 <div class="wiki-step">
                   <div class="wiki-step-num">${si + 1}</div>
@@ -6143,13 +6464,17 @@ function renderWiki() {
                     <strong>${step.h}</strong>
                     ${step.t ? `<span>${step.t.replace(/\n/g, '<br>')}</span>` : ''}
                     ${step.code ? `<div class="wiki-code">${step.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : ''}
+                    ${step.why ? `<div class="wiki-why"><strong>Warum?</strong> ${step.why.replace(/\n/g,'<br>')}</div>` : ''}
                   </div>
                 </div>`).join('')}
+              ${entry.checklist ? `<div class="wiki-checklist"><div class="wck-head">✅ Kurz-Checkliste</div>${entry.checklist.map(c=>`<div class="wck-item">${c}</div>`).join('')}</div>` : ''}
               ${entry.tip ? `<div class="wiki-tip">💡 ${entry.tip}</div>` : ''}
               ${entry.warn ? `<div class="wiki-warn">⚠️ ${entry.warn}</div>` : ''}
+              ${entry.glossary ? `<div class="wiki-glossary"><div class="wg-head">📖 Glossar</div>${entry.glossary.map(g=>`<div class="wg-item"><span class="wg-term">${g.t}</span> – ${g.d}</div>`).join('')}</div>` : ''}
             </div>
           </div>`;
         }).join('')}
+        <div class="htb-egg" onclick="howToBasic(event)"><span class="htb-icon">🥚</span> HowToBasic</div>
       </div>
     </div>`).join('');
   // Auto-open if single module filtered
@@ -6175,6 +6500,86 @@ window.wikiToggleEntry = function(eid) {
   if (!body) return;
   const open = body.classList.toggle('open');
   if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+};
+
+// ══════════════════ HowToBasic Easter Egg 🥚 ══════════════════
+let eggCooldown = false;
+window.howToBasic = function(ev) {
+  if (ev) ev.stopPropagation();
+  const layer = document.getElementById('egg-layer');
+  if (!layer) return;
+  // Flash
+  const flash = document.createElement('div');
+  flash.className = 'egg-flash';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 400);
+  // Toast
+  if (!eggCooldown) {
+    eggCooldown = true;
+    const phrases = [
+      'TUTORIAL COMPLETE. EZ.',
+      'And THAT is how you do it. 🥚',
+      'Step 1: Eier. Step 2: ???. Step 3: Profit.',
+      'You just got HowToBasic\'d.',
+      'Reinigung nicht im Lehrplan enthalten.',
+    ];
+    const toast = document.createElement('div');
+    toast.className = 'egg-toast';
+    toast.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 350); }, 2600);
+    setTimeout(() => { eggCooldown = false; }, 1200);
+  }
+  // Egg barrage
+  const eggs = ['🥚','🍳','🥚','🐣','🥚'];
+  const W = window.innerWidth, H = window.innerHeight;
+  const count = 26;
+  for (let i = 0; i < count; i++) {
+    const e = document.createElement('div');
+    e.className = 'egg-proj';
+    e.textContent = eggs[Math.floor(Math.random() * eggs.length)];
+    // Launch from a random screen edge toward the center/viewer
+    const edge = Math.floor(Math.random() * 4);
+    let sx, sy;
+    if (edge === 0) { sx = Math.random()*W; sy = -60; }
+    else if (edge === 1) { sx = W+60; sy = Math.random()*H; }
+    else if (edge === 2) { sx = Math.random()*W; sy = H+60; }
+    else { sx = -60; sy = Math.random()*H; }
+    e.style.left = sx + 'px';
+    e.style.top = sy + 'px';
+    e.style.fontSize = (24 + Math.random()*30) + 'px';
+    layer.appendChild(e);
+    // Target = roughly screen center (the "viewer") with some scatter
+    const tx = W/2 + (Math.random()-0.5)*W*0.5;
+    const ty = H/2 + (Math.random()-0.5)*H*0.5;
+    const dur = 420 + Math.random()*360;
+    const spin = (Math.random()-0.5)*1080;
+    const delay = Math.random()*260;
+    const anim = e.animate([
+      { transform: `translate(0,0) rotate(0deg) scale(.6)`, opacity: 0 },
+      { transform: `translate(${(tx-sx)*0.5}px,${(ty-sy)*0.5}px) rotate(${spin*0.5}deg) scale(1.15)`, opacity: 1, offset: 0.55 },
+      { transform: `translate(${tx-sx}px,${ty-sy}px) rotate(${spin}deg) scale(1.45)`, opacity: 1 },
+    ], { duration: dur, delay: delay, easing: 'cubic-bezier(.45,.05,.55,.95)', fill: 'forwards' });
+    anim.onfinish = () => {
+      // Splat at impact point
+      const splat = document.createElement('div');
+      splat.className = 'egg-splat';
+      splat.textContent = '💥';
+      splat.style.left = tx + 'px';
+      splat.style.top = ty + 'px';
+      document.body.appendChild(splat);
+      const drip = document.createElement('div');
+      drip.className = 'egg-splat';
+      drip.textContent = '🍳';
+      drip.style.left = (tx + (Math.random()-0.5)*30) + 'px';
+      drip.style.top = (ty + 18) + 'px';
+      drip.style.fontSize = '30px';
+      document.body.appendChild(drip);
+      e.remove();
+      setTimeout(() => { splat.remove(); drip.remove(); }, 1100);
+    };
+  }
 };
 
 // ══════════════════ GLOBAL WINDOW REGISTRATIONS (für GitHub Pages / type="module") ══════════════════
