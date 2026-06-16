@@ -2902,7 +2902,13 @@ const AUFGABEN={
 };
 
 // ══════════════════ AUFGABENHEFT ENGINE ══════════════════
-let aufgState={lf:'lf1',idx:0,revealed:false};
+let aufgState={lf:'lf1',idx:0,revealed:false,answers:{}};
+
+function aufgKey(){return aufgState.lf+'_'+aufgState.idx;}
+function aufgSaveAnswer(){
+  const el=document.getElementById('aufg-answer-input');
+  if(el){if(!aufgState.answers)aufgState.answers={};aufgState.answers[aufgKey()]=el.value;}
+}
 
 function aufgFilter(lf){
   aufgState={lf,idx:0,revealed:false};
@@ -2936,6 +2942,10 @@ function renderAufgaben(){
       <div class="q-area">
         <div style="font-size:16px;font-weight:600;margin-bottom:12px">${expandAbbr(q.title)}</div>
         <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:16px;font-size:13px;color:var(--text2);white-space:pre-line;line-height:1.7">${expandAbbr(q.text)}</div>
+        <div style="margin-bottom:16px">
+          <div style="font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">✍️ Deine Antwort</div>
+          <textarea id="aufg-answer-input" class="note-input body" placeholder="Schreibe hier deine Lösung / fülle die Lücken aus..." oninput="aufgSaveAnswer()" style="min-height:140px;font-family:var(--mono);font-size:13px">${(aufgState.answers&&aufgState.answers[aufgKey()])||''}</textarea>
+        </div>
         ${!aufgState.revealed?`
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn btn-primary" onclick="revealAufg()">💡 Lösung anzeigen</button>
@@ -2960,13 +2970,14 @@ function renderAufgaben(){
       </div>
     </div>`;
 }
-function revealAufg(){aufgState.revealed=true;renderAufgaben();}
+function revealAufg(){aufgSaveAnswer();aufgState.revealed=true;renderAufgaben();}
 function aufgNav(dir){
+  aufgSaveAnswer();
   const qs=AUFGABEN[aufgState.lf]||[];
   const next=aufgState.idx+dir;
   if(next>=0&&next<qs.length){aufgState.idx=next;aufgState.revealed=false;renderAufgaben();}
 }
-function aufgJump(i){aufgState.idx=i;aufgState.revealed=false;renderAufgaben();}
+function aufgJump(i){aufgSaveAnswer();aufgState.idx=i;aufgState.revealed=false;renderAufgaben();}
 
 
 // ══════════════════ LEADERBOARD ══════════════════
@@ -5148,6 +5159,7 @@ window.filterNotes      = filterNotes;
 window.editNote         = editNote;
 window.deleteNote       = deleteNote;
 window.aufgFilter       = aufgFilter;
+window.aufgSaveAnswer   = aufgSaveAnswer;
 window.revealAufg       = revealAufg;
 window.aufgNav          = aufgNav;
 window.aufgJump         = aufgJump;
