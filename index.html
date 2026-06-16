@@ -358,6 +358,27 @@ h3{font-size:14px;font-weight:500}
 .lb-tab{padding:9px 18px;font-size:12px;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-family:var(--mono)}
 .lb-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .lb-spinner{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--text3);font-size:13px}
+
+/* KARTEIKARTEN */
+.fc-stage{perspective:1400px;margin:0 auto 18px;max-width:560px}
+.fc-card{position:relative;width:100%;min-height:300px;cursor:pointer;transition:transform .55s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r2);border:1px solid var(--border);background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 26px;text-align:center}
+.fc-back{transform:rotateY(180deg);background:var(--bg3)}
+.fc-side-label{position:absolute;top:14px;left:16px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3)}
+.fc-lf-badge{position:absolute;top:12px;right:14px}
+.fc-q{font-size:18px;font-weight:600;line-height:1.5;color:var(--text)}
+.fc-a{font-size:15px;line-height:1.65;color:var(--text2);white-space:pre-line}
+.fc-flip-hint{position:absolute;bottom:14px;left:0;right:0;font-size:11px;color:var(--text3);font-family:var(--mono)}
+.fc-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.fc-rate{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.fc-rate .btn{min-width:150px}
+.fc-progress-dots{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:560px;margin:0 auto 16px}
+.fc-dot{width:14px;height:14px;border-radius:3px;background:var(--bg4);border:1px solid var(--border)}
+.fc-dot.known{background:var(--green)}
+.fc-dot.unknown{background:var(--red)}
+.fc-dot.current{border:1px solid var(--accent);box-shadow:0 0 0 2px var(--accentbg)}
+
 </style>
 </head>
 <body>
@@ -402,6 +423,7 @@ h3{font-size:14px;font-weight:500}
     <div class="nav-tab" id="tab-review" onclick="goTo('review')">🔁 Wiederholen</div>
     <div class="nav-tab" id="tab-achievements" onclick="goTo('achievements')">🏆 Erfolge</div>
     <div class="nav-tab" id="tab-aufgaben" onclick="goTo('aufgaben')">📖 Aufgabenheft</div>
+    <div class="nav-tab" id="tab-cards" onclick="goTo('cards')">🃏 Karteikarten</div>
     <div class="nav-tab" id="tab-debug" onclick="goTo('debug')">🐛 Code-Debugger</div>
     <div class="nav-tab" id="tab-subnet" onclick="goTo('subnet')">🌐 Subnetz-Spiel</div>
     <div class="nav-tab" id="tab-robot" onclick="goTo('robot')">🤖 Roboter</div>
@@ -515,6 +537,14 @@ h3{font-size:14px;font-weight:500}
     <button class="btn btn-ghost btn-sm" onclick="aufgFilter('lf5')">📊 LF 5 – PM & Software</button>
   </div>
   <div id="aufg-content"></div>
+</div>
+
+<!-- KARTEIKARTEN -->
+<div class="page" id="page-cards">
+  <div style="margin-bottom:18px"><h1>🃏 Karteikarten</h1><div class="sub">Frage vorne, Antwort hinten. Karte antippen zum Umdrehen. Nicht Gewusstes landet automatisch im Wiederholen-Tab.</div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="fc-lf-filter"></div>
+  <div style="font-size:12px;color:var(--text3);margin-bottom:14px" id="fc-stats"></div>
+  <div id="fc-content"></div>
 </div>
 
 <div class="page" id="page-debug">
@@ -2140,6 +2170,7 @@ function goTo(page){
   if(page==='review')renderReview();
   if(page==='achievements')renderAchievements();
   if(page==='aufgaben'){aufgFilter(aufgState.lf||'lf1');}
+  if(page==='cards'){renderCards();}
   if(page==='notes')renderNotes();
   if(page==='subnet'){snInitGame();}
   if(page==='debug'){dbgInitOnce();}
@@ -2900,6 +2931,464 @@ const AUFGABEN={
      lf:'lf5'},
   ],
 };
+
+// ══════════════════ KARTEIKARTEN DATEN ══════════════════
+const FLASHCARDS={
+  lf1:[
+    {q:'Welches Mindeststammkapital braucht eine GmbH?',a:'25.000 € Stammkapital.'},
+    {q:'Welches Mindestgrundkapital braucht eine AG?',a:'50.000 € Grundkapital.'},
+    {q:'Wie haften die Gesellschafter einer OHG?',a:'Unbeschränkt, solidarisch und mit dem Privatvermögen.'},
+    {q:'Wie haftet ein Kommanditist in der KG?',a:'Beschränkt – nur bis zur Höhe seiner Einlage.'},
+    {q:'Wie haftet der Komplementär in der KG?',a:'Unbeschränkt mit dem Privatvermögen.'},
+    {q:'Welche Sozialversicherung zahlt allein der Arbeitgeber?',a:'Die Unfallversicherung (Berufsgenossenschaft).'},
+    {q:'Aus wie vielen Zweigen besteht die gesetzliche Sozialversicherung?',a:'5: Kranken-, Renten-, Arbeitslosen-, Unfall- und Pflegeversicherung.'},
+    {q:'Wie lange darf die Probezeit in der Ausbildung maximal sein?',a:'1 bis 4 Monate (BBiG §20).'},
+    {q:'Was regelt das BBiG?',a:'Das Berufsbildungsgesetz – Grundlage aller Ausbildungsverhältnisse.'},
+    {q:'Was bedeutet Polypol?',a:'Viele Anbieter und viele Nachfrager.'},
+    {q:'Was bedeutet Monopol?',a:'Ein Anbieter, viele Nachfrager.'},
+    {q:'Was liefern Haushalte im Wirtschaftskreislauf an Unternehmen?',a:'Produktionsfaktoren: Arbeitskraft, Kapital, Boden.'},
+    {q:'Wie entsteht der Gleichgewichtspreis?',a:'Im Schnittpunkt von Angebots- und Nachfragekurve.'},
+    {q:'Welche Feuerlöscherklasse löscht flüssige Stoffe (z.B. Benzin)?',a:'Klasse B.'},
+    {q:'Welche Beleuchtungsstärke wird am Bildschirmarbeitsplatz empfohlen?',a:'Etwa 500 Lux.'},
+    {q:'Was regelt das ElektroG?',a:'Rücknahme und umweltgerechte Entsorgung von Elektro-/Elektronikgeräten.'},
+    {q:'Für wen gilt das JArbSchG?',a:'Für Jugendliche unter 18 Jahren (Jugendarbeitsschutzgesetz).'},
+    {q:'Was bedeutet eine beschränkte Geschäftsfähigkeit?',a:'Personen von 7 bis unter 18 Jahren.'},
+    {q:'Was wird in der Vorwärtskalkulation auf den Bezugspreis aufgeschlagen?',a:'Der Handlungskostenzuschlag (→ Selbstkostenpreis).'},
+    {q:'Wie addieren sich die Gewichtungen in der Nutzwertanalyse?',a:'Zu 100 % bzw. zum Faktor 1.'},
+    {q:'Was umfasst der TCO-Begriff?',a:'Alle Kosten über den gesamten Lebenszyklus (Anschaffung, Betrieb, Entsorgung).'},
+    {q:'Wer schließt einen Tarifvertrag ab?',a:'Gewerkschaft und Arbeitgeberverband.'},
+    {q:'Ab wie vielen Arbeitnehmern kann ein Betriebsrat gewählt werden?',a:'Ab 5 wahlberechtigten Arbeitnehmern (§1 BetrVG).'},
+    {q:'Wie lange ist die gesetzliche Gewährleistung bei Neuware?',a:'24 Monate (§438 BGB).'},
+    {q:'Unterschied Gewährleistung und Garantie?',a:'Gewährleistung = gesetzlich (24 Mon.); Garantie = freiwillig vom Hersteller.'},
+    {q:'Was ist eine Stabsstelle?',a:'Eine beratende Funktion ohne Weisungsbefugnis.'},
+    {q:'Wie kommt ein Kaufvertrag zustande?',a:'Durch zwei übereinstimmende Willenserklärungen (Angebot + Annahme).'},
+  ],
+  lf2:[
+    {q:'Wo sitzt der L1-Cache?',a:'Direkt im CPU-Kern – kleinster und schnellster Cache.'},
+    {q:'Was bedeutet TDP bei einer CPU?',a:'Thermal Design Power – maximale Wärmeverlustleistung.'},
+    {q:'Wie viel schneller ist NVMe gegenüber SATA-SSD?',a:'Bis ~7x (PCIe ~7000 MB/s vs. SATA ~550 MB/s).'},
+    {q:'Was verhindert Secure Boot?',a:'Das Laden von nicht signiertem Bootcode.'},
+    {q:'Welche Vorteile bietet UEFI gegenüber BIOS?',a:'GUI, Secure Boot, GPT-Unterstützung (>2 TB).'},
+    {q:'Was bewirkt Dual-Channel-RAM?',a:'Zwei Module parallel = doppelte Speicherbandbreite.'},
+    {q:'Welche maximale Dateigröße erlaubt FAT32?',a:'4 GB pro Datei.'},
+    {q:'Welches Dateisystem ist Linux-Standard?',a:'ext4.'},
+    {q:'Nutzbarer Speicher bei RAID 5 mit n Platten?',a:'(n-1) × Plattengröße.'},
+    {q:'Nutzbarer Speicher bei RAID 6?',a:'(n-2) × Plattengröße.'},
+    {q:'Welches RAID bietet Striping ohne Redundanz?',a:'RAID 0.'},
+    {q:'Wie berechnet man die Wirkleistung einer USV?',a:'W = VA × cos φ.'},
+    {q:'Was besagt die 3-2-1-Backup-Regel?',a:'3 Kopien, auf 2 Medientypen, davon 1 extern.'},
+    {q:'Was sichert ein differentielles Backup?',a:'Alle Änderungen seit der letzten Vollsicherung.'},
+    {q:'Was sichert ein inkrementelles Backup?',a:'Nur Änderungen seit dem letzten Backup (Archivbit wird zurückgesetzt).'},
+    {q:'1 GiB = wie viele MiB?',a:'1024 MiB (binäre IEC-Präfixe).'},
+    {q:'Dezimal 13 in Binär?',a:'1101 (8+4+1).'},
+    {q:'Hex A5 in Dezimal?',a:'165 (10×16 + 5).'},
+    {q:'Ergebnis von 1 AND 0?',a:'0.'},
+    {q:'Ergebnis von 1 XOR 1?',a:'0.'},
+    {q:'Wie viele Bit hat ein Nibble?',a:'4 Bit = 1 Hex-Stelle.'},
+    {q:'Wofür steht GPL (Copyleft)?',a:'Abgeleitete Werke müssen ebenfalls unter GPL stehen.'},
+    {q:'Was bedeutet eine OEM-Lizenz?',a:'An die Hardware gebunden, nicht übertragbar.'},
+    {q:'Was sagt die 80-Plus-Zertifizierung aus?',a:'Netzteil-Wirkungsgrad ≥ 80 % bei 20/50/100 % Last.'},
+    {q:'Was beschreibt der ACPI-Zustand S3?',a:'Suspend-to-RAM / Sleep-Modus.'},
+    {q:'Übertragungszeit-Formel?',a:'Datenmenge (Bit) / Übertragungsrate (Bit/s).'},
+    {q:'Welche Maßnahme spart per Konsolidierung am meisten?',a:'Virtualisierung (weniger physische Server).'},
+  ],
+  lf3:[
+    {q:'Auf welcher OSI-Schicht arbeitet ein Switch?',a:'Schicht 2 (Data Link / MAC-Adressen).'},
+    {q:'Auf welcher OSI-Schicht arbeitet ein Router?',a:'Schicht 3 (Vermittlungsschicht / IP).'},
+    {q:'Auf welcher OSI-Schicht arbeitet ein Hub?',a:'Schicht 1 (Bitübertragung).'},
+    {q:'TCP vs. UDP?',a:'TCP: verbindungsorientiert & zuverlässig; UDP: verbindungslos & schnell.'},
+    {q:'Welche Schritte hat der DHCP-DORA-Prozess?',a:'Discover → Offer → Request → Acknowledge.'},
+    {q:'Welcher Port gehört zu HTTPS?',a:'443.'},
+    {q:'Welcher Port gehört zu SSH?',a:'22.'},
+    {q:'Welcher Port gehört zu DNS?',a:'53.'},
+    {q:'Wie viele nutzbare Hosts hat ein /24-Netz?',a:'254 (2^8 − 2).'},
+    {q:'Wie viele nutzbare Hosts hat ein /26-Netz?',a:'62 (2^6 − 2).'},
+    {q:'Subnetzmaske für /26?',a:'255.255.255.192.'},
+    {q:'Host-Formel beim Subnetting?',a:'2^(32 − CIDR) − 2.'},
+    {q:'Welche IPv4-Bereiche sind privat?',a:'10/8, 172.16/12, 192.168/16.'},
+    {q:'Welche Adresse ist der IPv4-Loopback?',a:'127.0.0.1.'},
+    {q:'Welche Adresse ist der IPv6-Loopback?',a:'::1.'},
+    {q:'Welcher Bereich gehört zu APIPA?',a:'169.254.0.0/16 (vergeben wenn kein DHCP).'},
+    {q:'Was löst ARP auf?',a:'IP-Adresse → MAC-Adresse.'},
+    {q:'Welches Protokoll nutzt ping?',a:'ICMP (Echo Request/Reply).'},
+    {q:'Welcher DNS-Record zeigt auf eine IPv6-Adresse?',a:'AAAA-Record.'},
+    {q:'Welcher DNS-Record verweist auf den Mailserver?',a:'MX-Record.'},
+    {q:'Welcher WLAN-Standard läuft auf 2,4 und 5 GHz?',a:'802.11n (WiFi 4).'},
+    {q:'Welcher WLAN-Standard läuft nur auf 5 GHz?',a:'802.11ac (WiFi 5).'},
+    {q:'Was definiert IEEE 802.1Q?',a:'VLAN-Tagging auf Layer 2.'},
+    {q:'Was überträgt ein Trunk-Port?',a:'Mehrere VLANs gleichzeitig (802.1Q-tagged).'},
+    {q:'Welches Gerät trennt Broadcast-Domänen?',a:'Der Router (Layer 3).'},
+    {q:'Unterschied Singlemode/Multimode-Glasfaser?',a:'SM: 9µm, Laser, km; MM: 50µm, LED, kurze Distanzen.'},
+    {q:'Was zeigt tracert/traceroute an?',a:'Die Router-Hops auf dem Weg zum Ziel.'},
+  ],
+  lf4:[
+    {q:'Wofür steht die CIA-Triade?',a:'Confidentiality, Integrity, Availability (Vertraulichkeit, Integrität, Verfügbarkeit).'},
+    {q:'Symmetrische Verschlüsselung – Merkmal?',a:'Ein gemeinsamer Schlüssel, sehr schnell. Problem: Schlüsselaustausch.'},
+    {q:'Asymmetrische Verschlüsselung – Merkmal?',a:'Schlüsselpaar: Public Key + Private Key.'},
+    {q:'Beispiel symmetrischer Algorithmus?',a:'AES.'},
+    {q:'Beispiel asymmetrischer Algorithmus?',a:'RSA.'},
+    {q:'Wofür wird Asymmetrik bei TLS genutzt?',a:'Nur für den Schlüsselaustausch, danach symmetrisch (Hybrid).'},
+    {q:'Ist SHA-256 sicher? Was ist es?',a:'Ja – eine kryptografische Hashfunktion (256-Bit-Ausgabe).'},
+    {q:'Welche Hashfunktionen gelten als unsicher?',a:'MD5 und SHA-1 (kollisionsanfällig).'},
+    {q:'Womit wird eine digitale Signatur erstellt?',a:'Mit dem privaten Schlüssel des Absenders.'},
+    {q:'Was ist Ransomware?',a:'Malware, die Dateien verschlüsselt und Lösegeld fordert.'},
+    {q:'Was ist ein Man-in-the-Middle-Angriff?',a:'Angreifer schaltet sich zwischen zwei Kommunikationspartner.'},
+    {q:'Was unterscheidet DDoS von DoS?',a:'DDoS kommt von vielen verteilten Quellen gleichzeitig.'},
+    {q:'Was ist Social Engineering?',a:'Manipulation von Menschen, um Infos/Zugänge zu erlangen.'},
+    {q:'Wozu dient eine DMZ?',a:'Trennung öffentlicher Dienste vom internen Netz (oft 2-Firewall-Modell).'},
+    {q:'Was besagt das Least-Privilege-Prinzip?',a:'Nutzer erhalten nur die Rechte, die sie wirklich brauchen.'},
+    {q:'Welche 3 Faktoren kennt MFA?',a:'Wissen, Besitz, Sein (Biometrie).'},
+    {q:'Welches DSGVO-Recht regelt Art. 17?',a:'Recht auf Löschung / Recht auf Vergessenwerden.'},
+    {q:'Welches DSGVO-Recht regelt Art. 15?',a:'Recht auf Auskunft.'},
+    {q:'Welches DSGVO-Recht regelt Art. 20?',a:'Recht auf Datenübertragbarkeit.'},
+    {q:'Wie lang ist die DSGVO-Meldefrist bei einer Datenpanne?',a:'72 Stunden an die Aufsichtsbehörde (Art. 33).'},
+    {q:'Ab wann ist ein DSB Pflicht?',a:'Ab 20 Personen mit regelmäßiger autom. Verarbeitung (§38 BDSG).'},
+    {q:'Was schützt Art. 9 DSGVO (besondere Kategorien)?',a:'Gesundheit, Biometrie, ethnische Herkunft, polit./relig. Überzeugung.'},
+    {q:'Wann ist eine AVV nach Art. 28 nötig?',a:'Wenn ein Dritter personenbezogene Daten im Auftrag verarbeitet.'},
+    {q:'Unterschied Pseudonymisierung/Anonymisierung?',a:'Pseudonym: mit Schlüssel rückführbar; Anonym: irreversibel.'},
+    {q:'Wie berechnet man das Risiko?',a:'Eintrittswahrscheinlichkeit × Schadensausmaß.'},
+    {q:'Welche Schutzbedarfskategorien kennt der BSI-Grundschutz?',a:'Normal, hoch, sehr hoch.'},
+    {q:'Was regelt DIN 66399?',a:'Sicherheitsstufen für die Vernichtung von Datenträgern.'},
+  ],
+  lf5:[
+    {q:'Unterschied Lastenheft / Pflichtenheft?',a:'Lastenheft: AG beschreibt das WAS; Pflichtenheft: AN beschreibt das WIE.'},
+    {q:'Was fordert die 1. Normalform (1NF)?',a:'Alle Attribute atomar (unteilbar), keine Wiederholungsgruppen.'},
+    {q:'Was fordert die 2NF?',a:'1NF + keine partiellen Abhängigkeiten vom zusammengesetzten PK.'},
+    {q:'Was fordert die 3NF?',a:'2NF + keine transitiven Abhängigkeiten (A→B→C verboten).'},
+    {q:'Beispiel einer 3NF-Verletzung?',a:'PLZ → Ort (transitive Abhängigkeit) → eigene Tabelle.'},
+    {q:'Wie löst man eine m:n-Beziehung auf?',a:'Durch eine Zwischentabelle mit FK auf beide Seiten.'},
+    {q:'Was ist ein Primärschlüssel?',a:'Eindeutiger Identifier eines Datensatzes, niemals NULL.'},
+    {q:'Welches Symbol stellt eine Entität im ERM dar?',a:'Ein Rechteck (Beziehung = Raute, Attribut = Ellipse).'},
+    {q:'Welche SQL-Klausel filtert aggregierte Gruppen?',a:'HAVING.'},
+    {q:'Was berechnet SQL AVG()?',a:'Den Durchschnittswert einer Spalte.'},
+    {q:'Die 3 Dimensionen des magischen Dreiecks?',a:'Zeit, Kosten, Qualität/Leistungsumfang.'},
+    {q:'Was kennzeichnet den kritischen Pfad?',a:'Gesamtpuffer GP = 0 – keine Pufferzeit.'},
+    {q:'Formel für den Gesamtpuffer (GP)?',a:'GP = SAZ − FAZ = SEZ − FEZ.'},
+    {q:'Wie berechnet man die FAZ eines Nachfolgers?',a:'Maximum aller FEZ-Werte der Vorgänger.'},
+    {q:'Die drei Scrum-Rollen?',a:'Product Owner, Scrum Master, Entwicklungsteam.'},
+    {q:'Wer priorisiert den Product Backlog?',a:'Der Product Owner.'},
+    {q:'Wie lang ist ein Scrum-Sprint typischerweise?',a:'1–4 Wochen (meist 2 Wochen).'},
+    {q:'Besonderheit des V-Modells?',a:'Jeder Entwicklungsphase entspricht eine Testphase.'},
+    {q:'Größter Nachteil des Wasserfallmodells?',a:'Unflexibel – Änderungen nach Phasenabschluss sind teuer.'},
+    {q:'Welches PAP-Symbol steht für eine Entscheidung?',a:'Die Raute (DIN 66001).'},
+    {q:'Was ist im Struktogramm nicht erlaubt?',a:'Pfeile / GOTOs / Sprünge (DIN 66261).'},
+    {q:'Besonderheit der do-while-Schleife?',a:'Sie läuft mindestens einmal (fußgesteuert).'},
+    {q:'Schwache vs. starke KI?',a:'Schwache KI = spezifisch (real); starke KI/AGI = allgemein (noch nicht existent).'},
+    {q:'Was ist beim EU AI Act verboten?',a:'Social Scoring und manipulative KI.'},
+    {q:'Was bedeutet ein XOR-Gateway in BPMN?',a:'Genau ein Pfad wird genommen (entweder-oder).'},
+    {q:'Dezimal 255 in Hex?',a:'FF.'},
+    {q:'Bei welchem Index startet ein Array meist?',a:'Bei 0.'},
+  ],
+  lf6:[
+    {q:'Welcher Typ Routing-Protokoll ist OSPF?',a:'Link-State (nutzt Dijkstra / SPF).'},
+    {q:'Was definiert IEEE 802.1Q?',a:'VLAN-Tagging auf Layer 2.'},
+    {q:'Was braucht Inter-VLAN-Routing?',a:'Einen Router oder Layer-3-Switch.'},
+    {q:'Wer pflegt die Tabellen bei statischem Routing?',a:'Der Administrator (manuell).'},
+    {q:'Wofür wird BGP eingesetzt?',a:'Routing zwischen autonomen Systemen im Internet.'},
+    {q:'Wie hoch ist das RIP-Hop-Count-Limit?',a:'15 (16 = nicht erreichbar).'},
+    {q:'Was liefert DHCP-Option 3?',a:'Das Default Gateway.'},
+    {q:'Was bietet IPSec ESP?',a:'Verschlüsselung + Authentifizierung.'},
+    {q:'Vorteil eines SSL-VPN?',a:'Nur ein Browser nötig, kein eigener Client.'},
+    {q:'Wozu dient NTP?',a:'Zeitsynchronisation über das Netzwerk.'},
+    {q:'Was bringt SNMPv3?',a:'Authentifizierung (SHA) und Verschlüsselung (AES).'},
+    {q:'Welcher Port gehört zu SMTP?',a:'25 (Submission: 587).'},
+    {q:'IMAP vs. POP3?',a:'IMAP: Mails bleiben auf Server; POP3: lokal herunterladen.'},
+    {q:'Erster Schritt im TLS-Handshake?',a:'ClientHello.'},
+    {q:'Wozu gehört IKEv2?',a:'Zu IPSec (Internet Key Exchange).'},
+    {q:'Vorteil von MPLS?',a:'Label-Switching ermöglicht QoS und Traffic Engineering.'},
+    {q:'Was macht der Resolver bei iterativer DNS-Auflösung?',a:'Fragt sich selbst durch Root → TLD → autoritativen Server.'},
+    {q:'Wer initiiert die Datenverbindung bei passivem FTP?',a:'Der Client (firewall-freundlich).'},
+    {q:'DNS-Serverrollen?',a:'Primär, Sekundär, Forwarder, Resolver.'},
+    {q:'Was enthält eine DNS-Zonendatei u.a.?',a:'SOA-, NS-, A-, AAAA-, MX-, PTR-Records.'},
+    {q:'Unterschied Access- und Trunk-Port?',a:'Access: ein untagged VLAN; Trunk: mehrere VLANs (802.1Q).'},
+    {q:'Was ist ein VPN Site-to-Site?',a:'Dauerhafte verschlüsselte Verbindung zwischen zwei Standorten.'},
+    {q:'Was ist Remote-Access-VPN?',a:'Einzelner Client verbindet sich ins Firmennetz.'},
+    {q:'Was bietet AH bei IPSec?',a:'Nur Authentifizierung/Integrität, keine Verschlüsselung.'},
+    {q:'Welche Schicht ist HTTP/HTTPS/FTP/SMTP?',a:'Anwendungsschicht (Layer 7).'},
+    {q:'Was bewirkt VLAN-Trennung?',a:'Reduziert Broadcast-Domänen, erhöht Sicherheit.'},
+    {q:'Reihenfolge eines TLS-Handshakes (grob)?',a:'ClientHello → ServerHello → Zertifikat → Schlüsselaustausch → Finished.'},
+  ],
+  lf7:[
+    {q:'Was bedeutet Vererbung in OOP?',a:'Eine Kindklasse übernimmt Attribute/Methoden der Elternklasse.'},
+    {q:'Was bedeutet Polymorphismus?',a:'Gleicher Methodenname, unterschiedliche Implementierung.'},
+    {q:'Was bedeutet Kapselung (Encapsulation)?',a:'Attribute privat schützen, Zugriff über Getter/Setter.'},
+    {q:'Interface vs. abstrakte Klasse?',a:'Interface: nur Signaturen; abstrakte Klasse kann Implementierung haben.'},
+    {q:'Was ist eine Instanz?',a:'Ein konkretes Objekt einer Klasse (mit new erzeugt).'},
+    {q:'Was macht git commit?',a:'Speichert die Änderungen im lokalen Repository.'},
+    {q:'git pull vs. git fetch?',a:'fetch lädt nur; pull = fetch + merge.'},
+    {q:'Was ist ein git Branch?',a:'Ein unabhängiger Entwicklungszweig.'},
+    {q:'Was ist ein Pull Request?',a:'Vorschlag, einen Branch in main zu mergen.'},
+    {q:'Was bedeutet Continuous Integration (CI)?',a:'Häufige Code-Integration mit automatischen Tests.'},
+    {q:'Was prüft ein Unit-Test?',a:'Eine einzelne Funktion/Methode isoliert.'},
+    {q:'Black-Box-Test – was ist bekannt?',a:'Nur das externe Verhalten (Ein-/Ausgabe), nicht der Code.'},
+    {q:'White-Box-Test – Grundlage?',a:'Kenntnis der inneren Struktur / des Quellcodes.'},
+    {q:'Was prüft die Äquivalenzklassen-Methode?',a:'Repräsentative Werte aus gültigen und ungültigen Bereichen.'},
+    {q:'Was testet die Grenzwertanalyse?',a:'Werte an den Grenzen der Äquivalenzklassen.'},
+    {q:'Was zeigt ein Use-Case-Diagramm?',a:'Akteure und Systemfunktionen.'},
+    {q:'Was zeigt ein UML-Sequenzdiagramm?',a:'Zeitlichen Ablauf von Nachrichten zwischen Objekten.'},
+    {q:'Bedeutung von + in UML-Sichtbarkeit?',a:'public (− = private, # = protected).'},
+    {q:'Was zeigt ein Synchronisationsbalken im Aktivitätsdiagramm?',a:'Parallele Abläufe (Fork/Join).'},
+    {q:'Was ist das Startsymbol im Aktivitätsdiagramm?',a:'Ein ausgefüllter schwarzer Kreis.'},
+    {q:'Hauptkritik am Wasserfallmodell?',a:'Starre Phasen, spätes Feedback, teures Nachbessern.'},
+    {q:'Was enthält der Product Backlog?',a:'Alle Anforderungen, priorisiert.'},
+    {q:'Was passiert im Sprint Review?',a:'Das fertige Inkrement wird Stakeholdern präsentiert.'},
+    {q:'Was ist "technische Schuld"?',a:'Kurzfristige Lösungen, die später Mehraufwand verursachen.'},
+    {q:'Was bedeutet DevOps?',a:'Zusammenführung von Development und Operations für schnellere Lieferung.'},
+    {q:'Was ist Dependency Injection?',a:'Abhängigkeiten werden von außen übergeben statt intern erzeugt.'},
+    {q:'Was bedeutet Refactoring?',a:'Code-Struktur verbessern, ohne das Verhalten zu ändern.'},
+  ],
+  lf8:[
+    {q:'Was enthält eine Active-Directory-Domäne?',a:'Benutzer, Gruppen, Computer und Richtlinien.'},
+    {q:'Wofür steht GPO?',a:'Group Policy Object (Gruppenrichtlinie).'},
+    {q:'Was ist eine OU in AD?',a:'Organizational Unit – Container zur strukturierten Verwaltung.'},
+    {q:'LDAP-DN für Benutzer Max in OU Users, firma.de?',a:'CN=Max,OU=Users,DC=firma,DC=de.'},
+    {q:'Was macht systemctl start apache2?',a:'Startet den Apache-Dienst (systemd).'},
+    {q:'Was bedeutet chmod 755?',a:'rwxr-xr-x (Besitzer alle, Gruppe/Andere lesen+ausführen).'},
+    {q:'Was macht chown user:group datei?',a:'Ändert Besitzer und Gruppe der Datei.'},
+    {q:'Was beinhaltet NTFS-Vollzugriff?',a:'Lesen, Schreiben, Ausführen, Löschen, Berechtigungen ändern.'},
+    {q:'Wofür steht RBAC?',a:'Role-Based Access Control – Rechte über Rollen.'},
+    {q:'Was bedeutet Event-ID 4625 in Windows?',a:'Fehlgeschlagene Anmeldung.'},
+    {q:'Was zeigt journalctl -u nginx?',a:'Die Logs des nginx-Dienstes.'},
+    {q:'Wo liegen Logs unter Linux?',a:'In /var/log (syslog, journalctl).'},
+    {q:'Was ist ein SNMP-Trap?',a:'Spontane Benachrichtigung vom Agent an den Manager.'},
+    {q:'Welche Server-Rollen bietet Windows Server?',a:'AD DS, DNS, DHCP, IIS, File Server u.a.'},
+    {q:'Was ist IIS?',a:'Internet Information Services – Microsofts Webserver.'},
+    {q:'Wozu dient Nagios?',a:'Monitoring von Hosts und Services auf Verfügbarkeit.'},
+    {q:'Was prüft Heartbeat-Monitoring?',a:'Ob ein System noch erreichbar/aktiv ist.'},
+    {q:'Was erlaubt SLA 99,9 % an Ausfall?',a:'Ca. 8,76 h/Jahr bzw. ~43,8 min/Monat.'},
+    {q:'Was unterscheidet Windows Server Core?',a:'Keine grafische Oberfläche – nur CLI, kleinere Angriffsfläche.'},
+    {q:'apt upgrade vs. dist-upgrade?',a:'dist-upgrade löst zusätzlich Paketabhängigkeiten auf.'},
+    {q:'Was zeigt der Windows-Leistungsreiter?',a:'CPU-, RAM-, Festplatten- und Netzwerkauslastung.'},
+    {q:'Was bedeutet Syslog-Facility KERN?',a:'Kernel-Nachrichten.'},
+    {q:'Was ist LVM unter Linux?',a:'Logical Volume Manager – flexible Partitionsverwaltung.'},
+    {q:'Was ist das Least-Privilege-Prinzip bei Rechten?',a:'Nur die wirklich nötigen Rechte vergeben.'},
+    {q:'Unterschied lokale vs. domänenweite Gruppe?',a:'Lokal: nur ein System; domänenweit: gesamte Domäne.'},
+    {q:'Was sind Share- vs. NTFS-Berechtigungen?',a:'Freigabe-Rechte gelten übers Netz; bei Kombination gilt das restriktivere.'},
+    {q:'Was ist Server-Hardening?',a:'Absicherung durch Deaktivieren unnötiger Dienste/Ports usw.'},
+  ],
+  lf9:[
+    {q:'Welches Element folgt in der EPK immer auf ein Ereignis?',a:'Eine Funktion (Ereignis → Funktion → Ereignis).'},
+    {q:'Welche Konnektoren kennt die EPK?',a:'UND, ODER, XOR.'},
+    {q:'Wofür steht ETL?',a:'Extract, Transform, Load.'},
+    {q:'Welche Datenformate sind typisch für Datenimport?',a:'CSV, JSON, XML.'},
+    {q:'Wie werden Objekte in JSON begrenzt?',a:'Mit geschweiften Klammern {}.'},
+    {q:'Welches Big-Data-V steht für Echtzeit?',a:'Velocity.'},
+    {q:'Nenne die 5 Vs von Big Data.',a:'Volume, Velocity, Variety, Veracity, Value.'},
+    {q:'Womit kombiniert man GROUP BY in SQL?',a:'Mit HAVING (filtert Gruppen).'},
+    {q:'Was berechnet SQL AVG()?',a:'Den Durchschnitt einer Spalte.'},
+    {q:'Median von 3,1,4,1,5?',a:'3 (sortiert 1,1,3,4,5 → Mitte).'},
+    {q:'Arithmetisches Mittel von 2,4,6,8,10?',a:'6.'},
+    {q:'Wofür steht KPI?',a:'Key Performance Indicator – messbare Zielgröße.'},
+    {q:'Welche Tools sind typisch für Dashboards?',a:'Power BI, Tableau.'},
+    {q:'Was ist eine deskriptive Statistik?',a:'Beschreibende Kennzahlen wie Mittelwert, Median, Standardabweichung.'},
+    {q:'Wozu dient die Standardabweichung?',a:'Maß für die Streuung der Werte um den Mittelwert.'},
+    {q:'Was ist Korrelation?',a:'Statistischer Zusammenhang zwischen zwei Variablen.'},
+    {q:'Was bedeutet Datenbereinigung?',a:'Entfernen/Korrigieren fehlerhafter, doppelter oder fehlender Daten.'},
+    {q:'Wozu dient eine Ist-/Soll-Prozessanalyse?',a:'Vergleich des aktuellen mit dem gewünschten Prozess.'},
+    {q:'Was ist Hadoop?',a:'Framework zur verteilten Verarbeitung großer Datenmengen.'},
+    {q:'Was ist Apache Spark?',a:'In-Memory-Framework für schnelle Big-Data-Verarbeitung.'},
+    {q:'Welche Diagrammtypen gibt es u.a.?',a:'Balken, Linien, Kreis, Scatter.'},
+    {q:'Was bedeutet ein XOR-Gateway in BPMN?',a:'Genau ein Pfad wird genommen.'},
+    {q:'Was bedeutet ein AND-Gateway in BPMN?',a:'Alle ausgehenden Pfade gleichzeitig.'},
+    {q:'Was ist ein KPI-Beispiel im IT-Betrieb?',a:'Verfügbarkeit, MTTR, MTBF.'},
+    {q:'Was bedeutet MTTR?',a:'Mean Time To Repair – mittlere Reparaturzeit.'},
+    {q:'Was bedeutet MTBF?',a:'Mean Time Between Failures – mittlere Zeit zwischen Ausfällen.'},
+    {q:'Was ist beim Datenschutz bei Auswertungen zu beachten?',a:'Personenbezug minimieren, DSGVO-Grundsätze einhalten.'},
+  ],
+  lf10b:[
+    {q:'Was erlaubt ein Apache VirtualHost?',a:'Mehrere Webauftritte auf einer IP/Port.'},
+    {q:'Hauptvorteil von Nginx?',a:'Bessere Performance bei statischen Inhalten und hoher Last (event-basiert).'},
+    {q:'Was ermöglicht .htaccess?',a:'Verzeichnis-spezifische Konfiguration ohne Server-Neustart.'},
+    {q:'Womit beginnt ein Bash-Skript?',a:'Mit der Shebang #!/bin/bash.'},
+    {q:'Was bedeutet der Cron-Eintrag 0 2 * * *?',a:'Täglich um 2:00 Uhr.'},
+    {q:'Container vs. VM?',a:'Container teilen den Host-Kernel – leichter und schneller.'},
+    {q:'Was liefert Let\'s Encrypt?',a:'Kostenlose, automatisch erneuerbare TLS-Zertifikate (ACME).'},
+    {q:'Wozu dient ein Reverse Proxy?',a:'Nimmt externe Anfragen an und leitet sie an interne Server.'},
+    {q:'Was verhindert ein SPF-Record?',a:'E-Mail-Spoofing – definiert autorisierte Mailserver.'},
+    {q:'Was ist DKIM?',a:'Digitale Signatur von E-Mails durch den sendenden Server.'},
+    {q:'Was ist Ansible?',a:'Agentloses Automatisierungstool (YAML-Playbooks, IaC).'},
+    {q:'Was bedeutet Idempotenz bei Ansible?',a:'Mehrfaches Ausführen führt zum gleichen Endzustand.'},
+    {q:'Was ist Infrastructure as Code (IaC)?',a:'Infrastruktur wird per Konfigurationsdateien automatisiert beschrieben.'},
+    {q:'Was ist Terraform?',a:'IaC-Tool zur Bereitstellung von Infrastruktur.'},
+    {q:'PowerShell-Grundbausteine?',a:'Cmdlets, Pipeline, Skripte.'},
+    {q:'Was sichert mysqldump?',a:'Eine MySQL-/MariaDB-Datenbank als SQL-Dump.'},
+    {q:'Was ist Master/Slave-Replikation?',a:'Daten werden vom Master auf Slave-Server kopiert.'},
+    {q:'Was ist Load Balancing?',a:'Verteilung von Anfragen auf mehrere Server (z.B. HAProxy).'},
+    {q:'Round-Robin beim Load Balancing?',a:'Anfragen werden reihum gleichmäßig verteilt.'},
+    {q:'Active/Active vs. Active/Passive Cluster?',a:'Active/Active: beide aktiv; Active/Passive: einer steht bereit.'},
+    {q:'Was ist ein MTA?',a:'Mail Transfer Agent (z.B. Postfix) – transportiert E-Mails.'},
+    {q:'Wozu dient Dovecot?',a:'IMAP/POP3-Server zum Abrufen von E-Mails.'},
+    {q:'Was prüft DMARC?',a:'Richtlinie auf Basis von SPF und DKIM gegen Spoofing.'},
+    {q:'Was ist ein Cronjob?',a:'Zeitgesteuerte, automatische Aufgabe unter Linux.'},
+    {q:'Was ist ein Playbook in Ansible?',a:'YAML-Datei mit den auszuführenden Aufgaben (Tasks).'},
+    {q:'Wozu dient HTTP/2?',a:'Multiplexing und Header-Komprimierung – effizienter als HTTP/1.1.'},
+    {q:'Was ist STONITH?',a:'"Shoot The Other Node In The Head" – Fencing im Cluster.'},
+  ],
+  lf11b:[
+    {q:'Was ist eine NGFW?',a:'Next-Generation-Firewall mit Deep Packet Inspection und App-Awareness.'},
+    {q:'IDS vs. IPS?',a:'IDS erkennt nur; IPS erkennt und blockiert aktiv.'},
+    {q:'Was bedeutet Zero Trust?',a:'"Never trust, always verify" – jede Anfrage wird geprüft.'},
+    {q:'Hypervisor Typ 1 vs. Typ 2?',a:'Typ 1: bare-metal (ESXi, Hyper-V); Typ 2: hosted (VirtualBox).'},
+    {q:'Was ist ein Snapshot bei VMs?',a:'Eingefrorener Zustand einer VM zum Zurückrollen.'},
+    {q:'Was ist vMotion?',a:'Live-Migration laufender VMs zwischen Hosts.'},
+    {q:'Was ist ein Docker-Image?',a:'Unveränderliche Vorlage zum Starten von Containern.'},
+    {q:'Wozu dient docker-compose?',a:'Definition und Start von Multi-Container-Anwendungen.'},
+    {q:'Was ist ein Pod in Kubernetes?',a:'Kleinste deploybare Einheit (ein oder mehrere Container).'},
+    {q:'IaaS, PaaS, SaaS – Unterschied?',a:'IaaS: Infrastruktur; PaaS: Plattform; SaaS: fertige Software.'},
+    {q:'CapEx vs. OpEx (Cloud-Argument)?',a:'CapEx: einmalige Investition; OpEx: laufende Kosten.'},
+    {q:'Was ist eine Hybrid-Cloud?',a:'Kombination aus privater und öffentlicher Cloud.'},
+    {q:'BSI IT-Grundschutz – erste Schritte?',a:'Strukturanalyse, Schutzbedarfsfeststellung, Modellierung, Risikoanalyse.'},
+    {q:'Was regelt ISO 27001?',a:'Anforderungen an ein Informationssicherheits-Managementsystem (ISMS).'},
+    {q:'OWASP Top 10 2021 – Platz 1?',a:'Broken Access Control.'},
+    {q:'Wie verhindert man SQL-Injection?',a:'Prepared Statements / parameterisierte Abfragen.'},
+    {q:'Wofür steht XSS?',a:'Cross-Site Scripting – Einschleusen von Skripten in Webseiten.'},
+    {q:'Was ist CSRF?',a:'Cross-Site Request Forgery – Missbrauch einer aktiven Session.'},
+    {q:'Was ist ein Zero-Day-Exploit?',a:'Ausnutzung einer Lücke, für die noch kein Patch existiert.'},
+    {q:'Wozu dient ein Honeypot?',a:'Köder-System, um Angreifer anzulocken und zu analysieren.'},
+    {q:'Wofür steht SIEM?',a:'Security Information and Event Management.'},
+    {q:'Was ist Defense in Depth?',a:'Mehrere überlagerte Sicherheitsschichten.'},
+    {q:'Was ist eine WAF?',a:'Web Application Firewall – wehrt Layer-7-Angriffe ab.'},
+    {q:'Was ist ein Penetrationstest?',a:'Autorisierter Simulationsangriff zur Schwachstellensuche.'},
+    {q:'Was bedeutet Separation of Duties?',a:'Vier-Augen-Prinzip – keine kritische Aufgabe allein.'},
+    {q:'Was ist eine Container Registry?',a:'Speicher/Verzeichnis für Container-Images.'},
+    {q:'Was bedeutet Hardening?',a:'Systemabsicherung durch Reduktion der Angriffsfläche.'},
+  ],
+  lf12b:[
+    {q:'Wofür steht RTO?',a:'Recovery Time Objective – max. tolerierbare Ausfallzeit.'},
+    {q:'Wofür steht RPO?',a:'Recovery Point Objective – max. tolerierbarer Datenverlust.'},
+    {q:'Was bedeutet P2V-Migration?',a:'Physical to Virtual – physischer Server wird zur VM.'},
+    {q:'ROI-Formel?',a:'Gewinn / Investition × 100.'},
+    {q:'Was umfasst TCO?',a:'Hardware + Software + Betrieb + Support über den Lebenszyklus.'},
+    {q:'Was zeigt eine Break-Even-Analyse?',a:'Den Punkt, ab dem Erlöse die Kosten decken.'},
+    {q:'Was kennzeichnet den kritischen Pfad?',a:'Gesamtpuffer GP = 0.'},
+    {q:'Frühester-Anfangszeitpunkt-Berechnung?',a:'Maximum der FEZ aller Vorgänger.'},
+    {q:'Was regelt ein SLA?',a:'Vereinbarte Dienstqualität: Verfügbarkeit, RTO, RPO, Reaktionszeit.'},
+    {q:'Wie viel Ausfall erlaubt SLA 99,99 %/Jahr?',a:'Ca. 52,6 Minuten.'},
+    {q:'Werkvertrag vs. Dienstvertrag?',a:'Werkvertrag: Erfolg geschuldet; Dienstvertrag: nur Tätigkeit.'},
+    {q:'Was dokumentiert ein Abnahmeprotokoll?',a:'Die Akzeptanz des Liefergegenstands durch den Auftraggeber.'},
+    {q:'Was gehört in eine Netzwerkdokumentation?',a:'Topologie, IP-Pläne, Geräteinfos, Konfigurationen, Änderungslog.'},
+    {q:'Was erreicht man mit High Availability (HA)?',a:'Redundanz und automatischer Failover.'},
+    {q:'Migrationsphasen?',a:'Ist-Analyse, Planung, Test, Go-Live, Nachbetrieb.'},
+    {q:'Wozu dient ein Rollback-Plan?',a:'Rückkehr zum funktionierenden Zustand bei fehlgeschlagener Migration.'},
+    {q:'Was ist die Amortisationsrechnung?',a:'Ermittelt, nach welcher Zeit sich eine Investition bezahlt macht.'},
+    {q:'Was bedeutet ein SLA-Breach?',a:'Verletzung der vereinbarten Service-Level.'},
+    {q:'Was ist Change-Management?',a:'Strukturierte Steuerung von Änderungen an IT-Systemen.'},
+    {q:'Was ist ein Benutzerhandbuch?',a:'Dokumentation zur Bedienung des Systems für Endnutzer.'},
+    {q:'Welche Vertragsarten gibt es u.a.?',a:'Werkvertrag, Dienstvertrag, Kaufvertrag.'},
+    {q:'Was bedeutet Go-Live?',a:'Produktivsetzung des Systems nach Test und Vorbereitung.'},
+    {q:'Was ist eine Anlagendokumentation?',a:'Technische Dokumentation aller installierten Komponenten.'},
+    {q:'Wozu dient ein Risikoregister?',a:'Erfassung und Bewertung von Projektrisiken.'},
+    {q:'Was ist Stakeholder-Management?',a:'Identifikation und Steuerung der Projektbeteiligten/-betroffenen.'},
+    {q:'Was beschreibt das Gantt-Diagramm?',a:'Zeitliche Balkendarstellung von Vorgängen im Projekt.'},
+    {q:'Was ist eine Datenmigration?',a:'Übertragung von Daten von einem System in ein anderes.'},
+  ],
+};
+
+// ══════════════════ KARTEIKARTEN ENGINE ══════════════════
+const FC_LF_META={
+  lf1:{n:'LF 1 – WiSo',c:'#ce93d8'}, lf2:{n:'LF 2 – Hardware',c:'#4fc3f7'},
+  lf3:{n:'LF 3 – Netzwerke',c:'#c8ff00'}, lf4:{n:'LF 4 – Security',c:'#ef5350'},
+  lf5:{n:'LF 5 – PM/Software',c:'#ff8a65'}, lf6:{n:'LF 6 – Dienste',c:'#4fc3f7'},
+  lf7:{n:'LF 7 – Entwicklung',c:'#ce93d8'}, lf8:{n:'LF 8 – Admin',c:'#69f0ae'},
+  lf9:{n:'LF 9 – Daten',c:'#ff8a65'}, lf10b:{n:'LF 10b – Server',c:'#4fc3f7'},
+  lf11b:{n:'LF 11b – Security II',c:'#ef5350'}, lf12b:{n:'LF 12b – Integration',c:'#c8ff00'},
+};
+let fcState={lf:'lf1',idx:0,flipped:false,results:{}};
+
+function fcRenderFilter(){
+  const wrap=document.getElementById('fc-lf-filter');
+  if(!wrap)return;
+  wrap.innerHTML=Object.keys(FC_LF_META).map(lf=>{
+    const active=fcState.lf===lf;
+    return `<button class="btn btn-${active?'primary':'ghost'} btn-sm" onclick="fcFilter('${lf}')">${FC_LF_META[lf].n}</button>`;
+  }).join('');
+}
+function fcFilter(lf){
+  fcState.lf=lf;fcState.idx=0;fcState.flipped=false;
+  fcRenderFilter();renderCards();
+}
+function renderCards(){
+  fcRenderFilter();
+  const cards=FLASHCARDS[fcState.lf]||[];
+  if(!cards.length){document.getElementById('fc-content').innerHTML='<div class="empty">Keine Karteikarten.</div>';return;}
+  if(fcState.idx>=cards.length)fcState.idx=cards.length-1;
+  const card=cards[fcState.idx];
+  const meta=FC_LF_META[fcState.lf];
+  const res=fcState.results[fcState.lf]||{};
+  const known=Object.values(res).filter(v=>v==='known').length;
+  const unknown=Object.values(res).filter(v=>v==='unknown').length;
+  document.getElementById('fc-stats').textContent=`Karte ${fcState.idx+1} von ${cards.length} · ✅ ${known} gewusst · ❌ ${unknown} offen`;
+
+  const dots=cards.map((_,i)=>{
+    const r=res[i];
+    const cls=i===fcState.idx?'current':r==='known'?'known':r==='unknown'?'unknown':'';
+    return `<div class="fc-dot ${cls}" onclick="fcJump(${i})" style="cursor:pointer" title="Karte ${i+1}"></div>`;
+  }).join('');
+
+  document.getElementById('fc-content').innerHTML=`
+    <div class="fc-progress-dots">${dots}</div>
+    <div class="fc-stage">
+      <div class="fc-card${fcState.flipped?' flipped':''}" id="fc-card" onclick="fcFlip()">
+        <div class="fc-face fc-front">
+          <span class="fc-side-label">Frage</span>
+          <span class="fc-lf-badge"><span class="tag" style="background:${meta.c}15;color:${meta.c};border:1px solid ${meta.c}40">${fcState.lf.toUpperCase()}</span></span>
+          <div class="fc-q">${expandAbbr(card.q)}</div>
+          <div class="fc-flip-hint">👆 Antippen zum Umdrehen</div>
+        </div>
+        <div class="fc-face fc-back">
+          <span class="fc-side-label">Antwort</span>
+          <span class="fc-lf-badge"><span class="tag" style="background:${meta.c}15;color:${meta.c};border:1px solid ${meta.c}40">${fcState.lf.toUpperCase()}</span></span>
+          <div class="fc-a">${expandAbbr(card.a)}</div>
+          <div class="fc-flip-hint">👆 Antippen zum Zurückdrehen</div>
+        </div>
+      </div>
+    </div>
+    ${fcState.flipped?`
+      <div class="fc-rate" style="margin-bottom:14px">
+        <button class="btn btn-ghost" style="border-color:#ef535060;color:var(--red)" onclick="fcRate('unknown')">❌ Nicht gewusst</button>
+        <button class="btn btn-ghost" style="border-color:#69f0ae60;color:var(--green)" onclick="fcRate('known')">✅ Gewusst</button>
+      </div>`:''}
+    <div class="fc-controls">
+      <button class="btn btn-ghost btn-sm" onclick="fcNav(-1)" ${fcState.idx===0?'disabled':''}>← Zurück</button>
+      <button class="btn btn-ghost btn-sm" onclick="fcShuffle()">🔀 Mischen</button>
+      <button class="btn btn-ghost btn-sm" onclick="fcNav(1)" ${fcState.idx===cards.length-1?'disabled':''}>Weiter →</button>
+    </div>`;
+}
+function fcFlip(){fcState.flipped=!fcState.flipped;const el=document.getElementById('fc-card');if(el)el.classList.toggle('flipped',fcState.flipped);renderCards();}
+function fcNav(dir){
+  const cards=FLASHCARDS[fcState.lf]||[];
+  const next=fcState.idx+dir;
+  if(next>=0&&next<cards.length){fcState.idx=next;fcState.flipped=false;renderCards();}
+}
+function fcJump(i){fcState.idx=i;fcState.flipped=false;renderCards();}
+function fcShuffle(){
+  const cards=FLASHCARDS[fcState.lf];
+  for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+  fcState.idx=0;fcState.flipped=false;fcState.results[fcState.lf]={};renderCards();
+}
+function fcRate(rating){
+  const cards=FLASHCARDS[fcState.lf]||[];
+  const card=cards[fcState.idx];
+  if(!fcState.results[fcState.lf])fcState.results[fcState.lf]={};
+  fcState.results[fcState.lf][fcState.idx]=rating;
+  if(rating==='unknown'){
+    const ud=getUD();
+    if(!ud.reviewItems)ud.reviewItems=[];
+    const reviewKey='FC: '+card.q;
+    if(!ud.reviewItems.find(r=>r.r===reviewKey)){
+      ud.reviewItems.push({q:card.q,r:reviewKey,lf:fcState.lf,source:'Karteikarte'});
+      setUD(ud);
+    }
+    toast('Zum Wiederholen gespeichert','📌');
+  }else{
+    toast('Gut gemacht! ✅','✅');
+  }
+  // advance to next card
+  if(fcState.idx<cards.length-1){fcState.idx++;fcState.flipped=false;}
+  else{fcState.flipped=false;}
+  renderCards();
+  checkAchievements();
+}
 
 // ══════════════════ AUFGABENHEFT ENGINE ══════════════════
 let aufgState={lf:'lf1',idx:0,revealed:false,answers:{}};
@@ -5160,6 +5649,13 @@ window.editNote         = editNote;
 window.deleteNote       = deleteNote;
 window.aufgFilter       = aufgFilter;
 window.aufgSaveAnswer   = aufgSaveAnswer;
+window.fcFilter         = fcFilter;
+window.renderCards      = renderCards;
+window.fcFlip           = fcFlip;
+window.fcNav            = fcNav;
+window.fcJump           = fcJump;
+window.fcShuffle        = fcShuffle;
+window.fcRate           = fcRate;
 window.revealAufg       = revealAufg;
 window.aufgNav          = aufgNav;
 window.aufgJump         = aufgJump;
