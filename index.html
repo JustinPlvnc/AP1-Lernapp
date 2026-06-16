@@ -340,6 +340,33 @@ h3{font-size:14px;font-weight:500}
   .ach-grid{grid-template-columns:1fr 1fr}
 }
 
+/* WIKI */
+.wiki-mod{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden}
+.wiki-mod-header{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;transition:background .15s}
+.wiki-mod-header:hover{background:var(--bg3)}
+.wiki-mod-icon{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.wiki-mod-title{flex:1;font-size:14px;font-weight:500}
+.wiki-mod-count{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.wiki-mod-chev{color:var(--text3);font-size:14px;transition:transform .2s}
+.wiki-mod-body{display:none;border-top:1px solid var(--border)}
+.wiki-mod-body.open{display:block}
+.wiki-entry{border-bottom:1px solid var(--border)}
+.wiki-entry:last-child{border-bottom:none}
+.wiki-entry-header{display:flex;align-items:center;gap:10px;padding:12px 18px;cursor:pointer;transition:background .15s}
+.wiki-entry-header:hover{background:var(--bg3)}
+.wiki-entry-title{flex:1;font-size:13px;font-weight:500;color:var(--text)}
+.wiki-entry-chev{color:var(--text3);font-size:13px;transition:transform .2s}
+.wiki-entry-body{display:none;padding:0 18px 16px 18px;font-size:13px;color:var(--text2);line-height:1.7}
+.wiki-entry-body.open{display:block}
+.wiki-step{display:flex;gap:12px;margin-bottom:12px;padding-top:12px;border-top:1px solid var(--border)}
+.wiki-step:first-child{border-top:none;padding-top:0}
+.wiki-step-num{width:24px;height:24px;border-radius:50%;background:var(--accentbg);border:1px solid #c8ff0030;color:var(--accent);font-family:var(--mono);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.wiki-step-text{flex:1}
+.wiki-step-text strong{color:var(--text);display:block;margin-bottom:3px}
+.wiki-code{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:8px 12px;font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:6px;overflow-x:auto;white-space:pre}
+.wiki-tip{background:var(--accentbg);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 var(--r) var(--r) 0;margin-top:10px;font-size:12px;color:var(--text2)}
+.wiki-warn{background:var(--amberbg);border-left:3px solid var(--amber);padding:8px 12px;border-radius:0 var(--r) var(--r) 0;margin-top:10px;font-size:12px;color:var(--text2)}
+
 /* LEADERBOARD */
 .lb-table{width:100%;border-collapse:collapse}
 .lb-table th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);padding:8px 14px;border-bottom:1px solid var(--border);text-align:left;font-weight:500}
@@ -429,6 +456,7 @@ h3{font-size:14px;font-weight:500}
     <div class="nav-tab" id="tab-robot" onclick="goTo('robot')">🤖 Roboter</div>
     <div class="nav-tab" id="tab-leaderboard" onclick="goTo('leaderboard')">🏅 Rangliste</div>
     <div class="nav-tab" id="tab-notes" onclick="goTo('notes')">📝 Notizen</div>
+    <div class="nav-tab" id="tab-wiki" onclick="goTo('wiki')">📚 IT-Wiki</div>
   </div>
   <div class="nav-right">
     <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Hell/Dunkel wechseln">🌙</button>
@@ -933,6 +961,27 @@ h3{font-size:14px;font-weight:500}
   </div>
   <div style="margin-top:12px;font-size:11px;color:var(--text3);font-family:var(--mono)">🔄 Wird beim Öffnen live aus der Cloud geladen.</div>
 </div>
+
+<!-- IT-WIKI -->
+<div class="page" id="page-wiki">
+  <div style="margin-bottom:22px"><h1>📚 IT-Wiki</h1><div class="sub">HowTo-Anleitungen für typische IT-Aufgaben – von Hardware bis DevOps</div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px" id="wiki-filter">
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('all')">Alle</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m1')">🖥️ Hardware</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m2')">🖥️ Virtualisierung</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m3')">🌐 Netzwerk</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m4')">🐧 Linux</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m5')">🪟 Windows Server</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m6')">⚙️ Core Services</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m7')">🔐 Security</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m8')">📊 Monitoring</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m9')">🤖 Automation</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m10')">🔧 Troubleshooting</button>
+    <button class="btn btn-ghost btn-sm" onclick="wikiFilter('m11')">🎓 Abschlussprüfung</button>
+  </div>
+  <div id="wiki-content"></div>
+</div>
+
 </div><!-- end main-app -->
 
 <div class="toast" id="toast"></div>
@@ -2358,6 +2407,7 @@ function goTo(page){
   if(page==='debug'){dbgInitOnce();}
     if(page==='robot'){robotLoadLevel(robotState.level||0);}
   if(page==='leaderboard')renderLeaderboard();
+  if(page==='wiki')renderWiki();
 }
 function renderAll(){renderDash();}
 
@@ -5834,6 +5884,298 @@ async function robotRun() {
     attachSpeedListener();
   }
 })();
+
+// ══════════════════ IT-WIKI ══════════════════
+const WIKI_MODULES = [
+  {id:'m1',icon:'🖥️',color:'#4fc3f7',title:'Modul 1: Hardware, Arbeitsplatz & Erste Schritte',entries:[
+    {title:'HowTo: PC/Server fachgerecht zusammenbauen',steps:[
+      {h:'ESD-Schutz herstellen',t:'Antistatik-Armband anlegen und mit dem PC-Gehäuse verbinden. Arbeitsfläche erden. Bauteile nur an den Kanten anfassen, nie an Kontakten oder Chips.',code:''},
+      {h:'CPU einsetzen',t:'Sockel-Verriegelung öffnen, CPU anhand der Markierung (Dreieck) ausrichten und ohne Druck einlegen. Verriegelung schließen. Wärmeleitpaste auftragen (erbsengroß, Mitte), Kühler montieren.',code:''},
+      {h:'RAM bestücken (Dual-Channel)',t:'Im Handbuch die korrekten Slots für Dual-Channel prüfen (meist A2+B2 oder 2+4). RAM-Riegel einrasten lassen bis die Clips einschnappen.',code:''},
+      {h:'System testen',t:'Vor dem Einbau im Gehäuse: "Breadboard-Test" – Netzteil, CPU, 1 RAM-Riegel, Grafik anschließen und kurz starten. BIOS-POST beobachten.',code:''},
+    ],tip:'Tipp: CPU-Sockel niemals mit Kraft bearbeiten – kein Druck beim Einlegen!'},
+    {title:'HowTo: BIOS/UEFI optimal konfigurieren',steps:[
+      {h:'BIOS öffnen',t:'Beim Start Entf, F2 oder F10 drücken (herstellerabhängig). UEFI-Oberfläche mit Maus bedienbar.',code:''},
+      {h:'Secure Boot aktivieren',t:'Im Bereich Security oder Boot → Secure Boot auf Enabled setzen. Für Linux ggf. deaktivieren oder MOK-Key eintragen.',code:''},
+      {h:'Boot-Reihenfolge festlegen',t:'Boot → Boot Priority: USB vor SSD für Installationen, danach zurückstellen.',code:''},
+      {h:'Virtualisierungs-Features aktivieren',t:'Advanced → CPU Configuration → Intel VT-x (Intel) oder AMD-V (AMD) auf Enabled. Erforderlich für VMs!',code:''},
+    ],tip:'Tipp: Nach Änderungen immer F10 (Save & Exit) drücken.'},
+    {title:'HowTo: RAID am Controller einrichten',steps:[
+      {h:'RAID-Level wählen',t:'RAID 1 = Spiegelung (2 Platten, 1 Ausfall toleriert). RAID 5 = Parität verteilt (min. 3 Platten). RAID 10 = Mirror+Stripe (min. 4 Platten, beste Performance+Sicherheit).',code:''},
+      {h:'RAID-Controller-BIOS öffnen',t:'Beim Start Ctrl+R (Dell PERC), Ctrl+H (LSI/Avago) oder Ctrl+I (Intel RST) drücken.',code:''},
+      {h:'Array erstellen',t:'"Create Array" → Festplatten auswählen → RAID-Level setzen → Initialize. Bei Hot-Spare: nach Array-Erstellung eine freie Platte als "Global Hot Spare" zuweisen.',code:''},
+      {h:'RAID-Status prüfen',t:'Nach OS-Installation: im RAID-Management-Tool (z.B. MegaRAID Storage Manager oder mdadm) Status prüfen.',code:'cat /proc/mdstat   # Linux Software-RAID'},
+    ],warn:'Warnung: RAID ≠ Backup! RAID schützt vor Platten-Ausfall, nicht vor Fehlern oder versehentlichem Löschen.'},
+    {title:'HowTo: Arbeitsplatz-Setup für Admins',steps:[
+      {h:'SSH-Client installieren',t:'Windows: Termius (GUI, kostenlos) oder PuTTY. Linux/Mac: OpenSSH bereits vorhanden.',code:'ssh benutzer@server-ip\nssh -p 2222 benutzer@server-ip   # anderer Port'},
+      {h:'Texteditor einrichten',t:'VS Code installieren (code.visualstudio.com). Empfohlene Extensions: Remote-SSH, GitLens, YAML. Alternativ: Notepad++ für Windows.',code:''},
+      {h:'WinSCP / FileZilla einrichten',t:'WinSCP: Session → SFTP → Hostname+Port+User+Passwort eintragen. Schlüssel-Auth: Session → Advanced → SSH → Authentication → Schlüsseldatei.',code:''},
+    ],tip:'Tipp: SSH-Keys statt Passwörter nutzen! Sicherer und bequemer.'},
+    {title:'HowTo: Patchpanel auflegen (LSA-Plus)',steps:[
+      {h:'Belegungsschema wählen',t:'TIA-568B (Standard in DE): Weiß-Orange, Orange, Weiß-Grün, Blau, Weiß-Blau, Grün, Weiß-Braun, Braun. Die Farbbeschriftung am Panel nutzen.',code:''},
+      {h:'Kabel abisolieren',t:'Außenmantel ca. 3 cm abisolieren, Adernpaare entwirren und in die Kämme des Panels einlegen.',code:''},
+      {h:'LSA-Plus-Werkzeug ansetzen',t:'Werkzeug rechtwinklig ansetzen (Schneidseite nach außen!), Ader vollständig eindrücken bis es klickt. Überstehende Ader wird automatisch abgetrennt.',code:''},
+      {h:'Mit Kabeltester prüfen',t:'Beide Seiten des Kabels an den Tester anschließen, alle 8 Adern müssen durchgehen.',code:''},
+    ],tip:'Tipp: Immer die Schneidseite des LSA-Werkzeugs nach außen halten!'},
+    {title:'HowTo: Netzwerkkabel crimpen (RJ45)',steps:[
+      {h:'Kabel abisolieren',t:'Ca. 2,5 cm Außenmantel entfernen (Abmantelwerkzeug), Adernpaare entwirren.',code:''},
+      {h:'Adern nach TIA-568B sortieren',t:'Reihenfolge: W-Or, Or, W-Grn, Bl, W-Bl, Grn, W-Br, Br. Auf gleiche Länge kürzen (ca. 14 mm frei).',code:''},
+      {h:'In RJ45-Stecker einführen',t:'Adern in den Stecker führen (Clip unten), prüfen ob alle 8 bis ganz vorne durchgehen.',code:''},
+      {h:'Crimpen und testen',t:'Stecker in die Crimpzange, kräftig drücken. Mit Kabeltester beide Enden prüfen.',code:''},
+    ],tip:'Tipp: Kreuzkabel heute nicht mehr nötig – moderne Switches haben Auto-MDI-X.'},
+  ]},
+  {id:'m2',icon:'🖥️',color:'#69f0ae',title:'Modul 2: Virtualisierung, Container & Cloud',entries:[
+    {title:'HowTo: VM in VirtualBox aufsetzen',steps:[
+      {h:'VirtualBox installieren',t:'Download von virtualbox.org. Extension Pack für USB 3.0 und RDP zusätzlich installieren.',code:''},
+      {h:'Neue VM erstellen',t:'Neu → Name und BS-Typ wählen → RAM zuweisen (mind. 2 GB für Windows) → Neue virtuelle Festplatte erstellen (VDI, dynamisch).',code:''},
+      {h:'ISO einbinden und installieren',t:'Einstellungen → Massenspeicher → Controller:IDE → ISO-Datei auswählen → VM starten → OS installieren.',code:''},
+      {h:'Netzwerkmodus verstehen',t:'NAT: VM hat Internet, aber nicht vom Host erreichbar. Bridge: VM bekommt eigene IP im Heimnetz. Host-Only: Nur VM↔Host-Kommunikation, kein Internet.',code:''},
+    ],tip:'Tipp: Snapshot VOR jeder riskanten Aktion erstellen!',warn:'Snapshots ≠ Backup: Snapshots liegen auf derselben Disk. Bei Plattenausfall verlierst du alles.'},
+    {title:'HowTo: Proxmox VE installieren',steps:[
+      {h:'ISO herunterladen und booten',t:'Download: proxmox.com/downloads → Bootfähigen USB erstellen (Rufus/balenaEtcher). Von USB booten.',code:''},
+      {h:'Installation durchführen',t:'Zielfestplatte wählen → Zeitzone+Tastatur → Passwort+E-Mail für root → Netzwerk konfigurieren (IP/GW/DNS).',code:''},
+      {h:'Weboberfläche öffnen',t:'Browser: https://PROXMOX-IP:8006 → Root-Login → SSL-Warnung ignorieren (selbstsigniert).',code:''},
+      {h:'VM erstellen',t:'Datacenter → Node → "Create VM" → ISO auswählen → CPU/RAM/Disk konfigurieren → Starten.',code:''},
+    ],tip:'Tipp: Für Test-Cluster: 3 Proxmox-Nodes, Corosync für Quorum benötigt ungerade Anzahl.'},
+    {title:'HowTo: Docker unter Linux installieren',steps:[
+      {h:'Docker Engine installieren',t:'Offizielle Installationsskript-Methode (Ubuntu/Debian):',code:'curl -fsSL https://get.docker.com | sh\nsudo usermod -aG docker $USER   # Kein sudo nötig nach Re-Login'},
+      {h:'Docker Compose installieren',t:'Bei neuem Docker bereits als Plugin enthalten:',code:'docker compose version\n# Alternativ standalone:\nsudo apt install docker-compose-plugin'},
+      {h:'Ersten Container starten',t:'',code:'docker run -d --name nginx -p 80:80 nginx\ndocker ps           # laufende Container\ndocker logs nginx   # Logs ansehen'},
+      {h:'Container stoppen und löschen',t:'',code:'docker stop nginx\ndocker rm nginx\ndocker image ls     # Images auflisten'},
+    ],tip:'Tipp: Immer offizielle Images von hub.docker.com nutzen, Tags prüfen (z.B. :latest vs. :24.04).'},
+    {title:'HowTo: Dockerfile schreiben',steps:[
+      {h:'Basis-Dockerfile erstellen',t:'',code:'FROM ubuntu:22.04\nRUN apt-get update && apt-get install -y nginx\nCOPY index.html /var/www/html/\nEXPOSE 80\nCMD ["nginx", "-g", "daemon off;"]'},
+      {h:'Image bauen',t:'',code:'docker build -t mein-nginx:1.0 .\ndocker run -d -p 8080:80 mein-nginx:1.0'},
+    ],tip:'Tipp: RUN-Befehle verketten (&&) um Image-Layers zu minimieren.'},
+    {title:'HowTo: Persistente Daten in Docker (Volumes)',steps:[
+      {h:'Named Volume (empfohlen)',t:'Docker verwaltet den Speicherort:',code:'docker volume create meine-daten\ndocker run -v meine-daten:/var/lib/mysql mysql'},
+      {h:'Bind Mount (Entwicklung)',t:'Host-Verzeichnis wird eingebunden:',code:'docker run -v /home/user/daten:/app/daten nginx'},
+    ],warn:'Vorsicht: Ohne Volume gehen alle Container-Daten beim "docker rm" verloren!'},
+  ]},
+  {id:'m3',icon:'🌐',color:'#c8ff00',title:'Modul 3: Netzwerk-Infrastruktur & Routing',entries:[
+    {title:'HowTo: VLANs (802.1Q) konfigurieren',steps:[
+      {h:'VLAN-Konzept verstehen',t:'Untagged Port = Access-Port (Endgerät weiß nichts vom VLAN). Tagged Port = Trunk-Port (mehrere VLANs transportiert, z.B. zwischen Switches).',code:''},
+      {h:'VLAN auf Cisco-Switch (Beispiel)',t:'',code:'Switch# configure terminal\nSwitch(config)# vlan 10\nSwitch(config-vlan)# name BUERO\nSwitch(config-vlan)# exit\nSwitch(config)# interface Fa0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 10'},
+      {h:'Trunk-Port konfigurieren',t:'',code:'Switch(config)# interface Gi0/1\nSwitch(config-if)# switchport mode trunk\nSwitch(config-if)# switchport trunk allowed vlan 10,20,30'},
+    ],tip:'Tipp: VLAN 1 als Management-VLAN möglichst nicht für Nutzerdaten verwenden.'},
+    {title:'HowTo: Statische Routen eintragen',steps:[
+      {h:'Windows',t:'',code:'route add 192.168.10.0 mask 255.255.255.0 192.168.1.1\nroute add 192.168.10.0 mask 255.255.255.0 192.168.1.1 -p  # persistent'},
+      {h:'Linux',t:'',code:'ip route add 192.168.10.0/24 via 192.168.1.1\n# Persistent (Netplan, Ubuntu):\n# /etc/netplan/01-netcfg.yaml unter routes:'},
+      {h:'Cisco Router',t:'',code:'Router(config)# ip route 192.168.10.0 255.255.255.0 192.168.1.1'},
+    ],tip:'Tipp: route print (Windows) / ip route show (Linux) zur Überprüfung.'},
+    {title:'HowTo: Wireshark für Fehlersuche nutzen',steps:[
+      {h:'Capture starten',t:'Interface auswählen (z.B. eth0) → blauen Start-Button klicken. Filter vorab setzen für weniger Traffic.',code:''},
+      {h:'Nützliche Capture-Filter',t:'',code:'host 192.168.1.100          # Nur diesen Host\nport 443                    # Nur HTTPS\ntcp                         # Nur TCP'},
+      {h:'Display-Filter (nach Capture)',t:'',code:'ip.addr == 192.168.1.100\ntcp.port == 80\nhttp\ndns\nicmp'},
+      {h:'TCP-Handshake prüfen',t:'Filter: tcp → SYN, SYN-ACK, ACK suchen. Kein SYN-ACK = Ziel antwortet nicht (Firewall?). RST = Verbindung abgelehnt.',code:''},
+    ],tip:'Tipp: "Follow TCP Stream" (Rechtsklick auf Paket) zeigt gesamte Konversation im Klartext.'},
+    {title:'HowTo: OPNsense als Default Gateway einrichten',steps:[
+      {h:'OPNsense installieren',t:'ISO von opnsense.org → auf Hardware oder VM installieren. WAN und LAN Interfaces zuweisen.',code:''},
+      {h:'Grundkonfiguration',t:'Browser: https://192.168.1.1 → Admin/opnsense → Wizard durchlaufen → WAN (DHCP oder statisch), LAN (192.168.1.1/24).',code:''},
+      {h:'Clients konfigurieren',t:'DHCP-Server in OPNsense unter Services → DHCPv4 → LAN aktivieren. Clients erhalten automatisch IP+Gateway.',code:''},
+    ],tip:'Tipp: Firewall-Rules: LAN → any (erlauben), WAN → restriktiv.'},
+  ]},
+  {id:'m4',icon:'🐧',color:'#ff8a65',title:'Modul 4: Linux-Administration (CLI-Fokus)',entries:[
+    {title:'HowTo: Rechteverwaltung unter Linux',steps:[
+      {h:'Berechtigungen lesen',t:'rwxr-xr-- = Owner:rwx, Group:r-x, Others:r--',code:'ls -la /etc/passwd\nchmod 755 datei.sh    # rwxr-xr-x\nchmod +x datei.sh     # Ausführbar machen\nchown user:gruppe datei'},
+      {h:'Sticky Bit setzen',t:'Verhindert, dass Benutzer Dateien anderer im selben Verzeichnis löschen (z.B. /tmp):',code:'chmod +t /verzeichnis\nls -la  # zeigt t am Ende der Permissions'},
+      {h:'ACLs für feinere Rechte',t:'',code:'setfacl -m u:thomas:rwx datei.txt   # Benutzer thomas bekommt rwx\ngetfacl datei.txt                    # ACLs anzeigen'},
+    ],tip:'Tipp: chmod 640 für Konfigurationsdateien (Owner lesen+schreiben, Gruppe lesen).'},
+    {title:'HowTo: Dienste verwalten mit systemd',steps:[
+      {h:'Häufige systemctl-Befehle',t:'',code:'systemctl start nginx        # starten\nsystemctl stop nginx         # stoppen\nsystemctl restart nginx      # neu starten\nsystemctl status nginx       # Status & Logs\nsystemctl enable nginx       # Autostart aktivieren\nsystemctl disable nginx      # Autostart deaktivieren'},
+      {h:'Logs mit journalctl',t:'',code:'journalctl -u nginx              # alle Logs des Dienstes\njournalctl -u nginx -f           # live verfolgen\njournalctl -u nginx --since today'},
+    ],tip:'Tipp: systemctl enable --now nginx startet den Dienst und aktiviert Autostart in einem Befehl.'},
+    {title:'HowTo: LVM – Festplatten-Management',steps:[
+      {h:'LVM-Übersicht',t:'Physical Volume (PV) → Volume Group (VG) → Logical Volume (LV). LVs können im laufenden Betrieb erweitert werden.',code:''},
+      {h:'Neue Disk einbinden',t:'',code:'pvcreate /dev/sdb               # Physical Volume erstellen\nvgextend vg0 /dev/sdb           # zur Volume Group hinzufügen\nlvextend -L +50G /dev/vg0/data  # LV erweitern\nresize2fs /dev/vg0/data         # Dateisystem anpassen (ext4)'},
+      {h:'Status prüfen',t:'',code:'pvs   # Physical Volumes\nvgs   # Volume Groups\nlvs   # Logical Volumes'},
+    ],tip:'Tipp: resize2fs nur für ext4. Für XFS: xfs_growfs /mountpoint'},
+    {title:'HowTo: Cronjobs einrichten',steps:[
+      {h:'Crontab bearbeiten',t:'',code:'crontab -e          # Crontab des aktuellen Benutzers editieren\ncrontab -l          # Crontab anzeigen\ncrontab -u user -e  # Als root: Crontab für anderen Benutzer'},
+      {h:'Syntax',t:'Minute Stunde Tag Monat Wochentag Befehl',code:'0 2 * * *   /usr/bin/backup.sh      # täglich 02:00\n*/5 * * * * /usr/bin/check.sh       # alle 5 Minuten\n0 0 1 * *   /usr/bin/monthly.sh    # 1. jedes Monats'},
+    ],tip:'Tipp: crontab.guru ist eine praktische Website zum Testen von Cron-Ausdrücken.'},
+  ]},
+  {id:'m5',icon:'🪟',color:'#ce93d8',title:'Modul 5: Windows Server & Active Directory',entries:[
+    {title:'HowTo: Neue Windows-Domäne aufsetzen',steps:[
+      {h:'AD DS-Rolle installieren',t:'',code:'Install-WindowsFeature AD-Domain-Services -IncludeManagementTools'},
+      {h:'Domain Controller hochstufen',t:'',code:'Install-ADDSForest `\n  -DomainName "firma.local" `\n  -DomainNetbiosName "FIRMA" `\n  -InstallDns `\n  -Force'},
+      {h:'Nach Neustart prüfen',t:'',code:'Get-ADDomain\nGet-ADDomainController'},
+    ],tip:'Tipp: DNS wird automatisch mitinstalliert. Statische IP VOR der DC-Promotion setzen!'},
+    {title:'HowTo: Benutzer nach AGDLP anlegen',steps:[
+      {h:'AGDLP-Prinzip',t:'Account → Global Group → Domain Local Group → Permission. Benutzer in globale Gruppen, globale Gruppen in Domain Local Gruppen, Domain Local Gruppen bekommen Berechtigungen.',code:''},
+      {h:'Umsetzung in PowerShell',t:'',code:'New-ADUser -Name "Max Mustermann" -SamAccountName "m.mustermann" -AccountPassword (ConvertTo-SecureString "Pa$$w0rd" -AsPlainText -Force) -Enabled $true\nNew-ADGroup "GG_IT_Admins" -GroupScope Global\nAdd-ADGroupMember "GG_IT_Admins" "m.mustermann"\nNew-ADGroup "DL_IT_Server_Vollzugriff" -GroupScope DomainLocal\nAdd-ADGroupMember "DL_IT_Server_Vollzugriff" "GG_IT_Admins"'},
+    ],tip:'Tipp: Niemals Benutzer direkt auf Ressourcen berechtigen – immer über Gruppen!'},
+    {title:'HowTo: NTFS- vs. Freigabe-Berechtigungen',steps:[
+      {h:'Grundregel',t:'Netzwerkfreigabe immer auf "Jeder → Vollzugriff" stellen. Feingranulare Rechte IMMER über NTFS-Berechtigungen steuern.',code:''},
+      {h:'Freigabe erstellen (PowerShell)',t:'',code:'New-SmbShare -Name "Daten" -Path "D:\\Daten" -FullAccess "Jeder"'},
+      {h:'NTFS-Berechtigungen setzen',t:'',code:'$acl = Get-Acl "D:\\Daten"\n$rule = New-Object System.Security.AccessControl.FileSystemAccessRule("DL_IT_Server_Vollzugriff","FullControl","ContainerInherit,ObjectInherit","None","Allow")\n$acl.SetAccessRule($rule)\nSet-Acl "D:\\Daten" $acl'},
+    ],warn:'Beim Zugriff über Netzwerk gilt: restriktivere Berechtigung aus NTFS+Freigabe gewinnt.'},
+    {title:'HowTo: Laufwerksmapping per GPO verteilen',steps:[
+      {h:'GPO erstellen',t:'GPMC öffnen → Domäne → Neue GPO erstellen und verknüpfen → Bearbeiten.',code:''},
+      {h:'Laufwerk konfigurieren',t:'User Configuration → Preferences → Windows Settings → Drive Maps → New → Mapped Drive. Buchstabe, Pfad (\\\\server\\freigabe), Action: Create oder Update.',code:''},
+      {h:'Zielgruppenfilterung',t:'Item-Level Targeting: nur für bestimmte Sicherheitsgruppen oder OUs anwenden.',code:''},
+    ],tip:'Tipp: gpupdate /force auf dem Client erzwingt sofortige Richtlinienaktualisierung.'},
+  ]},
+  {id:'m6',icon:'⚙️',color:'#ffd54f',title:'Modul 6: Core Services & Internet-Dienste',entries:[
+    {title:'HowTo: Nginx als Reverse Proxy einrichten',steps:[
+      {h:'Nginx installieren',t:'',code:'sudo apt install nginx\nsudo systemctl enable --now nginx'},
+      {h:'Reverse-Proxy-Config erstellen',t:'',code:'# /etc/nginx/sites-available/mein-dienst\nserver {\n    listen 80;\n    server_name meinedomain.de;\n    location / {\n        proxy_pass http://localhost:8080;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n    }\n}'},
+      {h:'Config aktivieren und testen',t:'',code:'sudo ln -s /etc/nginx/sites-available/mein-dienst /etc/nginx/sites-enabled/\nsudo nginx -t         # Syntax prüfen\nsudo systemctl reload nginx'},
+    ],tip:'Tipp: Mehrere Dienste über einen einzigen Port 443 erreichbar via server_name.'},
+    {title:'HowTo: Let\'s Encrypt via Certbot',steps:[
+      {h:'Certbot installieren',t:'',code:'sudo apt install certbot python3-certbot-nginx'},
+      {h:'Zertifikat ausstellen',t:'',code:'sudo certbot --nginx -d meinedomain.de\n# DNS-01 Challenge für interne/Wildcard-Domains:\nsudo certbot certonly --manual --preferred-challenges dns -d "*.intern.firma.de"'},
+      {h:'Auto-Renewal prüfen',t:'',code:'sudo certbot renew --dry-run\nsystemctl status certbot.timer'},
+    ],tip:'Tipp: Zertifikate laufen nach 90 Tagen ab – Auto-Renewal läuft als systemd-Timer.'},
+    {title:'HowTo: MySQL/MariaDB installieren & absichern',steps:[
+      {h:'Installieren',t:'',code:'sudo apt install mariadb-server\nsudo systemctl enable --now mariadb'},
+      {h:'Absichern',t:'',code:'sudo mysql_secure_installation\n# Root-Passwort setzen, anonyme Benutzer entfernen,\n# Root-Remote-Login deaktivieren, Test-DB löschen'},
+      {h:'Benutzer anlegen',t:'',code:"mysql -u root -p\nCREATE DATABASE myapp;\nCREATE USER 'appuser'@'localhost' IDENTIFIED BY 'StarkesPasswort!';\nGRANT ALL PRIVILEGES ON myapp.* TO 'appuser'@'localhost';\nFLUSH PRIVILEGES;"},
+    ],tip:'Tipp: Niemals root-Benutzer für Applikationen verwenden! Minimale Rechte vergeben.'},
+  ]},
+  {id:'m7',icon:'🔐',color:'#ef5350',title:'Modul 7: Cyber-Security & Hardening',entries:[
+    {title:'HowTo: SSH-Server absichern',steps:[
+      {h:'SSH-Konfiguration bearbeiten',t:'',code:'sudo nano /etc/ssh/sshd_config\n\n# Folgende Zeilen anpassen:\nPort 2222                    # Anderen Port nutzen\nPermitRootLogin no           # Root-Login verbieten\nPasswordAuthentication no    # Nur Key-Auth\nPubkeyAuthentication yes'},
+      {h:'SSH-Key generieren (Client)',t:'',code:'ssh-keygen -t ed25519 -C "mein-server"\nssh-copy-id -i ~/.ssh/id_ed25519.pub benutzer@server'},
+      {h:'fail2ban installieren',t:'',code:'sudo apt install fail2ban\nsudo systemctl enable --now fail2ban\n# Sperrt IPs nach x Fehlversuchen automatisch'},
+      {h:'SSH-Dienst neu starten',t:'',code:'sudo systemctl restart sshd\n# Erst testen, dann alte Session schließen!'},
+    ],warn:'Wichtig: Erst neue SSH-Session testen, bevor du die aktuelle schließt – sonst kannst du dich aussperren!'},
+    {title:'HowTo: Windows Server Hardening',steps:[
+      {h:'SMBv1 deaktivieren',t:'',code:'Set-SmbServerConfiguration -EnableSMB1Protocol $false\nGet-SmbServerConfiguration | Select EnableSMB1Protocol'},
+      {h:'Unnötige Rollen/Features entfernen',t:'',code:'Get-WindowsFeature | Where-Object {$_.InstallState -eq "Installed"} | Format-Table\nRemove-WindowsFeature <FeatureName>'},
+      {h:'Windows Defender Firewall aktivieren',t:'',code:'Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled True'},
+    ],tip:'Tipp: CIS Benchmarks (cisecurity.org) bieten detaillierte Härtungsanleitungen für Windows Server.'},
+  ]},
+  {id:'m8',icon:'📊',color:'#69f0ae',title:'Modul 8: Monitoring, Log-Management & Backup',entries:[
+    {title:'HowTo: Veeam Backup einrichten',steps:[
+      {h:'Backup-Job erstellen',t:'Veeam Backup & Replication öffnen → Backup → Virtual Machine → Job-Name → VMs hinzufügen → Repository auswählen (NAS/lokale Disk).',code:''},
+      {h:'Backup-Zeitplan',t:'Schedule: täglich, wöchentlich, oder nach Ereignis. Für kritische Systeme: täglich + wöchentliches Full-Backup.',code:''},
+      {h:'Backup testen (Instant Recovery)',t:'Veeam → Instant VM Recovery → VM direkt aus Backup starten. Test: Kann die VM booten? Sind Daten vollständig?',code:''},
+    ],warn:'3-2-1-1-0-Regel: 3 Kopien, 2 verschiedene Medien, 1 Off-Site, 1 Offline/Air-Gap, 0 ungetestete Backups!'},
+    {title:'HowTo: Checkmk Agenten installieren',steps:[
+      {h:'Agent herunterladen',t:'Im Checkmk-Webinterface: Setup → Agents → Download des passenden Agenten (Linux .deb/.rpm oder Windows .msi).',code:''},
+      {h:'Linux-Agent installieren',t:'',code:'sudo dpkg -i check-mk-agent_*.deb\nsudo systemctl enable --now check-mk-agent'},
+      {h:'Windows-Agent installieren',t:'MSI-Datei ausführen, Standardinstallation. Firewall-Regel für Port 6556 prüfen.',code:''},
+      {h:'Host in Checkmk aufnehmen',t:'Setup → Hosts → Add Host → IP eintragen → Services discovern → Aktivieren.',code:''},
+    ],tip:'Tipp: Agenten-Updates immer über die Bakery-Funktion von Checkmk zentral ausrollen.'},
+  ]},
+  {id:'m9',icon:'🤖',color:'#4fc3f7',title:'Modul 9: Automation, Scripting & DevOps',entries:[
+    {title:'HowTo: PowerShell für Daily Tasks',steps:[
+      {h:'Abgelaufene AD-Accounts finden',t:'',code:'Get-ADUser -Filter * -Properties PasswordLastSet,Enabled |\nWhere-Object {$_.PasswordLastSet -lt (Get-Date).AddDays(-90) -and $_.Enabled} |\nSelect-Object Name,SamAccountName,PasswordLastSet'},
+      {h:'Abgelaufene Accounts deaktivieren',t:'',code:'Get-ADUser -Filter {PasswordLastSet -lt "01.01.2024" -and Enabled -eq $true} |\nDisable-ADAccount\nWrite-Output "Erledigt"'},
+      {h:'PowerShell-Skript mit Fehlerbehandlung',t:'',code:'$ErrorActionPreference = "Stop"\ntry {\n    # Dein Code hier\n} catch {\n    Write-Error "Fehler: $_"\n}'},
+    ],tip:'Tipp: Immer zuerst mit -WhatIf testen! Disable-ADAccount -WhatIf zeigt was passieren würde.'},
+    {title:'HowTo: Ansible Playbook schreiben',steps:[
+      {h:'Inventory erstellen',t:'',code:'# /etc/ansible/hosts\n[webserver]\n192.168.1.10\n192.168.1.11\n\n[dbserver]\n192.168.1.20'},
+      {h:'Playbook schreiben',t:'',code:'# update_all.yml\n---\n- name: Alle Linux-Server updaten\n  hosts: all\n  become: true\n  tasks:\n    - name: apt update & upgrade\n      apt:\n        update_cache: yes\n        upgrade: dist'},
+      {h:'Playbook ausführen',t:'',code:'ansible-playbook update_all.yml\nansible-playbook update_all.yml --check   # Dry-Run'},
+    ],tip:'Tipp: Idempotenz – ein Ansible-Playbook kann beliebig oft laufen ohne unerwünschte Nebeneffekte.'},
+    {title:'HowTo: Git-Workflow im Team',steps:[
+      {h:'Repository klonen und Branch erstellen',t:'',code:'git clone https://github.com/firma/repo.git\ncd repo\ngit checkout -b feature/meine-funktion'},
+      {h:'Änderungen committen',t:'',code:'git add .\ngit commit -m "feat: neue Funktion hinzugefügt"\ngit push origin feature/meine-funktion'},
+      {h:'Merge Request / Pull Request',t:'Auf GitHub/GitLab: "New Pull Request" → Beschreibung → Review anfordern → Merge nach Genehmigung.',code:''},
+    ],tip:'Tipp: Commit-Messages im Conventional-Commits-Format: feat:, fix:, docs:, chore:'},
+  ]},
+  {id:'m10',icon:'🔧',color:'#ff8a65',title:'Modul 10: Troubleshooting, Dokumentation & Daily Business',entries:[
+    {title:'HowTo: OSI-Modell beim Troubleshooting anwenden',steps:[
+      {h:'Layer 1 – Physisch',t:'Kabel gesteckt? Link-LED leuchtet? Kabel tauschen, Port wechseln.',code:'ethtool eth0   # Linux: Link-Status prüfen'},
+      {h:'Layer 2 – Datensicherung',t:'VLAN korrekt? MAC-Tabelle prüfen.',code:'show mac address-table   # Cisco Switch'},
+      {h:'Layer 3 – Netzwerk',t:'IP-Adresse gesetzt? Default-Gateway erreichbar? Routing korrekt?',code:'ping 8.8.8.8\nip route show\ntraceroute 8.8.8.8'},
+      {h:'Layer 4–7 – Transport bis Anwendung',t:'Port offen? Dienst läuft? Firewall-Regel?',code:'ss -tlnp | grep 80    # Port offen?\ncurl -v http://server  # HTTP-Antwort prüfen'},
+    ],tip:'Tipp: Immer von Layer 1 nach oben arbeiten – 80% der Probleme liegen auf L1–L3.'},
+    {title:'HowTo: Professionelle Ticket-Erstellung',steps:[
+      {h:'Pflichtfelder im Ticket',t:'1. Beobachtetes Verhalten (Was passiert?)\n2. Erwartetes Verhalten (Was sollte passieren?)\n3. Schritte zur Reproduktion\n4. Was wurde schon probiert?\n5. Logs, Screenshots, Fehlermeldungen anhängen',code:''},
+      {h:'Gutes Beispiel',t:'Betreff: "VPN-Verbindung seit 09:00 Uhr nicht möglich"\n\nBeobachtet: VPN-Client zeigt Fehler "Authentication failed" (Screenshot)\nErwartet: Verbindung zum Firmennetz\nProbiert: Passwort zurückgesetzt, Client neu gestartet\nLogs: C:\\Users\\user\\AppData\\Local\\VPN\\vpn.log angehängt',code:''},
+    ],tip:'Tipp: Ein vollständiges Ticket spart Rückfragen und verkürzt die Lösungszeit um 50%.'},
+    {title:'HowTo: Sauberes Netzdiagramm erstellen',steps:[
+      {h:'Tool auswählen',t:'draw.io (kostenlos, Browser oder Desktop): app.diagrams.net. Alternativ: Visio, Lucidchart.',code:''},
+      {h:'Logische Ansicht',t:'Zeigt IP-Adressen, Subnetze, VLANs, Dienste. Keine physischen Ports.',code:''},
+      {h:'Physische Ansicht',t:'Zeigt Racks, Kabelwege, Switch-Ports, Patchpanel-Belegung.',code:''},
+      {h:'Mindestinhalt',t:'Alle Geräte mit IP, alle Subnetze mit CIDR, Default Gateway, Internetzugang, Firewalls/Proxies, Server-Rollen.',code:''},
+    ],tip:'Tipp: Für NetBox als IPAM-Tool: netbox.dev – kostenloses Open-Source-IPAM/DCIM.'},
+  ]},
+  {id:'m11',icon:'🎓',color:'#c8ff00',title:'Modul 11: Der Weg zur Abschlussprüfung',entries:[
+    {title:'HowTo: Projektantrag formulieren',steps:[
+      {h:'Thema eingrenzen',t:'Konkretes, in 35–40 Stunden umsetzbares Projekt wählen. Beispiele: "Aufbau eines Monitoring-Systems mit Checkmk", "Migration eines File-Servers auf NAS".',code:''},
+      {h:'Zeitplanung (Muss-Angabe!)',t:'Tabelle mit Phase, Tätigkeit, geplante Stunden. Summe = genau 35 Std. (FiSi). Puffer für Dokumentation einplanen (ca. 8 Std.).',code:''},
+      {h:'Antrag einreichen',t:'Mindestens 6 Wochen vor Prüfungsbeginn beim Prüfungsausschuss. Nach Genehmigung erst starten!',code:''},
+    ],tip:'Tipp: IHK-Musteranträge auf der Website deiner IHK herunterladen!'},
+    {title:'HowTo: Projektdokumentation schreiben',steps:[
+      {h:'Formale Vorgaben der IHK',t:'Deckblatt mit Name, Betrieb, Thema, Datum. Max. 10–15 Seiten Hauptteil (je IHK unterschiedlich). Anhänge nicht begrenzt.',code:''},
+      {h:'Kaufmännische Projektsicht',t:'Amortisationsrechnung: Investitionskosten (Hardware, Lizenzen, Arbeitszeit) vs. Nutzen (Einsparungen, Effizienzgewinn). Tabelle im Anhang.',code:''},
+      {h:'Struktur',t:'1. Ausgangssituation / Ist-Zustand\n2. Soll-Konzept und Begründung der Entscheidung\n3. Durchführung (mit Fotos/Screenshots)\n4. Qualitätssicherung / Tests\n5. Fazit und Ausblick',code:''},
+    ],tip:'Tipp: Jede Entscheidung begründen! Warum Nginx statt Apache? Warum RAID 5 statt RAID 1?'},
+    {title:'HowTo: Fachgespräch & Präsentation',steps:[
+      {h:'Präsentation aufbauen',t:'Max. 15 Minuten. Folien: Ausgangslage, Ziel, Umsetzung, Ergebnis, Ausblick. Nicht mehr als 5 Bullet-Points pro Folie.',code:''},
+      {h:'Typische Prüferfragen',t:'• Warum haben Sie sich für XY entschieden?\n• Was würden Sie beim nächsten Mal anders machen?\n• Wie skaliert Ihre Lösung bei doppelter Last?\n• Welche Sicherheitsrisiken hat Ihre Lösung?',code:''},
+      {h:'Tipps gegen Nervosität',t:'• Laut üben (allein oder vor Freunden)\n• "Wenn ich nicht weiter weiß, frage ich kurz nach"\n• Prüfer wollen, dass du bestehst!\n• Pausen sind ok, Stille ist kein Fehler',code:''},
+    ],tip:'Tipp: Das Fachgespräch dauert 15 Min. – Prüfer stellen ca. 8–12 Fragen. Kurze, präzise Antworten bevorzugen.'},
+  ]},
+];
+
+let wikiActiveFilter = 'all';
+
+function renderWiki() {
+  const container = document.getElementById('wiki-content');
+  if (!container) return;
+  const mods = wikiActiveFilter === 'all' ? WIKI_MODULES : WIKI_MODULES.filter(m => m.id === wikiActiveFilter);
+  container.innerHTML = mods.map((mod, mi) => `
+    <div class="wiki-mod" data-mod="${mod.id}">
+      <div class="wiki-mod-header" onclick="wikiToggleMod('${mod.id}')">
+        <div class="wiki-mod-icon" style="background:${mod.color}22;border:1px solid ${mod.color}40">${mod.icon}</div>
+        <div class="wiki-mod-title">${mod.title}</div>
+        <div class="wiki-mod-count mono">${mod.entries.length} HowTos</div>
+        <div class="wiki-mod-chev" id="wmc-${mod.id}">▼</div>
+      </div>
+      <div class="wiki-mod-body" id="wmb-${mod.id}">
+        ${mod.entries.map((entry, ei) => {
+          const eid = mod.id + '_' + ei;
+          return `<div class="wiki-entry">
+            <div class="wiki-entry-header" onclick="wikiToggleEntry('${eid}')">
+              <div class="wiki-entry-title">${entry.title}</div>
+              <div class="wiki-entry-chev" id="wec-${eid}">▼</div>
+            </div>
+            <div class="wiki-entry-body" id="web-${eid}">
+              ${entry.steps.map((step, si) => `
+                <div class="wiki-step">
+                  <div class="wiki-step-num">${si + 1}</div>
+                  <div class="wiki-step-text">
+                    <strong>${step.h}</strong>
+                    ${step.t ? `<span>${step.t.replace(/\n/g, '<br>')}</span>` : ''}
+                    ${step.code ? `<div class="wiki-code">${step.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : ''}
+                  </div>
+                </div>`).join('')}
+              ${entry.tip ? `<div class="wiki-tip">💡 ${entry.tip}</div>` : ''}
+              ${entry.warn ? `<div class="wiki-warn">⚠️ ${entry.warn}</div>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+  // Auto-open if single module filtered
+  if (wikiActiveFilter !== 'all' && mods.length === 1) {
+    wikiToggleMod(mods[0].id);
+  }
+}
+
+window.wikiFilter = function(id) {
+  wikiActiveFilter = id;
+  renderWiki();
+};
+window.wikiToggleMod = function(id) {
+  const body = document.getElementById('wmb-' + id);
+  const chev = document.getElementById('wmc-' + id);
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+};
+window.wikiToggleEntry = function(eid) {
+  const body = document.getElementById('web-' + eid);
+  const chev = document.getElementById('wec-' + eid);
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+};
 
 // ══════════════════ GLOBAL WINDOW REGISTRATIONS (für GitHub Pages / type="module") ══════════════════
 window.toggleTheme      = toggleTheme;
