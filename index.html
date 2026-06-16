@@ -936,6 +936,20 @@ h3{font-size:14px;font-weight:500}
 </div><!-- end main-app -->
 
 <div class="toast" id="toast"></div>
+
+<!-- LERNKOMPASS-HINWEIS MODAL -->
+<div id="compass-warn-overlay" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:26px 24px;width:100%;max-width:440px;box-shadow:0 12px 48px rgba(0,0,0,.45)">
+    <div style="font-size:34px;margin-bottom:10px;text-align:center">🧭</div>
+    <div style="font-size:17px;font-weight:600;text-align:center;margin-bottom:8px">Lernfeld noch nicht durchgearbeitet</div>
+    <div id="compass-warn-text" style="font-size:13px;color:var(--text2);line-height:1.6;text-align:center;margin-bottom:18px"></div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <button class="btn btn-primary" id="compass-warn-goto" style="width:100%;justify-content:center">🧭 Erst im Lernkompass anschauen</button>
+      <button class="btn btn-ghost" id="compass-warn-continue" style="width:100%;justify-content:center">Trotzdem Test starten</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
@@ -1444,6 +1458,30 @@ const MODULES=[
       {q:'MPLS-Vorteil gegenüber klassischem IP-Routing?',o:['Kein Routing nötig','Günstigerer Hardware','Nur für WLAN','Label-Switching ermöglicht QoS und Traffic Engineering'],a:3,exp:'MPLS: schnelles Forwarding via Labels, QoS und Traffic Engineering.',r:'MPLS',lf:'lf6'},
       {q:'DNS-Auflösung iterativ: Was macht der Resolver?',o:['Fragt nur einen Server','Fragt sich durch die DNS-Hierarchie selbst','Rät die IP','Nutzt nur Cache'],a:1,exp:'Iterativ: Resolver fragt Root → TLD → authoritative Server selbst.',r:'DNS iterativ',lf:'lf6'},
     ]},
+    {id:'w18b',title:'DNS & DHCP-Server vertieft',questions:[
+      {q:'Welche DNS-Serverrolle hält eine schreibbare Kopie der Zone?',o:['Sekundär','Forwarder','Primär','Resolver'],a:2,exp:'Primärer DNS-Server: hält die schreibbare Masterkopie der Zonendatei.',r:'Primärer DNS',lf:'lf6'},
+      {q:'Wozu dient ein PTR-Record?',o:['IPv6-Auflösung','Reverse Lookup (IP → Name)','Mailrouting','Aliasdefinition'],a:1,exp:'PTR-Record: Reverse-DNS, löst IP-Adresse zu Hostnamen auf.',r:'PTR-Record',lf:'lf6'},
+      {q:'Was enthält der SOA-Record einer Zone?',o:['Nur die IP','Verwaltungsdaten: Primärserver, Seriennummer, Refresh','Eine MAC-Adresse','Den Default Gateway'],a:1,exp:'SOA (Start of Authority): Primärserver, Admin-Mail, Seriennummer, Timer.',r:'SOA-Record',lf:'lf6'},
+      {q:'Was bewirkt eine DHCP-Reservierung?',o:['Sperrt eine IP komplett','Bindet feste IP an eine MAC-Adresse','Verlängert die Lease unendlich','Deaktiviert DHCP'],a:1,exp:'Reservierung: eine bestimmte MAC erhält immer dieselbe IP aus dem Scope.',r:'DHCP-Reservierung',lf:'lf6'},
+      {q:'DHCP-Option 6 liefert?',o:['Default Gateway','Subnetzmaske','DNS-Server','NTP-Server'],a:2,exp:'DHCP-Option 6 = DNS-Server-Adressen.',r:'DHCP Option 6',lf:'lf6'},
+      {q:'Was ist ein DHCP-Scope?',o:['Ein einzelner Host','Der definierte Adressbereich, den der Server vergibt','Ein VLAN','Eine Firewall-Regel'],a:1,exp:'Scope: zusammenhängender IP-Bereich, aus dem der DHCP-Server Adressen vergibt.',r:'DHCP-Scope',lf:'lf6'},
+      {q:'Was macht ein DNS-Forwarder?',o:['Blockiert Anfragen','Leitet nicht auflösbare Anfragen an einen anderen DNS weiter','Vergibt IPs','Erstellt Zonen'],a:1,exp:'Forwarder: leitet Anfragen, die er nicht selbst auflösen kann, gezielt weiter.',r:'DNS-Forwarder',lf:'lf6'},
+      {q:'Wozu dient die TTL eines DNS-Records?',o:['Verschlüsselung','Wie lange ein Eintrag im Cache gültig bleibt','Anzahl der Hops','Priorität des Servers'],a:1,exp:'TTL (Time to Live): legt fest, wie lange ein Resolver den Eintrag cachen darf.',r:'DNS TTL',lf:'lf6'},
+      {q:'Was ist ein Zonentransfer (AXFR)?',o:['Kopieren der Zonendaten vom Primär- zum Sekundärserver','Ein Reverse Lookup','Eine DHCP-Erneuerung','Ein VLAN-Wechsel'],a:0,exp:'AXFR: vollständige Replikation der Zone vom Primär- auf den Sekundärserver.',r:'Zonentransfer',lf:'lf6'},
+      {q:'Was bewirkt ein CNAME-Record?',o:['Mailserver-Zuordnung','Alias eines Namens auf einen anderen Namen','IPv6-Auflösung','Reverse Lookup'],a:1,exp:'CNAME: Aliasname, verweist auf einen anderen (kanonischen) Hostnamen.',r:'CNAME',lf:'lf6'},
+    ]},
+    {id:'w18c',title:'Routing-Praxis & Subnetzdesign',questions:[
+      {q:'Was ist die administrative Distanz im Routing?',o:['Die Länge des Kabels','Vertrauenswürdigkeit einer Routenquelle','Die Anzahl der Hosts','Die Latenz in ms'],a:1,exp:'Administrative Distanz: bewertet, welcher Routenquelle bei mehreren Routen vertraut wird.',r:'Administrative Distanz',lf:'lf6'},
+      {q:'Welche Route hat bei gleicher Zieladresse Vorrang?',o:['Die mit längstem Präfix (longest match)','Die kürzeste','Die erste in der Tabelle','Zufällig'],a:0,exp:'Longest-Prefix-Match: die spezifischste Route (längstes Präfix) gewinnt.',r:'Longest Prefix Match',lf:'lf6'},
+      {q:'Wofür steht eine Default-Route 0.0.0.0/0?',o:['Loopback','Alle Ziele ohne spezifischere Route','Broadcast','Nur lokales Netz'],a:1,exp:'Default-Route: Sammelroute für alle Ziele, für die keine spezifische Route existiert.',r:'Default-Route',lf:'lf6'},
+      {q:'Was bewirkt VLSM?',o:['Feste Subnetzgröße','Variabel große Subnetze je nach Bedarf','Mehr Broadcast','Schnelleres WLAN'],a:1,exp:'VLSM (Variable Length Subnet Mask): unterschiedlich große Subnetze für effiziente Adressnutzung.',r:'VLSM',lf:'lf6'},
+      {q:'Ein /30-Netz wird typischerweise wofür genutzt?',o:['Großes LAN','Punkt-zu-Punkt-Verbindung zwischen Routern','WLAN-Gastnetz','Server-Farm'],a:1,exp:'/30: genau 2 nutzbare Hosts – ideal für Router-zu-Router-Links.',r:'/30 Punkt-zu-Punkt',lf:'lf6'},
+      {q:'Was ist ein Gateway of Last Resort?',o:['Backup-Server','Router, an den unbekannter Traffic geschickt wird','Firewall','DNS-Server'],a:1,exp:'Gateway of Last Resort: Ziel der Default-Route für unbekannte Netze.',r:'Gateway of Last Resort',lf:'lf6'},
+      {q:'Was unterscheidet OSPF von RIP?',o:['OSPF nutzt Hop-Count','OSPF ist Link-State und skaliert besser','RIP ist neuer','Kein Unterschied'],a:1,exp:'OSPF: Link-State mit Kostenmetrik, RIP: Distanzvektor mit 15-Hop-Limit.',r:'OSPF vs RIP',lf:'lf6'},
+      {q:'Wozu dient ein Voice-VLAN?',o:['Trennt VoIP-Traffic für QoS','Speichert Sprachnachrichten','Verschlüsselt Anrufe','Ersetzt das Telefon'],a:0,exp:'Voice-VLAN: separiert Sprachdaten für Priorisierung (QoS) und Sicherheit.',r:'Voice-VLAN',lf:'lf6'},
+      {q:'Was macht ein Native VLAN am Trunk?',o:['Trägt getaggten Traffic','Trägt ungetaggten Traffic über den Trunk','Blockiert alle VLANs','Ist immer VLAN 100'],a:1,exp:'Native VLAN: ungetaggte Frames auf einem 802.1Q-Trunk werden diesem VLAN zugeordnet.',r:'Native VLAN',lf:'lf6'},
+      {q:'Wie viele /28-Subnetze passen in ein /24?',o:['4','8','16','32'],a:2,exp:'28-24=4 geliehene Bits → 2^4 = 16 Subnetze.',r:'Subnetze /24 zu /28',lf:'lf6'},
+    ]},
   ]},
   {id:'m_lf7',title:'IT-Lösungen entwickeln (LF 7)',icon:'⚙️',color:'#ce93d8',lf:'lf7',weeks:[
     {id:'w20',title:'Programmierung & OOP',questions:[
@@ -1469,6 +1507,30 @@ const MODULES=[
       {q:'git branch erstellt?',o:['Neuen Entwicklungszweig','Kopie des Repositories','Commit','Tag'],a:0,exp:'Branch: unabhängiger Entwicklungszweig vom aktuellen Stand.',r:'Git Branch',lf:'lf7'},
       {q:'Pull Request (PR) in GitHub?',o:['Daten herunterladen','Konflikte lösen','Repository löschen','Änderungen aus Branch zum Mergen vorschlagen'],a:3,exp:'PR: Entwickler schlägt vor, seinen Branch in main zu mergen.',r:'Pull Request',lf:'lf7'},
       {q:'Continuous Integration (CI) bedeutet?',o:['Tägliche Meetings','Häufige Code-Integration mit automatischen Tests','Manuelle Deployments','Kein Testing'],a:1,exp:'CI: häufige Zusammenführung von Code + automatisierte Tests.',r:'CI',lf:'lf7'},
+    ]},
+    {id:'w20b',title:'Datentypen, Operatoren & Logik',questions:[
+      {q:'Welcher Datentyp speichert Wahrheitswerte?',o:['Integer','Boolean','String','Float'],a:1,exp:'Boolean: nur true oder false.',r:'Boolean',lf:'lf7'},
+      {q:'Was liefert der Modulo-Operator %?',o:['Den Quotienten','Den Rest der ganzzahligen Division','Die Potenz','Das Produkt'],a:1,exp:'Modulo: 17 % 5 = 2 (Rest).',r:'Modulo',lf:'lf7'},
+      {q:'Was bedeutet die Bedingung (a && b)?',o:['a ODER b','NICHT a','a UND b – beide müssen wahr sein','a gleich b'],a:2,exp:'&& = logisches UND: nur wahr, wenn beide Operanden wahr sind.',r:'Logisches UND',lf:'lf7'},
+      {q:'Was ist Kurzschlussauswertung (short-circuit)?',o:['Programmabsturz','Bei && wird abgebrochen, sobald der erste Teil false ist','Endlosschleife','Ein Hardwarefehler'],a:1,exp:'Short-circuit: bei false && ... wird der zweite Teil gar nicht erst geprüft.',r:'Short-circuit',lf:'lf7'},
+      {q:'Was ist ein Cast (Typumwandlung)?',o:['Variable löschen','Wert von einem Datentyp in einen anderen umwandeln','Funktion aufrufen','Kommentar setzen'],a:1,exp:'Cast: z.B. Integer 5 → Float 5.0 oder String "5".',r:'Type-Cast',lf:'lf7'},
+      {q:'Welcher Operator ist der Zuweisungsoperator?',o:['==','=','!=','>='],a:1,exp:'= weist zu, == vergleicht.',r:'Zuweisung',lf:'lf7'},
+      {q:'Was ist ein lokaler Gültigkeitsbereich (Scope)?',o:['Global überall sichtbar','Variable nur innerhalb ihres Blocks/Funktion gültig','Nie sichtbar','Nur in Schleifen'],a:1,exp:'Lokaler Scope: Variable existiert nur innerhalb des definierenden Blocks.',r:'Scope',lf:'lf7'},
+      {q:'Was ist eine Konstante?',o:['Variable, die sich ständig ändert','Unveränderlicher Wert nach Initialisierung','Eine Schleife','Ein Array'],a:1,exp:'Konstante (const/final): Wert kann nach Zuweisung nicht mehr geändert werden.',r:'Konstante',lf:'lf7'},
+      {q:'Was bewirkt die break-Anweisung in einer Schleife?',o:['Pausiert kurz','Bricht die Schleife sofort ab','Überspringt nur einen Durchlauf','Startet neu'],a:1,exp:'break: verlässt die Schleife vollständig.',r:'break',lf:'lf7'},
+      {q:'Was bewirkt continue in einer Schleife?',o:['Beendet die Schleife','Springt zum nächsten Durchlauf','Wiederholt den aktuellen ewig','Löscht die Variable'],a:1,exp:'continue: überspringt den Rest des aktuellen Durchlaufs, fährt mit dem nächsten fort.',r:'continue',lf:'lf7'},
+    ]},
+    {id:'w20c',title:'Datenstrukturen & Komplexität',questions:[
+      {q:'Was ist ein Array?',o:['Eine einzelne Variable','Eine geordnete Sammlung gleichartiger Elemente mit Index','Eine Funktion','Ein Kommentar'],a:1,exp:'Array: indizierte Liste von Elementen, Zugriff über Index.',r:'Array',lf:'lf7'},
+      {q:'Bei welchem Index startet ein Array üblicherweise?',o:['0','1','-1','Variabel'],a:0,exp:'Arrays: Index beginnt in den meisten Sprachen bei 0.',r:'Array-Index',lf:'lf7'},
+      {q:'Was ist ein Stack (Stapel)?',o:['FIFO – First In First Out','LIFO – Last In First Out','Zufälliger Zugriff','Sortierte Liste'],a:1,exp:'Stack: LIFO – das zuletzt abgelegte Element wird zuerst entnommen.',r:'Stack',lf:'lf7'},
+      {q:'Was ist eine Queue (Warteschlange)?',o:['LIFO','FIFO – First In First Out','Index-basiert','Immer leer'],a:1,exp:'Queue: FIFO – das zuerst eingefügte Element wird zuerst entnommen.',r:'Queue',lf:'lf7'},
+      {q:'Was beschreibt die O-Notation?',o:['Speicherort','Laufzeit-/Komplexitätsverhalten eines Algorithmus','Die Programmiersprache','Die Codezeilen'],a:1,exp:'O-Notation: beschreibt das Wachstum von Laufzeit/Speicher mit der Eingabegröße.',r:'O-Notation',lf:'lf7'},
+      {q:'Welche Komplexität hat lineare Suche im Worst Case?',o:['O(1)','O(log n)','O(n)','O(n²)'],a:2,exp:'Lineare Suche: im schlimmsten Fall n Vergleiche → O(n).',r:'Lineare Suche',lf:'lf7'},
+      {q:'Welche Komplexität hat binäre Suche?',o:['O(n)','O(log n)','O(n²)','O(1)'],a:1,exp:'Binäre Suche: halbiert den Bereich pro Schritt → O(log n).',r:'Binäre Suche',lf:'lf7'},
+      {q:'Was ist Rekursion?',o:['Eine Schleife','Eine Funktion, die sich selbst aufruft','Ein Array','Ein Datentyp'],a:1,exp:'Rekursion: Funktion ruft sich selbst auf, braucht eine Abbruchbedingung.',r:'Rekursion',lf:'lf7'},
+      {q:'Was passiert ohne Abbruchbedingung bei Rekursion?',o:['Schnellerer Code','Stack Overflow / Endlosrekursion','Nichts','Automatischer Stopp'],a:1,exp:'Fehlende Abbruchbedingung: unendliche Aufrufe → Stack Overflow.',r:'Endlosrekursion',lf:'lf7'},
+      {q:'Was ist eine Hashtabelle?',o:['Sortierte Liste','Struktur mit Schlüssel-Wert-Zugriff in ~O(1)','Ein Stack','Ein Baum'],a:1,exp:'Hashtabelle: schneller Zugriff über Schlüssel mittels Hashfunktion.',r:'Hashtabelle',lf:'lf7'},
     ]},
   ]},
   {id:'m_lf8',title:'IT-Systeme administrieren (LF 8)',icon:'🖥️',color:'#69f0ae',lf:'lf8',weeks:[
@@ -1496,6 +1558,30 @@ const MODULES=[
       {q:'Syslog-Facility KERN bedeutet?',o:['Kernel-Nachrichten','E-Mail-System','Authentifizierung','Cron-Dienste'],a:0,exp:'Facility 0 = KERN: Kernel-Meldungen.',r:'Syslog Facility',lf:'lf8'},
       {q:'IIS ist ein?',o:['Microsoft Webserver für Windows Server','Linux-Webserver','Datenbank','Monitoring-Tool'],a:0,exp:'IIS = Internet Information Services: Microsofts Webserver.',r:'IIS',lf:'lf8'},
     ]},
+    {id:'w22b',title:'Active Directory & Gruppenrichtlinien vertieft',questions:[
+      {q:'Was ist ein Domänencontroller (DC)?',o:['Ein Client-PC','Server, der Authentifizierung und AD-Datenbank bereitstellt','Ein Switch','Eine Firewall'],a:1,exp:'DC: hält die AD-Datenbank und authentifiziert Benutzer/Computer der Domäne.',r:'Domänencontroller',lf:'lf8'},
+      {q:'Was ist ein Forest in Active Directory?',o:['Ein einzelner Benutzer','Die oberste Sammlung von einer oder mehreren Domänenstrukturen','Eine GPO','Ein Drucker'],a:1,exp:'Forest: höchste logische Struktur, umfasst alle Domänen und ihr gemeinsames Schema.',r:'AD Forest',lf:'lf8'},
+      {q:'Wozu dient eine Vertrauensstellung (Trust)?',o:['Datenverschlüsselung','Authentifizierung über Domänengrenzen hinweg','Backup','Routing'],a:1,exp:'Trust: ermöglicht Benutzern einer Domäne den Zugriff auf Ressourcen einer anderen.',r:'Trust',lf:'lf8'},
+      {q:'In welcher Reihenfolge werden GPOs angewendet (LSDOU)?',o:['Lokal, Standort, Domäne, OU','OU, Domäne, Standort, Lokal','Nur Domäne','Zufällig'],a:0,exp:'LSDOU: Local → Site → Domain → OU; die zuletzt angewendete gewinnt bei Konflikt.',r:'GPO LSDOU',lf:'lf8'},
+      {q:'Was bewirkt "Block Inheritance" bei einer OU?',o:['Verhindert das Erben übergeordneter GPOs','Löscht alle GPOs','Erzwingt eine GPO','Aktiviert Vererbung'],a:0,exp:'Block Inheritance: blockiert das Vererben von GPOs übergeordneter Container.',r:'GPO Vererbung',lf:'lf8'},
+      {q:'Was ist eine Sicherheitsgruppe in AD?',o:['Ein einzelner Benutzer','Sammlung von Konten zur gemeinsamen Rechtevergabe','Eine GPO','Ein DNS-Eintrag'],a:1,exp:'Sicherheitsgruppe: bündelt Benutzer, um ihnen gemeinsam Berechtigungen zuzuweisen.',r:'Sicherheitsgruppe',lf:'lf8'},
+      {q:'Wofür steht das Kerberos-Protokoll in AD?',o:['Dateifreigabe','Sichere Authentifizierung mit Tickets','DNS-Auflösung','Backup'],a:1,exp:'Kerberos: ticketbasierte, sichere Authentifizierung im Active Directory.',r:'Kerberos',lf:'lf8'},
+      {q:'Was bewirkt gpupdate /force?',o:['Startet den Server neu','Wendet Gruppenrichtlinien sofort neu an','Löscht GPOs','Erstellt eine OU'],a:1,exp:'gpupdate /force: erzwingt die sofortige Neuanwendung aller Richtlinien.',r:'gpupdate',lf:'lf8'},
+      {q:'Was ist das SYSVOL-Verzeichnis?',o:['Benutzerprofile','Freigegebener Ordner mit GPO-Daten und Skripten','Die Registry','Ein Papierkorb'],a:1,exp:'SYSVOL: repliziertes Verzeichnis mit Gruppenrichtlinien und Anmeldeskripten.',r:'SYSVOL',lf:'lf8'},
+      {q:'Was ist ein Anmeldeskript?',o:['Ein Virus','Skript, das bei Benutzeranmeldung automatisch ausgeführt wird','Eine Firewall-Regel','Ein DNS-Record'],a:1,exp:'Anmeldeskript: führt beim Login z.B. Laufwerksverbindungen oder Einstellungen aus.',r:'Anmeldeskript',lf:'lf8'},
+    ]},
+    {id:'w22c',title:'Linux-Administration & Rechte',questions:[
+      {q:'Was bedeutet chmod 644 bei einer Datei?',o:['rwxrwxrwx','rw-r--r-- (Besitzer schreibt, Rest liest)','rwx------','r--r--r--'],a:1,exp:'644: Besitzer rw- (6), Gruppe r-- (4), Andere r-- (4).',r:'chmod 644',lf:'lf8'},
+      {q:'Welcher Befehl zeigt laufende Prozesse unter Linux?',o:['ls','ps aux','cd','mkdir'],a:1,exp:'ps aux: listet alle laufenden Prozesse mit Details.',r:'ps aux',lf:'lf8'},
+      {q:'Wozu dient der Befehl sudo?',o:['Datei löschen','Befehl mit erhöhten Rechten ausführen','Verzeichnis wechseln','Datei kopieren'],a:1,exp:'sudo: führt einen Befehl mit Administrator-/Root-Rechten aus.',r:'sudo',lf:'lf8'},
+      {q:'Was ist das Wurzelverzeichnis unter Linux?',o:['/home','C:\\','/ (root)','/var'],a:2,exp:'/ ist das Wurzelverzeichnis – Ausgangspunkt der gesamten Verzeichnisstruktur.',r:'Root-Verzeichnis',lf:'lf8'},
+      {q:'Welche Berechtigung steht im Zahlensystem für r (lesen)?',o:['1','2','4','7'],a:2,exp:'r=4, w=2, x=1. Summe ergibt die Rechtezahl (z.B. rwx = 7).',r:'Linux-Rechte Zahlen',lf:'lf8'},
+      {q:'Wozu dient der Befehl grep?',o:['Dateien kopieren','Textmuster in Dateien/Ausgaben suchen','Prozesse beenden','Pakete installieren'],a:1,exp:'grep: durchsucht Eingaben/Dateien nach Mustern (z.B. grep error logfile).',r:'grep',lf:'lf8'},
+      {q:'Was macht systemctl enable dienst?',o:['Startet den Dienst sofort','Aktiviert den Autostart beim Booten','Stoppt den Dienst','Löscht den Dienst'],a:1,exp:'systemctl enable: sorgt dafür, dass der Dienst beim Systemstart automatisch startet.',r:'systemctl enable',lf:'lf8'},
+      {q:'Wozu dient eine ACL unter Linux?',o:['Nur ein Besitzer/Gruppe-Modell','Feingranulare Rechte über das Standardmodell hinaus','Festplatten formatieren','Netzwerk-Routing'],a:1,exp:'ACL (Access Control List): erlaubt differenzierte Rechte für mehrere Benutzer/Gruppen.',r:'Linux ACL',lf:'lf8'},
+      {q:'Was bewirkt das setuid-Bit?',o:['Datei wird versteckt','Programm läuft mit den Rechten des Dateibesitzers','Datei wird gelöscht','Nur Lesezugriff'],a:1,exp:'setuid: ausführbares Programm läuft mit den Rechten des Eigentümers (oft root).',r:'setuid',lf:'lf8'},
+      {q:'Wo werden Benutzerkonten unter Linux gespeichert?',o:['/etc/passwd','/home/users','/var/log','/boot'],a:0,exp:'/etc/passwd: enthält die Benutzerkonten (Passwörter gehasht in /etc/shadow).',r:'/etc/passwd',lf:'lf8'},
+    ]},
   ]},
   {id:'m_lf9',title:'Daten analysieren (LF 9)',icon:'📊',color:'#ff8a65',lf:'lf9',weeks:[
     {id:'w24',title:'Geschäftsprozesse & Datenanalyse',questions:[
@@ -1509,6 +1595,30 @@ const MODULES=[
       {q:'KPI steht für?',o:['Key Product Identifier','Key Performance Indicator','Knowledge Process Integration','Kernel Protocol Interface'],a:1,exp:'KPI = Key Performance Indicator: messbare Zielgröße.',r:'KPI',lf:'lf9'},
       {q:'JSON-Format: Wie werden Objekte begrenzt?',o:['()','[]','{}','<>'],a:2,exp:'JSON-Objekte: {}. Arrays: []. Beispiel: {"key":"value"}.',r:'JSON Syntax',lf:'lf9'},
       {q:'SQL AVG(gehalt) berechnet?',o:['Summe aller Gehälter','Maximalgehalt','Anzahl der Gehälter','Durchschnittsgehalt'],a:3,exp:'AVG = Average: Durchschnittswert der Spalte.',r:'SQL AVG',lf:'lf9'},
+    ]},
+    {id:'w24b',title:'SQL & Datenaufbereitung',questions:[
+      {q:'Welche SQL-Aggregatfunktion zählt Datensätze?',o:['SUM()','COUNT()','AVG()','MAX()'],a:1,exp:'COUNT(): zählt die Anzahl der Zeilen bzw. Werte.',r:'COUNT',lf:'lf9'},
+      {q:'Was bewirkt SQL ORDER BY?',o:['Filtert Zeilen','Sortiert das Ergebnis','Gruppiert Daten','Löscht Zeilen'],a:1,exp:'ORDER BY: sortiert die Ergebnismenge auf- oder absteigend.',r:'ORDER BY',lf:'lf9'},
+      {q:'Was unterscheidet WHERE von HAVING?',o:['Identisch','WHERE filtert Zeilen, HAVING filtert Gruppen nach Aggregation','HAVING ist schneller','WHERE filtert Gruppen'],a:1,exp:'WHERE: vor der Gruppierung. HAVING: filtert aggregierte Gruppen danach.',r:'WHERE vs HAVING',lf:'lf9'},
+      {q:'Was macht ein INNER JOIN?',o:['Alle Zeilen beider Tabellen','Nur Zeilen mit Übereinstimmung in beiden Tabellen','Nur linke Tabelle','Kreuzprodukt'],a:1,exp:'INNER JOIN: liefert nur Datensätze, die in beiden Tabellen passende Werte haben.',r:'INNER JOIN',lf:'lf9'},
+      {q:'Wozu dient SQL DISTINCT?',o:['Duplikate im Ergebnis entfernen','Zeilen löschen','Werte summieren','Sortieren'],a:0,exp:'DISTINCT: gibt jeden unterschiedlichen Wert nur einmal aus.',r:'DISTINCT',lf:'lf9'},
+      {q:'Was beschreibt der Begriff Data Cleansing?',o:['Daten verschlüsseln','Fehlerhafte, doppelte oder fehlende Daten bereinigen','Daten löschen','Daten komprimieren'],a:1,exp:'Data Cleansing: Korrigieren/Entfernen fehlerhafter, doppelter, unvollständiger Daten.',r:'Data Cleansing',lf:'lf9'},
+      {q:'Welches Format ist ein typisches Austauschformat für tabellarische Daten?',o:['CSV','EXE','DLL','ISO'],a:0,exp:'CSV (Comma Separated Values): einfaches, weit verbreitetes Tabellenformat.',r:'CSV',lf:'lf9'},
+      {q:'Was ist ein Data Warehouse?',o:['Eine Festplatte','Zentrale Sammlung integrierter Daten für Analysen','Ein Backup-Band','Ein Webserver'],a:1,exp:'Data Warehouse: zentrales System, das Daten aus Quellen für Auswertungen zusammenführt.',r:'Data Warehouse',lf:'lf9'},
+      {q:'Was bedeutet die Phase "Transform" bei ETL?',o:['Daten extrahieren','Daten bereinigen und umformen','Daten laden','Daten löschen'],a:1,exp:'Transform: Bereinigung, Formatierung und Anpassung der Daten an das Zielschema.',r:'ETL Transform',lf:'lf9'},
+      {q:'Wozu dient XML?',o:['Bilder anzeigen','Strukturierte Daten mit Tags auszeichnen','Tabellen sortieren','Verschlüsseln'],a:1,exp:'XML: textbasiertes Format zur Strukturierung von Daten mit selbstdefinierten Tags.',r:'XML',lf:'lf9'},
+    ]},
+    {id:'w24c',title:'Statistik, KPIs & Visualisierung',questions:[
+      {q:'Was beschreibt der Median?',o:['Den häufigsten Wert','Den mittleren Wert einer sortierten Reihe','Die Summe','Die Spannweite'],a:1,exp:'Median: der mittlere Wert; bei gerader Anzahl der Durchschnitt der beiden mittleren.',r:'Median',lf:'lf9'},
+      {q:'Was ist der Modus (Modalwert)?',o:['Der Durchschnitt','Der am häufigsten vorkommende Wert','Der kleinste Wert','Der mittlere Wert'],a:1,exp:'Modus: der Wert, der in der Datenreihe am häufigsten auftritt.',r:'Modus',lf:'lf9'},
+      {q:'Wofür steht die Standardabweichung?',o:['Den Durchschnitt','Das Maß für die Streuung um den Mittelwert','Die Anzahl','Den Maximalwert'],a:1,exp:'Standardabweichung: gibt an, wie stark die Werte um den Mittelwert streuen.',r:'Standardabweichung',lf:'lf9'},
+      {q:'Welches Diagramm eignet sich für Anteile am Ganzen?',o:['Liniendiagramm','Kreisdiagramm','Streudiagramm','Histogramm'],a:1,exp:'Kreisdiagramm (Tortendiagramm): zeigt prozentuale Anteile am Gesamtwert.',r:'Kreisdiagramm',lf:'lf9'},
+      {q:'Welches Diagramm zeigt am besten einen Verlauf über die Zeit?',o:['Kreisdiagramm','Liniendiagramm','Tabelle','Baumdiagramm'],a:1,exp:'Liniendiagramm: ideal für zeitliche Entwicklungen und Trends.',r:'Liniendiagramm',lf:'lf9'},
+      {q:'Was misst der KPI "Verfügbarkeit"?',o:['Kosten','Anteil der Zeit, in der ein System nutzbar ist','Anzahl Benutzer','Datenmenge'],a:1,exp:'Verfügbarkeit: prozentualer Anteil der Betriebszeit (z.B. 99,9 %).',r:'KPI Verfügbarkeit',lf:'lf9'},
+      {q:'Wofür steht MTBF?',o:['Mean Time Between Failures','Maximum Total Backup Files','Mean Transfer Bit Frequency','Monitoring Tool Base Format'],a:0,exp:'MTBF: mittlere Zeit zwischen zwei Ausfällen – Maß für Zuverlässigkeit.',r:'MTBF',lf:'lf9'},
+      {q:'Was beschreibt eine Korrelation?',o:['Ursache und Wirkung','Statistischen Zusammenhang zwischen zwei Variablen','Einen Mittelwert','Eine Tabelle'],a:1,exp:'Korrelation: misst den Zusammenhang; bedeutet aber nicht zwingend Kausalität.',r:'Korrelation',lf:'lf9'},
+      {q:'Was sollte bei Auswertungen aus Datenschutzsicht beachtet werden?',o:['Möglichst viele Personendaten sammeln','Personenbezug minimieren / anonymisieren','Daten unverschlüsselt teilen','Keine Regeln nötig'],a:1,exp:'Datenschutz: Datenminimierung und Anonymisierung gemäß DSGVO-Grundsätzen.',r:'Datenschutz Auswertung',lf:'lf9'},
+      {q:'Was ist ein Ausreißer (Outlier) in Daten?',o:['Ein typischer Wert','Ein stark vom Rest abweichender Wert','Der Mittelwert','Ein fehlender Wert'],a:1,exp:'Ausreißer: Wert, der deutlich von den übrigen Daten abweicht und Analysen verzerren kann.',r:'Ausreißer',lf:'lf9'},
     ]},
   ]},
   {id:'m_lf10b',title:'Serverdienste & Automatisierung (LF 10b)',icon:'🤖',color:'#4fc3f7',lf:'lf10b',weeks:[
@@ -1524,6 +1634,30 @@ const MODULES=[
       {q:'SPF-Record verhindert?',o:['DDoS-Angriffe','Virenversand','E-Mail-Spoofing (unberechtigtes Senden im Namen der Domain)','SSL-Fehler'],a:2,exp:'SPF: definiert autorisierte Mailserver für eine Domain.',r:'SPF',lf:'lf10b'},
       {q:'Ansible ist ein Tool zur?',o:['Automatisierten IT-Konfiguration (Infrastructure as Code)','Datenbankadministration','Netzwerk-Monitoring','Backup-Verwaltung'],a:0,exp:'Ansible: agentlose Automatisierung via YAML-Playbooks.',r:'Ansible',lf:'lf10b'},
     ]},
+    {id:'w25b',title:'Mail- & Datenbankserver',questions:[
+      {q:'Welche Rolle hat ein MTA wie Postfix?',o:['E-Mails abrufen','E-Mails transportieren/zustellen','Webseiten ausliefern','Datenbank verwalten'],a:1,exp:'MTA (Mail Transfer Agent): nimmt E-Mails an und stellt sie zu.',r:'MTA',lf:'lf10b'},
+      {q:'Wozu dient Dovecot?',o:['Als Webserver','Als IMAP/POP3-Server zum Abrufen von Mails','Als Firewall','Als DNS-Server'],a:1,exp:'Dovecot: stellt Postfächer per IMAP/POP3 für Clients bereit.',r:'Dovecot',lf:'lf10b'},
+      {q:'Was prüft DMARC?',o:['Festplattenstatus','Auf Basis von SPF und DKIM, wie mit gefälschten Mails umzugehen ist','Die CPU-Last','Das WLAN-Passwort'],a:1,exp:'DMARC: Richtlinie, die SPF und DKIM kombiniert und Reporting ermöglicht.',r:'DMARC',lf:'lf10b'},
+      {q:'Was bewirkt ein DKIM-Eintrag?',o:['Sperrt Mails','Signiert ausgehende Mails kryptografisch','Löscht Spam','Vergibt IP-Adressen'],a:1,exp:'DKIM: digitale Signatur der Mail, prüfbar über den öffentlichen Schlüssel im DNS.',r:'DKIM',lf:'lf10b'},
+      {q:'Wozu dient mysqldump?',o:['Datenbank starten','Datenbank als SQL-Datei sichern','Tabellen löschen','Benutzer anlegen'],a:1,exp:'mysqldump: erzeugt ein Backup der Datenbank als SQL-Skript.',r:'mysqldump',lf:'lf10b'},
+      {q:'Was ist eine Master/Slave-Replikation?',o:['Zwei unabhängige Server','Daten werden vom Master auf einen Slave kopiert','Ein Backup auf Band','Eine Firewall-Regel'],a:1,exp:'Replikation: der Slave erhält fortlaufend die Änderungen des Masters.',r:'DB-Replikation',lf:'lf10b'},
+      {q:'Welcher Standardport gehört zu MySQL/MariaDB?',o:['3306','1433','5432','27017'],a:0,exp:'MySQL/MariaDB: Standardport 3306.',r:'MySQL-Port',lf:'lf10b'},
+      {q:'Wozu dient ein Index in einer Datenbank?',o:['Daten verschlüsseln','Abfragen beschleunigen','Speicher sparen','Backups erstellen'],a:1,exp:'Index: beschleunigt Suchvorgänge, erhöht aber Speicherbedarf und Schreibaufwand.',r:'DB-Index',lf:'lf10b'},
+      {q:'Was bewirkt das GRANT-Statement in SQL?',o:['Löscht eine Tabelle','Vergibt Berechtigungen an einen Benutzer','Startet den Server','Erstellt einen Index'],a:1,exp:'GRANT: weist einem Datenbankbenutzer bestimmte Rechte zu.',r:'GRANT',lf:'lf10b'},
+      {q:'Welcher Standardport gehört zu PostgreSQL?',o:['3306','5432','1521','6379'],a:1,exp:'PostgreSQL: Standardport 5432.',r:'PostgreSQL-Port',lf:'lf10b'},
+    ]},
+    {id:'w25c',title:'Skripting, IaC & Hochverfügbarkeit',questions:[
+      {q:'Was ist ein PowerShell-Cmdlet?',o:['Eine Datei','Ein kleiner Befehl nach dem Schema Verb-Substantiv','Eine GPO','Ein Dienst'],a:1,exp:'Cmdlet: PowerShell-Befehl wie Get-Process oder Set-Item.',r:'Cmdlet',lf:'lf10b'},
+      {q:'Was bewirkt die Pipeline | in der Shell?',o:['Beendet ein Skript','Leitet die Ausgabe eines Befehls als Eingabe an den nächsten weiter','Löscht Dateien','Kommentiert Code'],a:1,exp:'Pipe |: verkettet Befehle, indem Ausgabe an den nächsten Befehl weitergegeben wird.',r:'Pipeline',lf:'lf10b'},
+      {q:'Was bedeutet Idempotenz bei Ansible?',o:['Jeder Lauf ändert etwas','Mehrfaches Ausführen führt zum gleichen Endzustand','Skripte sind langsam','Nur einmal ausführbar'],a:1,exp:'Idempotenz: wiederholtes Anwenden erzeugt denselben Soll-Zustand ohne Nebenwirkungen.',r:'Idempotenz',lf:'lf10b'},
+      {q:'Was ist ein Ansible-Playbook?',o:['Eine Datenbank','YAML-Datei mit den auszuführenden Tasks','Ein Webserver','Eine Firewall'],a:1,exp:'Playbook: beschreibt in YAML die gewünschten Zustände/Aufgaben.',r:'Playbook',lf:'lf10b'},
+      {q:'Wofür steht IaC?',o:['Internet as Code','Infrastructure as Code','Integration and Compilation','Input and Caching'],a:1,exp:'IaC: Infrastruktur wird per Code/Konfigurationsdateien automatisiert beschrieben.',r:'IaC',lf:'lf10b'},
+      {q:'Wozu dient Terraform?',o:['Datenbankabfragen','Provisionierung von Infrastruktur über Code','E-Mail-Versand','Monitoring'],a:1,exp:'Terraform: deklaratives IaC-Tool zur Bereitstellung von Infrastruktur.',r:'Terraform',lf:'lf10b'},
+      {q:'Was bewirkt Load Balancing per Round-Robin?',o:['Anfragen gehen immer an einen Server','Anfragen werden reihum gleichmäßig verteilt','Nur an den schnellsten Server','Zufällig ohne Regel'],a:1,exp:'Round-Robin: verteilt Anfragen der Reihe nach gleichmäßig auf alle Server.',r:'Round-Robin',lf:'lf10b'},
+      {q:'Was unterscheidet Active/Passive von Active/Active-Cluster?',o:['Kein Unterschied','Active/Passive: ein Standby-Server; Active/Active: alle aktiv','Active/Passive ist schneller','Active/Active hat kein Failover'],a:1,exp:'Active/Passive: Standby übernimmt bei Ausfall. Active/Active: alle Knoten arbeiten parallel.',r:'Cluster-Typen',lf:'lf10b'},
+      {q:'Wozu dient ein Cronjob?',o:['Backups verschlüsseln','Zeitgesteuerte, automatische Aufgaben ausführen','Benutzer anlegen','Pakete installieren'],a:1,exp:'Cronjob: führt Befehle/Skripte automatisch zu definierten Zeitpunkten aus.',r:'Cronjob',lf:'lf10b'},
+      {q:'Was beschreibt Hochverfügbarkeit (HA)?',o:['Schnellere CPU','Minimierte Ausfallzeit durch Redundanz und Failover','Mehr Speicher','Günstigere Hardware'],a:1,exp:'HA: durch redundante Systeme und automatischen Failover wird Ausfallzeit minimiert.',r:'Hochverfügbarkeit',lf:'lf10b'},
+    ]},
   ]},
   {id:'m_lf11b',title:'IT-Sicherheit umsetzen (LF 11b)',icon:'🛡️',color:'#ef5350',lf:'lf11b',weeks:[
     {id:'w26',title:'Sicherheitskonzepte & Penetration Testing',questions:[
@@ -1538,6 +1672,30 @@ const MODULES=[
       {q:'Phishing-Erkennungsmerkmal?',o:['Korrektes HTTPS','Legitimer Absender','Dringende Aufforderung + verdächtige Absender-Domain','Korrekte Rechtschreibung'],a:2,exp:'Phishing: Dringlichkeit, falsche Domain, unbekannte Links.',r:'Phishing erkennen',lf:'lf11b'},
       {q:'Defense in Depth bedeutet?',o:['Nur eine Firewall','Tiefe Datenverschlüsselung','Mehrere überlagerte Sicherheitsschichten','Nur perimeter Schutz'],a:2,exp:'Defense in Depth: Angreifer muss mehrere Sicherheitsebenen überwinden.',r:'Defense in Depth',lf:'lf11b'},
     ]},
+    {id:'w26b',title:'Virtualisierung & Container',questions:[
+      {q:'Was unterscheidet einen Typ-1- von einem Typ-2-Hypervisor?',o:['Typ 1 läuft direkt auf der Hardware (bare-metal), Typ 2 auf einem Host-OS','Kein Unterschied','Typ 2 ist schneller','Typ 1 braucht Windows'],a:0,exp:'Typ 1 (ESXi, Hyper-V): bare-metal. Typ 2 (VirtualBox): auf einem Betriebssystem.',r:'Hypervisor-Typen',lf:'lf11b'},
+      {q:'Was ist ein VM-Snapshot?',o:['Ein Backup auf Band','Eingefrorener Zustand einer VM zum Zurückrollen','Ein Klon der Festplatte','Ein Screenshot'],a:1,exp:'Snapshot: speichert den aktuellen VM-Zustand, um später dorthin zurückzukehren.',r:'Snapshot',lf:'lf11b'},
+      {q:'Was ist vMotion / Live-Migration?',o:['VM-Löschung','Verschieben laufender VMs zwischen Hosts ohne Ausfall','Backup-Vorgang','Netzwerk-Routing'],a:1,exp:'Live-Migration: VM wird im laufenden Betrieb auf einen anderen Host verschoben.',r:'Live-Migration',lf:'lf11b'},
+      {q:'Was ist ein Docker-Image?',o:['Ein laufender Container','Unveränderliche Vorlage zum Starten von Containern','Ein Snapshot','Eine VM'],a:1,exp:'Image: schreibgeschützte Vorlage, aus der Container instanziiert werden.',r:'Docker-Image',lf:'lf11b'},
+      {q:'Wozu dient ein Dockerfile?',o:['Container löschen','Bauanweisungen für ein Image definieren','Netzwerk konfigurieren','Logs anzeigen'],a:1,exp:'Dockerfile: textbasierte Bauanleitung, aus der ein Image erstellt wird.',r:'Dockerfile',lf:'lf11b'},
+      {q:'Wozu dient docker-compose?',o:['Einzelne Datei verschlüsseln','Multi-Container-Anwendungen deklarativ definieren und starten','Images löschen','Firewall einrichten'],a:1,exp:'docker-compose: beschreibt mehrere Container und ihre Beziehungen in einer YAML-Datei.',r:'docker-compose',lf:'lf11b'},
+      {q:'Was ist ein Pod in Kubernetes?',o:['Ein physischer Server','Kleinste deploybare Einheit (ein oder mehrere Container)','Eine Festplatte','Ein Netzwerk'],a:1,exp:'Pod: kleinste Einheit in Kubernetes, kapselt einen oder mehrere Container.',r:'Pod',lf:'lf11b'},
+      {q:'Worin unterscheidet sich ein Container von einer VM?',o:['Container hat eigenen Kernel','Container teilt den Host-Kernel und ist leichtgewichtiger','VMs sind kleiner','Kein Unterschied'],a:1,exp:'Container: teilt den Host-Kernel, kein eigenes Gast-OS → schneller und ressourcenschonend.',r:'Container vs VM',lf:'lf11b'},
+      {q:'Wozu dient eine Container Registry?',o:['Logs speichern','Container-Images bereitstellen und verwalten','Netzwerk routen','Backups verschlüsseln'],a:1,exp:'Registry: zentrales Verzeichnis zum Speichern und Verteilen von Images (z.B. Docker Hub).',r:'Container Registry',lf:'lf11b'},
+      {q:'Was bedeutet IaaS, PaaS, SaaS?',o:['Speichertypen','Infrastruktur-, Plattform- und Software-Dienste der Cloud','Verschlüsselungsarten','Netzwerktopologien'],a:1,exp:'IaaS: Infrastruktur, PaaS: Plattform, SaaS: fertige Software – Cloud-Servicemodelle.',r:'Cloud-Modelle',lf:'lf11b'},
+    ]},
+    {id:'w26c',title:'BSI-Grundschutz & Sicherheitsbetrieb',questions:[
+      {q:'Was ist das Ziel des BSI IT-Grundschutzes?',o:['Software verkaufen','Systematische Identifikation und Absicherung von IT-Risiken','Netzwerke beschleunigen','Backups erstellen'],a:1,exp:'IT-Grundschutz: methodisches Vorgehen zur strukturierten Informationssicherheit.',r:'IT-Grundschutz',lf:'lf11b'},
+      {q:'Welcher erste Schritt gehört zur BSI-Methodik?',o:['Firewall kaufen','Strukturanalyse der IT-Landschaft','Server abschalten','Penetrationstest'],a:1,exp:'Strukturanalyse: Erfassung aller Komponenten als Grundlage der Schutzbedarfsfeststellung.',r:'Strukturanalyse',lf:'lf11b'},
+      {q:'Was regelt die ISO 27001?',o:['Netzwerkverkabelung','Anforderungen an ein Informationssicherheits-Managementsystem (ISMS)','Datenschutz allein','Hardware-Recycling'],a:1,exp:'ISO 27001: international anerkannte Norm für ein ISMS.',r:'ISO 27001',lf:'lf11b'},
+      {q:'Was ist ein ISMS?',o:['Ein Virenscanner','Managementsystem für Informationssicherheit (Prozesse, Rollen, Maßnahmen)','Eine Firewall','Ein Backup-Tool'],a:1,exp:'ISMS: steuert Informationssicherheit systematisch über Richtlinien und Prozesse.',r:'ISMS',lf:'lf11b'},
+      {q:'Was beschreibt der PDCA-Zyklus im Sicherheitsmanagement?',o:['Plan – Do – Check – Act','Patch – Deploy – Compile – Audit','Protect – Detect – Control – Adapt','Prepare – Develop – Connect – Apply'],a:0,exp:'PDCA: kontinuierlicher Verbesserungszyklus Plan, Do, Check, Act.',r:'PDCA',lf:'lf11b'},
+      {q:'Was ist ein Notfallhandbuch (BCM)?',o:['Eine GPO','Dokumentierte Maßnahmen zur Aufrechterhaltung des Betriebs im Notfall','Ein Virenscanner','Ein Backup'],a:1,exp:'BCM (Business Continuity Management): Pläne für den Geschäftsbetrieb bei Störungen.',r:'BCM',lf:'lf11b'},
+      {q:'Was bedeutet das Need-to-know-Prinzip?',o:['Jeder darf alles sehen','Nur Zugriff auf Informationen, die für die Aufgabe nötig sind','Keine Zugriffskontrolle','Alle Admin-Rechte'],a:1,exp:'Need-to-know: Zugriff nur auf die für die Tätigkeit zwingend erforderlichen Informationen.',r:'Need-to-know',lf:'lf11b'},
+      {q:'Was ist ein Patch-Management?',o:['Hardware tauschen','Strukturierte Verwaltung und Einspielung von Updates','Logs löschen','Benutzer anlegen'],a:1,exp:'Patch-Management: geplantes Testen und Verteilen von Sicherheits- und Bugfix-Updates.',r:'Patch-Management',lf:'lf11b'},
+      {q:'Was ist ein Incident-Response-Plan?',o:['Backup-Plan','Vorgehensplan zur Reaktion auf Sicherheitsvorfälle','Netzwerkdiagramm','Schulungsplan'],a:1,exp:'Incident Response: definiert Schritte zur Erkennung, Eindämmung und Behebung von Vorfällen.',r:'Incident Response',lf:'lf11b'},
+      {q:'Was bedeutet Hardening eines Systems?',o:['Mehr RAM einbauen','Angriffsfläche durch Deaktivieren unnötiger Dienste/Ports reduzieren','System neu installieren','Daten verschlüsseln'],a:1,exp:'Hardening: Absicherung durch Reduktion unnötiger Dienste, Ports und Konten.',r:'Hardening',lf:'lf11b'},
+    ]},
   ]},
   {id:'m_lf12b',title:'IT-Systeme einführen (LF 12b)',icon:'🚀',color:'#c8ff00',lf:'lf12b',weeks:[
     {id:'w27',title:'Migration, SLA & Wirtschaftlichkeit',questions:[
@@ -1551,6 +1709,30 @@ const MODULES=[
       {q:'Break-Even-Analyse zeigt?',o:['Maximalen Gewinn','Minimalkosten','Amortisationsdauer','Punkt, ab dem Erlöse die Kosten decken'],a:3,exp:'Break-Even: Punkt, an dem Gesamterlöse = Gesamtkosten.',r:'Break-Even',lf:'lf12b'},
       {q:'High Availability (HA) erreicht man durch?',o:['Bessere Software allein','Redundanz und Failover-Mechanismen','Schnellere Hardware','Mehr RAM'],a:1,exp:'HA: Redundanz (mehrere Systeme) + automatischer Failover.',r:'High Availability',lf:'lf12b'},
       {q:'Netzwerkdokumentation sollte enthalten?',o:['Nur IP-Adressen','Nur Passwörter','Topologie, IP-Pläne, Geräteinfos, Konfigurationen, Änderungslog','Nur Herstellerinformationen'],a:2,exp:'Vollständige Netzdoku: Topologie, IPs, Geräte, Konfig, Change-Log.',r:'Netzwerkdokumentation',lf:'lf12b'},
+    ]},
+    {id:'w27b',title:'Projektmanagement & Wirtschaftlichkeit',questions:[
+      {q:'Was kennzeichnet den kritischen Pfad im Netzplan?',o:['Den kürzesten Weg','Den Pfad mit Gesamtpuffer GP = 0','Den teuersten Pfad','Den ersten Vorgang'],a:1,exp:'Kritischer Pfad: Vorgänge mit GP=0 – jede Verzögerung verzögert das Projekt.',r:'Kritischer Pfad',lf:'lf12b'},
+      {q:'Wie berechnet sich der Gesamtpuffer (GP)?',o:['FAZ − SAZ','SAZ − FAZ','FEZ + Dauer','Dauer × 2'],a:1,exp:'GP = SAZ − FAZ = SEZ − FEZ.',r:'Gesamtpuffer',lf:'lf12b'},
+      {q:'Was zeigt ein Gantt-Diagramm?',o:['Datenbankschema','Zeitliche Balkendarstellung von Vorgängen','Netzwerktopologie','Klassendiagramm'],a:1,exp:'Gantt: visualisiert Vorgänge als Balken über die Zeitachse.',r:'Gantt-Diagramm',lf:'lf12b'},
+      {q:'Wofür steht der ROI?',o:['Return on Investment','Risk of Implementation','Rate of Income','Resource Optimization Index'],a:0,exp:'ROI = Return on Investment = Gewinn / Investition × 100.',r:'ROI',lf:'lf12b'},
+      {q:'Was zeigt die Amortisationsrechnung?',o:['Den Maximalgewinn','Nach welcher Zeit sich eine Investition bezahlt macht','Die Steuerlast','Die Personalkosten'],a:1,exp:'Amortisation: Zeitraum, bis die Investition durch Rückflüsse gedeckt ist.',r:'Amortisation',lf:'lf12b'},
+      {q:'Was umfasst der TCO-Begriff?',o:['Nur den Kaufpreis','Alle Kosten über den Lebenszyklus (Anschaffung, Betrieb, Support)','Nur Stromkosten','Nur die Wartung'],a:1,exp:'TCO: Total Cost of Ownership – sämtliche Kosten über die gesamte Nutzungsdauer.',r:'TCO',lf:'lf12b'},
+      {q:'Was ist ein Meilenstein im Projekt?',o:['Ein Arbeitspaket','Ein wichtiges Zwischenereignis mit Dauer 0','Ein Risiko','Ein Mitarbeiter'],a:1,exp:'Meilenstein: bedeutsamer Zeitpunkt im Projekt, hat keine Dauer.',r:'Meilenstein',lf:'lf12b'},
+      {q:'Was beschreibt ein Projektstrukturplan (PSP)?',o:['Den Zeitplan','Die hierarchische Zerlegung in Teilaufgaben/Arbeitspakete','Das Budget allein','Die Risiken'],a:1,exp:'PSP: gliedert das Projekt in handhabbare Arbeitspakete (Work Breakdown Structure).',r:'PSP',lf:'lf12b'},
+      {q:'Was gehört in ein Risikoregister?',o:['Nur Kosten','Identifizierte Risiken mit Bewertung und Gegenmaßnahmen','Nur Termine','Mitarbeiterdaten'],a:1,exp:'Risikoregister: erfasst Risiken, Eintrittswahrscheinlichkeit, Auswirkung und Maßnahmen.',r:'Risikoregister',lf:'lf12b'},
+      {q:'Was ist Stakeholder-Management?',o:['Nur Kundenbetreuung','Identifikation und Steuerung aller Projektbeteiligten und -betroffenen','Budgetkontrolle','Codeverwaltung'],a:1,exp:'Stakeholder-Management: Erwartungen aller Beteiligten erkennen und steuern.',r:'Stakeholder',lf:'lf12b'},
+    ]},
+    {id:'w27c',title:'Migration, SLA & Übergabe',questions:[
+      {q:'Was bedeutet RTO?',o:['Recovery Time Objective – max. tolerierbare Ausfallzeit','Return Time Order','Remote Transfer Object','Real-Time Operation'],a:0,exp:'RTO: maximal akzeptable Zeit bis zur Wiederherstellung nach einem Ausfall.',r:'RTO',lf:'lf12b'},
+      {q:'Was bedeutet RPO?',o:['Recovery Point Objective – max. tolerierbarer Datenverlust','Remote Point Option','Recovery Process Order','Rapid Processing Output'],a:0,exp:'RPO: maximal akzeptabler Datenverlust, gemessen als Zeit seit dem letzten Backup.',r:'RPO',lf:'lf12b'},
+      {q:'Welche Migrationsphasen gibt es typischerweise?',o:['Nur Go-Live','Ist-Analyse, Planung, Test, Go-Live, Nachbetrieb','Nur Test','Nur Planung'],a:1,exp:'Migration: strukturierter Ablauf von der Analyse bis zum Nachbetrieb.',r:'Migrationsphasen',lf:'lf12b'},
+      {q:'Was bedeutet P2V?',o:['Public to Virtual','Physical to Virtual – physischer Server wird zur VM','Point to VLAN','Patch to Version'],a:1,exp:'P2V: Umwandlung eines physischen Servers in eine virtuelle Maschine.',r:'P2V',lf:'lf12b'},
+      {q:'Wozu dient ein Rollback-Plan bei Migrationen?',o:['Schnelleres Go-Live','Rückkehr zum funktionierenden Zustand bei Fehlern','Mehr Speicher','Verschlüsselung'],a:1,exp:'Rollback-Plan: definiert die Rückabwicklung, falls die Migration scheitert.',r:'Rollback-Plan',lf:'lf12b'},
+      {q:'Was regelt ein SLA?',o:['Nur den Preis','Vereinbarte Dienstqualität: Verfügbarkeit, Reaktionszeit, RTO/RPO','Die Hardware','Den Quellcode'],a:1,exp:'SLA (Service Level Agreement): vertraglich zugesicherte Service-Kennzahlen.',r:'SLA',lf:'lf12b'},
+      {q:'Wie viel Ausfallzeit erlaubt eine SLA-Verfügbarkeit von 99,9 % pro Jahr?',o:['~8,76 Stunden','~52 Minuten','~5 Minuten','0 Minuten'],a:0,exp:'99,9 % → 0,1 % von 8760 h ≈ 8,76 Stunden Ausfall pro Jahr.',r:'SLA 99,9%',lf:'lf12b'},
+      {q:'Was dokumentiert ein Abnahmeprotokoll?',o:['Den Quellcode','Die formelle Akzeptanz des Liefergegenstands durch den Auftraggeber','Den Zeitplan','Die Mitarbeiter'],a:1,exp:'Abnahmeprotokoll: bestätigt, dass die Leistung vertragsgemäß erbracht wurde.',r:'Abnahmeprotokoll',lf:'lf12b'},
+      {q:'Was ist Change-Management im IT-Betrieb?',o:['Personalwechsel','Strukturierte Steuerung von Änderungen an IT-Systemen','Budgetplanung','Backup-Strategie'],a:1,exp:'Change-Management: kontrollierter Prozess zur Bewertung und Umsetzung von Änderungen.',r:'Change-Management',lf:'lf12b'},
+      {q:'Unterschied Werkvertrag und Dienstvertrag?',o:['Identisch','Werkvertrag: Erfolg geschuldet; Dienstvertrag: nur Tätigkeit','Dienstvertrag: Erfolg geschuldet','Beide ohne Vergütung'],a:1,exp:'Werkvertrag schuldet ein Ergebnis, Dienstvertrag nur die Tätigkeit.',r:'Werk- vs Dienstvertrag',lf:'lf12b'},
     ]},
   ]},
 ];
@@ -2357,8 +2539,46 @@ function startQuiz(modId,weekId){
   const mod=MODULES.find(m=>m.id===modId);
   const week=mod&&mod.weeks.find(w=>w.id===weekId);
   if(!week)return;
+  // Lernkompass-Hinweis: wenn das zugehörige Lernfeld noch nicht (vollständig) abgehakt ist
+  const ud=getUD();
+  const compassSec=COMPASS_DATA.find(c=>c.id===mod.lf);
+  if(compassSec){
+    const checked=ud.compassChecked||{};
+    const doneCount=compassSec.topics.filter(t=>checked[t.id]).length;
+    const allDone=doneCount===compassSec.topics.length;
+    const alreadyTested=!!(ud.testResults||{})[weekId];
+    // Nur warnen, wenn noch NICHT alle Themen abgehakt sind und der Test neu ist
+    if(!allDone && !alreadyTested){
+      showCompassWarn(mod,week,compassSec,doneCount);
+      return;
+    }
+  }
+  launchQuiz(modId,weekId);
+}
+function launchQuiz(modId,weekId){
+  const mod=MODULES.find(m=>m.id===modId);
+  const week=mod&&mod.weeks.find(w=>w.id===weekId);
+  if(!week)return;
   curQuiz={modId,weekId,questions:week.questions,current:0,answers:[],marked:[],title:week.title,lf:mod.lf};
   goTo('quiz');renderQuizQ();
+}
+function showCompassWarn(mod,week,compassSec,doneCount){
+  const overlay=document.getElementById('compass-warn-overlay');
+  const txt=document.getElementById('compass-warn-text');
+  const gotoBtn=document.getElementById('compass-warn-goto');
+  const contBtn=document.getElementById('compass-warn-continue');
+  if(!overlay)return;
+  const total=compassSec.topics.length;
+  txt.innerHTML=`Du hast im Lernfeld <strong>${compassSec.lf} – ${compassSec.title}</strong> erst <strong>${doneCount} von ${total}</strong> Themen abgehakt.<br><br>Schau dir das Themenfeld lieber zuerst in Ruhe im <strong>🧭 Lernkompass</strong> an, bevor du den Test „${week.title}“ machst.`;
+  gotoBtn.onclick=()=>{
+    overlay.style.display='none';
+    goToCompass(mod.lf);
+  };
+  contBtn.onclick=()=>{
+    overlay.style.display='none';
+    launchQuiz(mod.id,week.id);
+  };
+  overlay.style.display='flex';
 }
 function renderQuizQ(){
   const q=curQuiz.questions[curQuiz.current];
@@ -5626,6 +5846,7 @@ window.toggleLK         = toggleLK;
 window.toggleCompassChk = toggleCompassChk;
 window.goToCompass      = goToCompass;
 window.startQuiz        = startQuiz;
+window.launchQuiz       = launchQuiz;
 window.selectOpt        = selectOpt;
 window.submitOpt        = submitOpt;
 window.nextQ            = nextQ;
